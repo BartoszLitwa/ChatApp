@@ -31,7 +31,7 @@
                             <TextBox Tag="Email"/>
 
                             <!-- Password -->
-                            <TextBox Tag="Password"/>
+                            <PasswordBox Tag="Password"/>
 
                             <!-- Next button -->
                             <Button Content="Next" HorizontalAlignment="Center"/>
