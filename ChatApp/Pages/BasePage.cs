@@ -9,22 +9,14 @@ namespace ChatApp
     /// <summary>
     /// A base page for all pages to gain base functionality
     /// </summary>
-    public class BasePage : Page
+    public class BasePage<VM> : Page where VM : BaseViewModel, new()
     {
-        #region Constructor
+        #region Private Member
 
         /// <summary>
-        /// Default Constructor
+        /// The View Model associated with this page
         /// </summary>
-        public BasePage()
-        {
-            //If we are animating in, hide to begin with
-            if (this.PageLoadAnimation != PageAnimation.None)
-                this.Visibility = Visibility.Collapsed; //Invisible
-
-            //Listen out for the page loading
-            this.Loaded += BasePage_Loaded;
-        }
+        private VM mViewModel;
 
         #endregion
 
@@ -44,6 +36,45 @@ namespace ChatApp
         /// The time any sldie animation takes
         /// </summary>
         public float SlideSeconds { get; set; } = 0.8f;
+
+        /// <summary>
+        /// The View Model associated with this page
+        /// </summary>
+        public VM ViewModel
+        {
+            get => mViewModel;
+            set
+            {
+                // If nothing has changed return
+                if (mViewModel == value)
+                    return;
+
+                //Update the value
+                mViewModel = value;
+
+                this.DataContext = ViewModel;
+            }
+        }
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
+        public BasePage()
+        {
+            //If we are animating in, hide to begin with
+            if (this.PageLoadAnimation != PageAnimation.None)
+                this.Visibility = Visibility.Collapsed; //Invisible
+
+            //Listen out for the page loading
+            this.Loaded += BasePage_Loaded;
+
+            //Create a default ViewModel
+            this.ViewModel = new VM();
+        }
 
         #endregion
 
