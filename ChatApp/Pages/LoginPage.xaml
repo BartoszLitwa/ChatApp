@@ -17,10 +17,10 @@
                     <Border Background="{StaticResource ForegroundLightBrush}" CornerRadius="10" Padding="15 50 15 15" Width="330" Height="350" Margin="50 50 50 0">
 
                         <StackPanel>
-                            <!-- Sign Up header -->
-                            <TextBlock Text="Sign In" FontSize="{StaticResource FontSizeLarge}" FontFamily="{StaticResource     LatoRegular}" Foreground="{StaticResource WordBlueBrush}"/>
+                            <!-- Sign In header -->
+                            <TextBlock Text="Sign In" FontSize="{StaticResource FontSizeLarge}" FontFamily="{StaticResource LatoRegular}" Foreground="{StaticResource WordBlueBrush}"/>
 
-                            <!-- Sign up subtext -->
+                            <!-- Sign In subtext -->
                             <TextBlock Text="It's about to get fun" FontSize="{StaticResource FontSizeRegular}" Foreground="{StaticResource ForegroundDarkBrush}" Margin="0 0 0 10"/>
 
                             <!-- Email -->

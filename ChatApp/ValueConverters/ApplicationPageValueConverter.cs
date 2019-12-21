@@ -16,7 +16,8 @@ namespace ChatApp
                 //Find the approparite page
                 case ApplicationPage.Login:
                     return new LoginPage();
-
+                case ApplicationPage.Chat:
+                    return new ChatPage();
                 default:
                     Debugger.Break();
                     return null;
