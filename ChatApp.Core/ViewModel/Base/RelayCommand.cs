@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace ChatApp
+namespace ChatApp.Core
 {
     public class RelayCommand : ICommand
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatApp
+namespace ChatApp.Core
 {
     /// <summary>
     /// A view model for the overview chat list

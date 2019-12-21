@@ -1,4 +1,4 @@
-﻿namespace ChatApp
+﻿namespace ChatApp.Core
 {
     /// <summary>
     /// A page of the application
@@ -14,5 +14,10 @@
         /// The main chat Page
         /// </summary>
         Chat = 1,
+
+        /// <summary>
+        /// The register page
+        /// </summary>
+        Register = 2,
     }
 }

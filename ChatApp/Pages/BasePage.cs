@@ -3,6 +3,7 @@ using System.Windows;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Media.Animation;
+using ChatApp.Core;
 
 namespace ChatApp
 {
@@ -52,7 +53,7 @@ namespace ChatApp
                 //Update the value
                 mViewModel = value;
 
-                this.DataContext = ViewModel;
+                DataContext = ViewModel;
             }
         }
 
@@ -66,14 +67,14 @@ namespace ChatApp
         public BasePage()
         {
             //If we are animating in, hide to begin with
-            if (this.PageLoadAnimation != PageAnimation.None)
-                this.Visibility = Visibility.Collapsed; //Invisible
+            if (PageLoadAnimation != PageAnimation.None)
+                Visibility = Visibility.Collapsed; //Invisible
 
             //Listen out for the page loading
-            this.Loaded += BasePage_Loaded;
+            Loaded += BasePage_LoadedAsync;
 
             //Create a default ViewModel
-            this.ViewModel = new VM();
+            ViewModel = new VM();
         }
 
         #endregion
@@ -85,28 +86,28 @@ namespace ChatApp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void BasePage_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private async void BasePage_LoadedAsync(object sender, System.Windows.RoutedEventArgs e)
         {
-            // Ainimate the page in
-            await AnimateIn();
+            // Animate the page in
+            await AnimateInAsync();
         }
 
         /// <summary>
         ///  Animates the page in
         /// </summary>
         /// <returns></returns>
-        public async Task AnimateIn()
+        public async Task AnimateInAsync()
         {
             //Make sure we have something to do
-            if (this.PageLoadAnimation == PageAnimation.None)
+            if (PageLoadAnimation == PageAnimation.None)
                 return;
 
-            switch (this.PageLoadAnimation)
+            switch (PageLoadAnimation)
             {
                 case PageAnimation.SlideAndFadeInFromRight:
 
                     // Start the animation
-                    await this.SlideAndFadeInFromRight(this.SlideSeconds);
+                    await this.SlideAndFadeInFromRightAsync(SlideSeconds);
 
                     break;
                 default:
@@ -118,18 +119,18 @@ namespace ChatApp
         ///  Animates the page out
         /// </summary>
         /// <returns></returns>
-        public async Task AnimateOut()
+        public async Task AnimateOutAsync()
         {
             //Make sure we have something to do
-            if (this.PageUnLoadAnimation == PageAnimation.None)
+            if (PageUnLoadAnimation == PageAnimation.None)
                 return;
 
-            switch (this.PageUnLoadAnimation)
+            switch (PageUnLoadAnimation)
             {
                 case PageAnimation.SlideAndFadeOutToLeft:
 
                     // Start the animation
-                    await this.SlideAndFadeOutToLeft(this.SlideSeconds);
+                    await this.SlideAndFadeOutToLeftAsync(SlideSeconds);
 
                     break;
                 default:

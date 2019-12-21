@@ -18,13 +18,18 @@ using System.Windows.Shapes;
 namespace ChatApp
 {
     /// <summary>
-    /// Interaction logic for ChatPage.xaml
+    /// Interaction logic for LoginPage.xaml
     /// </summary>
-    public partial class ChatPage : BasePage<LoginViewModel>
+    public partial class RegisterPage : BasePage<LoginViewModel>, IHavePassword
     {
-        public ChatPage()
+        public RegisterPage()
         {
             InitializeComponent();
         }
+
+        /// <summary>
+        /// The secure password for this login
+        /// </summary>
+        public SecureString SecurePassword => PasswordText.SecurePassword;
     }
 }

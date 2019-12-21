@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatApp
+namespace ChatApp.Core
 {
     /// <summary>
     /// A helper for expressions

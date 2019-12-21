@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using ChatApp.Core;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ChatApp
@@ -11,6 +12,10 @@ namespace ChatApp
         #region Private Members
 
         private Window mWindow;
+
+        private WindowResizer mWindowResizer;
+
+        private WindowDockPosition mDockPosition;
 
         /// <summary>
         /// The margin around the window to allow for a drop shadow
@@ -39,17 +44,17 @@ namespace ChatApp
         /// <summary>
         /// True if the window should be borderless because it is docked or maximized
         /// </summary>
-        public bool Borderless { get { return (mWindow.WindowState == WindowState.Maximized); } }
+        public bool Borderless => (mWindow.WindowState == WindowState.Maximized || mDockPosition != WindowDockPosition.Undocked);
 
         /// <summary>
         /// The size of the resize border around the window
         /// </summary>
-        public int ResizeBorder { get { return Borderless ? 0 : 6; } }
+        public int ResizeBorder => Borderless ? 0 : 6;
 
         /// <summary>
         /// The size of the resize border around the window taking into account the outer margin
         /// </summary>
-        public Thickness ResizeBorderThickness { get { return new Thickness(ResizeBorder + OuterMarginSize); } }
+        public Thickness ResizeBorderThickness => new Thickness(ResizeBorder + OuterMarginSize);
 
         /// <summary>
         /// The padding of the inner content of the main window
@@ -61,40 +66,28 @@ namespace ChatApp
         /// </summary>
         public int OuterMarginSize
         {
-            get
-            {
-                return mWindow.WindowState == WindowState.Maximized ? 0 : mOuterMarginSize;
-            }
-            set
-            {
-                mOuterMarginSize = value;
-            }
+            get => mWindow.WindowState == WindowState.Maximized ? 0 : mOuterMarginSize;
+            set => mOuterMarginSize = value;
         }
 
         /// <summary>
         /// The margin around the window to allow for a drop shadow
         /// </summary>
-        public Thickness OuterMarginSizeThickness { get { return new Thickness(OuterMarginSize); } }
+        public Thickness OuterMarginSizeThickness => new Thickness(OuterMarginSize);
 
         /// <summary>
         /// The radius of the edges of the window
         /// </summary>
         public int WindowRadius
         {
-            get
-            {
-                return mWindow.WindowState == WindowState.Maximized ? 0 : mWindowRadius;
-            }
-            set
-            {
-                mWindowRadius = value;
-            }
+            get => mWindow.WindowState == WindowState.Maximized ? 0 : mWindowRadius;
+            set => mWindowRadius = value;
         }
 
         /// <summary>
         /// The radius of the edges of the window
         /// </summary>
-        public CornerRadius WindowCornerRadius { get { return new CornerRadius(WindowRadius); } }
+        public CornerRadius WindowCornerRadius => new CornerRadius(WindowRadius);
 
         /// <summary>
         /// The height of the title bar / caption bar of the window
@@ -104,12 +97,7 @@ namespace ChatApp
         /// <summary>
         /// The height of the title bar / caption bar of the window
         /// </summary>
-        public GridLength TitleHeightGridLength { get { return new GridLength(TitleHeight + ResizeBorder); } }
-
-        /// <summary>
-        /// The current Page 
-        /// </summary>
-        public ApplicationPage CurrentPage { get; set; } = ApplicationPage.Chat;
+        public GridLength TitleHeightGridLength => new GridLength(TitleHeight + ResizeBorder);
 
         #endregion
 
@@ -145,12 +133,7 @@ namespace ChatApp
             //Listen out for the window resizing
             mWindow.StateChanged += (sender, e) =>
             {
-                //Fire off events for all properties that are affected by a resize
-                OnPropertyChanged(nameof(ResizeBorderThickness));
-                OnPropertyChanged(nameof(OuterMarginSize));
-                OnPropertyChanged(nameof(OuterMarginSizeThickness));
-                OnPropertyChanged(nameof(WindowRadius));
-                OnPropertyChanged(nameof(WindowCornerRadius));
+                WindowResized();
             };
 
             //Create commands
@@ -160,7 +143,17 @@ namespace ChatApp
             MenuCommand = new RelayCommand(() => SystemCommands.ShowSystemMenu(mWindow, GetMousePostion()));
 
             //Fix window resize issue
-            var resizer = new WindowResizer(mWindow);
+            mWindowResizer = new WindowResizer(mWindow);
+
+            //Listen out for dock changes
+            mWindowResizer.WindowDockChanged += (dock) =>
+            {
+                // Store last position
+                mDockPosition = dock;
+
+                //Fire off resize events
+                WindowResized();
+            };
         }
         #endregion
 
@@ -172,8 +165,23 @@ namespace ChatApp
         /// <returns></returns>
         private Point GetMousePostion()
         {
+            // Position of the mouse relative to the window
             var mousePos = Mouse.GetPosition(mWindow);
-            return new Point(mousePos.X + mWindow.Left, mousePos.Y + mWindow.Top);
+
+            if(mWindow.WindowState == WindowState.Maximized)
+                return new Point(mousePos.X + mWindowResizer.CurrentMonitorSize.Left, mousePos.Y + mWindowResizer.CurrentMonitorSize.Top);
+            else
+                return new Point(mousePos.X + mWindow.Left, mousePos.Y + mWindow.Top);
+        }
+
+        private void WindowResized()
+        {
+            //Fire off events for all properties that are affected by a resize
+            OnPropertyChanged(nameof(ResizeBorderThickness));
+            OnPropertyChanged(nameof(OuterMarginSize));
+            OnPropertyChanged(nameof(OuterMarginSizeThickness));
+            OnPropertyChanged(nameof(WindowRadius));
+            OnPropertyChanged(nameof(WindowCornerRadius));
         }
 
         #endregion

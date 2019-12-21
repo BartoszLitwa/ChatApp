@@ -9,7 +9,7 @@
         <Setter Property="Margin" Value="0 4"/>
     </Style>
 
-    <!-- Standard textBox -->
+    <!-- Standard TextBox -->
     <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseStyle}">
         <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}"/>
         <Setter Property="FontFamily" Value="{StaticResource LatoRegular}"/>
@@ -17,6 +17,8 @@
         <Setter Property="Margin" Value="0 5 0 5"/>
         <Setter Property="BorderBrush" Value="{StaticResource WordBlueBrush}"/>
         <Setter Property="BorderThickness" Value="0 0 0 1"/>
+        <Setter Property="Background" Value="{StaticResource ForegroundLightBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForegroundVeryDarkBrush}"/>
 
         <Setter Property="Template">
             <Setter.Value>
@@ -69,7 +71,7 @@
         </Setter>
     </Style>
 
-    <!-- Standard textBox -->
+   <!-- Password Box-->
     <Style TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource BaseStyle}">
         <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}"/>
         <Setter Property="FontFamily" Value="{StaticResource LatoRegular}"/>
@@ -77,6 +79,8 @@
         <Setter Property="Margin" Value="0 5 0 5"/>
         <Setter Property="BorderBrush" Value="{StaticResource WordBlueBrush}"/>
         <Setter Property="BorderThickness" Value="0 0 0 1"/>
+        <Setter Property="Background" Value="{StaticResource ForegroundLightBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForegroundVeryDarkBrush}"/>
         
         <Setter Property="local:MonitorPasswordProperty.Value" Value="True"/>
 
@@ -120,6 +124,7 @@
         </Setter>
     </Style>
 
+    <!-- Spinning TextBox -->
     <Style TargetType="{x:Type TextBlock}" x:Key="SpinningText" BasedOn="{StaticResource BaseTextBlockStyle}">
         <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
         <Setter Property="Text" Value="&#xf110;"/>

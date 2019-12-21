@@ -16,7 +16,7 @@ namespace ChatApp
         /// <summary>
         /// A single static instance of this value converter
         /// </summary>
-        private static T mConverter = null;
+        private static T Converter = null;
 
         #endregion
 
@@ -28,7 +28,7 @@ namespace ChatApp
         /// <returns></returns>
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            return mConverter ?? (mConverter = new T());
+            return Converter ?? (Converter = new T());
         }
 
         #endregion

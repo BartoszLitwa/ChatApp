@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChatApp"
+             xmlns:core="clr-namespace:ChatApp.Core;assembly=ChatApp.Core"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="300">
     
-    <Grid DataContext="{x:Static local:ChatListDesignModel.Instance}" Background="{StaticResource ForegroundLightBrush}">
+    <Grid DataContext="{x:Static core:ChatListDesignModel.Instance}" Background="{StaticResource ForegroundLightBrush}">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <ItemsControl ItemsSource="{Binding Items}">
                 <ItemsControl.ItemTemplate>
