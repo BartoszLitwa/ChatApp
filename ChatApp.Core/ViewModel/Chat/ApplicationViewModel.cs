@@ -15,5 +15,10 @@ namespace ChatApp.Core
         /// The current Page 
         /// </summary>
         public ApplicationPage CurrentPage { get; set; } = ApplicationPage.Login;
+
+        /// <summary>
+        /// True if the side menu is viisble
+        /// </summary>
+        public bool SIdeMenuVisible { get; set; } = false;
     }
 }

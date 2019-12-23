@@ -21,7 +21,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Window}">
                         <!-- Outer border with the dropshadow margin -->
-                        <Border Padding="{Binding OuterMarginSizeThickness, FallbackValue=10}">
+                        <Border Margin="{Binding OuterMarginSizeThickness, FallbackValue=10}">
                             
                             <!-- Main window outline -->
                             <Grid>
@@ -94,7 +94,7 @@
                                     </Grid>
 
                                     <!-- Page Content -->
-                                    <Border Grid.Row="1" Padding="{Binding InnerContentPadding}">
+                                    <Border Grid.Row="1" Padding="{Binding InnerContentPadding}" ClipToBounds="True">
                                         <ContentPresenter Content="{TemplateBinding Content}"/>
                                     </Border>
 
@@ -119,7 +119,7 @@
         <Grid>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
@@ -135,8 +135,12 @@
                    Background="Transparent"/>
 
             <!-- Side menu -->
-            <local:SideMenuControl>
+            <local:SideMenuControl Width="300"
+                                   local:AnimateSlideInFromLeftProperty.Value="{Binding ApplicationViewModel.SIdeMenuVisible,
+                                   Source={x:Static local:ViewModelLocator.Instance}}">
+                
                 <local:ChatListControl/>
+                
             </local:SideMenuControl>
             
         </Grid>
