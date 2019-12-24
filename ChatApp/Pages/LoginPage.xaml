@@ -19,10 +19,10 @@
 
                         <StackPanel ClipToBounds="True">
                             <!-- Sign In header -->
-                            <TextBlock Text="Sign In" FontSize="{StaticResource FontSizeLarge}" FontFamily="{StaticResource LatoRegular}" Foreground="{StaticResource WordBlueBrush}"/>
+                            <TextBlock Text="Sign In" FontSize="{StaticResource FontSizeXXLarge}" FontFamily="{StaticResource LatoRegular}" Foreground="{StaticResource WordBlueBrush}"/>
 
                             <!-- Sign In subtext -->
-                            <TextBlock Text="It's about to get fun" FontSize="{StaticResource FontSizeRegular}" Foreground="{StaticResource ForegroundDarkBrush}" Margin="0 0 0 10"/>
+                            <TextBlock Text="It's about to get fun" FontSize="{StaticResource FontSizeLarge}" Foreground="{StaticResource ForegroundDarkBrush}" Margin="0 0 0 10"/>
 
                             <!-- Email -->
                             <TextBox Text="{Binding Email}" Tag="Email"/>

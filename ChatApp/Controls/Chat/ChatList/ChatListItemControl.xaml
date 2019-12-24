@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChatApp"
-             xmlns:core="clr-namespace:ChatApp.Core"
+             xmlns:core="clr-namespace:ChatApp.Core;assembly=ChatApp.Core"
              mc:Ignorable="d" 
              Height="60"
              d:DesignHeight="60" d:DesignWidth="300">
@@ -29,13 +29,17 @@
                                 <Border Visibility="{Binding NewContentAvailable, Converter={local:BooleanToVisibilityConverter}, ConverterParameter=True}" Background="Red" Width="4" HorizontalAlignment="Left"/>
 
                                 <!-- Profile Picture -->
-                                <Border Grid.Column="0" Padding="8">
+                                <Border Grid.Column="0" 
+                                        Padding="8">
+                                    
                                     <!-- Profile Picture Background -->
                                     <Border Background="{Binding ProfilePictureRGB, Converter={local:StringRGBToBrushConverter}}"
-                    Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
-                    CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
+                                            Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
+                                            CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
+                                        
                                         <!-- Profile Picture Initials -->
-                                        <TextBlock Text="{Binding Initials}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource BackgroundLightBrush}" FontSize="{StaticResource FontSizeAverage}" FontFamily="{StaticResource LatoRegular}"/>
+                                        <TextBlock Text="{Binding Initials}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource BackgroundLightBrush}" FontSize="{StaticResource FontSizeLarge}" FontFamily="{StaticResource LatoRegular}"/>
+                                        
                                     </Border>
                                 </Border>
 
@@ -43,9 +47,18 @@
                                 <Border Grid.Column="1"  Padding="0 0 8 0">
                                     <StackPanel VerticalAlignment="Center">
                                         <!-- Name -->
-                                        <TextBlock Text="{Binding Name}" FontFamily="{StaticResource LatoRegular}" Foreground="{StaticResource WordBlueBrush}"/>
+                                        <TextBlock Text="{Binding Name}"
+                                                   Padding="0 0 0 3"
+                                                   FontFamily="{StaticResource LatoRegular}"
+                                                   Foreground="{StaticResource WordBlueBrush}"
+                                                   FontSize="{StaticResource FontSizeSmall}"/>
                                         <!-- Message -->
-                                        <TextBlock Text="{Binding Message}" FontFamily="{StaticResource LatoRegular}" Foreground="{StaticResource ForegroundDarkBrush}" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding Message}"
+                                                   Padding="0 2 0 0"
+                                                   FontFamily="{StaticResource LatoRegular}"
+                                                   FontSize="{StaticResource FontSizeSmall}"
+                                                   Foreground="{StaticResource ForegroundDarkBrush}"
+                                                   TextTrimming="CharacterEllipsis"/>
                                     </StackPanel>
                                 </Border>
 

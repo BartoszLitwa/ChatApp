@@ -9,7 +9,7 @@ namespace ChatApp.Core
     /// <summary>
     /// The viemodel for a login screen
     /// </summary>
-    public class LoginViewModel : BaseViewModel
+    public class RegisterViewModel : BaseViewModel
     {
         #region Public Properties
 
@@ -19,9 +19,9 @@ namespace ChatApp.Core
         public string Email { get; set; }
 
         /// <summary>
-        /// A flag indicating if the login command is running
+        /// A flag indicating if the register command is running
         /// </summary>
-        public bool LoginIsRunning { get; set; }
+        public bool RegisterIsRunning { get; set; }
 
         #endregion
 
@@ -44,39 +44,37 @@ namespace ChatApp.Core
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public LoginViewModel() 
+        public RegisterViewModel() 
         {
             //Create commands
-            LoginCommand = new RelayParameterizedCommand(async (parameter) => await LoginAsync(parameter));
-            RegisterCommand = new RelayCommand(async () => await RegisterAsync());
+            RegisterCommand = new RelayParameterizedCommand(async (parameter) => await RegisterAsync(parameter));
+            LoginCommand = new RelayCommand(async () => await LoginAsync());
         }
 
         #endregion
 
         /// <summary>
-        /// Attempts to log the user in
+        /// Attempts to register a new user
         /// </summary>
         /// <param name="parameter">The <see cref="SecureString"/> passed in from the view for the users password</param>
         /// <returns></returns>
-        public async Task LoginAsync(object parameter)
+        public async Task RegisterAsync(object parameter)
         {
-            await RunCommandAsync(() => LoginIsRunning, async () =>
+            await RunCommandAsync(() => RegisterIsRunning, async () =>
             {
                 await Task.Delay(500);
                 var email = Email;
                 var pass = (parameter as IHavePassword).SecurePassword.Unsecure();
             });
-
-            IoC.Get<ApplicationViewModel>().GoToPage(ApplicationPage.Chat);
         }
 
         /// <summary>
-        /// Takes the user to the register page
+        /// Takes the user to the login page
         /// </summary>
         /// <returns></returns>
-        public async Task RegisterAsync()
+        public async Task LoginAsync()
         {
-            IoC.Get<ApplicationViewModel>().GoToPage(ApplicationPage.Register);
+            IoC.Get<ApplicationViewModel>().GoToPage(ApplicationPage.Login);
 
             await Task.Delay(1);
         }

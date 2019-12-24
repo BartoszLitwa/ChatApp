@@ -67,6 +67,7 @@
     <Compile Include="ViewModel\Chat\ChatListViewModel.cs" />
     <Compile Include="ViewModel\Chat\Design\ChatListDesignModel.cs" />
     <Compile Include="ViewModel\Chat\Design\ChatListItemDesignModel.cs" />
+    <Compile Include="ViewModel\RegisterViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
