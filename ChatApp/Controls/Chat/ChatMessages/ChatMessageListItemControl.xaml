@@ -98,7 +98,7 @@
                                Foreground="{StaticResource WordDarkBlueBrush}"
                                FontSize="{StaticResource FontSizeSmall}"
                                FontFamily="{StaticResource LatoRegular}"
-                               HorizontalAlignment="Left"/>
+                               HorizontalAlignment="{Binding SentByMe, Converter={local:SentByMeToAlignmentConverter}, ConverterParameter=True}"/>
 
                     <!-- Sent time -->
                     <TextBlock Margin="0 0 10 0"
@@ -106,7 +106,7 @@
                                Foreground="{StaticResource ForegroundLightBrush}"
                                FontSize="{StaticResource FontSizeSmall}"
                                FontFamily="{StaticResource LatoRegular}"
-                               HorizontalAlignment="Right"/>
+                               HorizontalAlignment="{Binding SentByMe, Converter={local:SentByMeToAlignmentConverter}}"/>
 
                 </Grid>
 

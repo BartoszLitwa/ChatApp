@@ -38,9 +38,10 @@
         <Setter Property="Padding" Value="8"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundMainBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}" />
         <Setter Property="LayoutTransform">
             <Setter.Value>
-                <ScaleTransform ScaleX="1.5"/>
+                <ScaleTransform ScaleX="1.3"/>
             </Setter.Value>
         </Setter> 
 
@@ -185,7 +186,7 @@
     <!-- Icon Button -->
     <Style x:Key="IconButton" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}">
 
-        <Setter Property="Background" Value="{StaticResource WordBlueBrush}"/>
+        <Setter Property="Background" Value="{StaticResource WordTransparentBlueBrush}"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundLightBrush}"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="FontSize" Value="{StaticResource FontSizeXXLarge}"/>
@@ -230,7 +231,7 @@
                             <!-- Animation -->
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <ColorAnimation To="{StaticResource WordBlue}" Duration="0:0:0.3" Storyboard.TargetName="border" Storyboard.TargetProperty="Background.Color"/>
+                                    <ColorAnimation To="{StaticResource WordTransparentBlue}" Duration="0:0:0.3" Storyboard.TargetName="border" Storyboard.TargetProperty="Background.Color"/>
                                 </Storyboard>
                             </BeginStoryboard>
                         </EventTrigger>

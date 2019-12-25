@@ -14,12 +14,12 @@ namespace ChatApp.Core
         /// <summary>
         /// The current Page 
         /// </summary>
-        public ApplicationPage CurrentPage { get; private set; } = ApplicationPage.Login;
+        public ApplicationPage CurrentPage { get; private set; } = ApplicationPage.Chat;
 
         /// <summary>
         /// True if the side menu is viisble
         /// </summary>
-        public bool SIdeMenuVisible { get; set; } = false;
+        public bool SIdeMenuVisible { get; set; } = true;
 
         /// <summary>
         /// Navigates to the specified page

@@ -7,10 +7,47 @@
                 xmlns:core="clr-namespace:ChatApp.Core;assembly=ChatApp.Core"
                 mc:Ignorable="d" 
                 x:Name="Page"
-                d:DesignHeight="700" d:DesignWidth="700"
-                Title="LoginPage">
+                d:DesignHeight="700" d:DesignWidth="700">
 
-    <Border>
-        <local:ChatMessageListControl />
-    </Border>
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <!-- Title Bar -->
+            <RowDefinition Height="Auto" />
+            <!-- Chat messages -->
+            <RowDefinition Height="*" />
+            <!-- Message Send text box -->
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Title Bar -->
+        <Grid Height="50">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- title Text -->
+            <TextBlock Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Text="Paranell"
+                       Foreground="{StaticResource ForegroundLightBrush}"
+                       FontSize="{StaticResource FontSizeXXLarge}"
+                       FontFamily="{StaticResource LatoRegular}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+
+            <!-- Buttons -->
+            <StackPanel Orientation="Horizontal" Grid.Column="1">
+                <Button Style="{StaticResource IconButton}" Content="{StaticResource FontAwesomeSearchIcon}" />
+                <Button Style="{StaticResource IconButton}" Content="{StaticResource FontAwesomeEllipsisVerticalIcon}" />
+            </StackPanel>
+
+        </Grid>
+        
+        <!-- Chat messages -->
+        <local:ChatMessageListControl Grid.Row="1"/>
+
+    </Grid>
 </local:BasePage>

@@ -7,8 +7,7 @@
                 xmlns:core="clr-namespace:ChatApp.Core;assembly=ChatApp.Core"
                 mc:Ignorable="d" 
                 x:Name="Page"
-                d:DesignHeight="700" d:DesignWidth="700"
-                Title="LoginPage">
+                d:DesignHeight="700" d:DesignWidth="700">
 
     <Border>
         <Grid>
@@ -25,13 +24,16 @@
                             <TextBlock Text="It's about to get fun" FontSize="{StaticResource FontSizeLarge}" Foreground="{StaticResource ForegroundDarkBrush}" Margin="0 0 0 10"/>
 
                             <!-- Email -->
-                            <TextBox Text="{Binding Email}" Tag="Email"/>
+                            <TextBox Text="{Binding Email}"
+                                     Tag="Email"
+                                     local:IsFocusedProperty.Value="True"/>
 
                             <!-- Password -->
                             <PasswordBox x:Name="PasswordText" Tag="Password"/>
 
-                            <!-- Next button -->
+                            <!-- Login button -->
                             <Button Content="Login"
+                                    IsDefault="True"
                                     local:IsBusyProperty.Value="{Binding LoginIsRunning}"
                                     Command="{Binding LoginCommand}"
                                     CommandParameter="{Binding ElementName=Page}"

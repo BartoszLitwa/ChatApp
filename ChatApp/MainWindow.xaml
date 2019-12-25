@@ -118,21 +118,22 @@
     <Border Background="{StaticResource WordBlueBrush}">
         <Grid>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            
             <!-- Blue Background -->
             <Grid.Background>
                 <ImageBrush TileMode="Tile" ViewportUnits="Absolute" Viewport="0 0 500 500" ImageSource="/Images/Backgrounds/emoji-background.png"/>
             </Grid.Background>
 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
             <local:PageHost Grid.Column="1"
-                   DataContext="{Binding ApplicationViewModel.CurrentPage,
-                             Source={x:Static local:ViewModelLocator.Instance},
-                             Converter={local:ApplicationPageValueConverter}}"
-                   CurrentPage="{Binding }" />
+                            d:DataContext=""
+                            DataContext="{Binding ApplicationViewModel.CurrentPage,
+                                      Source={x:Static local:ViewModelLocator.Instance},
+                                      Converter={local:ApplicationPageValueConverter}}"
+                            CurrentPage="{Binding }" />
 
             <!-- Side menu -->
             <local:SideMenuControl Width="300"

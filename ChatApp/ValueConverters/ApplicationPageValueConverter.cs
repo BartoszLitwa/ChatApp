@@ -10,7 +10,7 @@ namespace ChatApp
     /// </summary>
     public class ApplicationPageValueConverter : BaseValueConverter<ApplicationPageValueConverter>
     {
-        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object Convert(object value, Type targetType = null, object parameter = null, CultureInfo culture = null)
         {
             switch ((ApplicationPage)value)
             {

@@ -25,7 +25,7 @@ namespace ChatApp
                 Duration = new Duration(TimeSpan.FromSeconds(seconds)),
                 From = new Thickness(keepMargin ? offset : 0, 0, -offset, 0),
                 To = new Thickness(0),
-                DecelerationRatio = deceleration,
+                DecelerationRatio = deceleration
             };
 
             // Set the target property name

@@ -1,4 +1,4 @@
-﻿namespace ChatApp.Core
+﻿namespace ChatApp
 {
     /// <summary>
     /// A page of the application

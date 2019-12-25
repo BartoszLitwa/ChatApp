@@ -4,11 +4,10 @@
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                 xmlns:local="clr-namespace:ChatApp"
-                xmlns:core="clr-namespace:ChatApp.Core"
+                xmlns:core="clr-namespace:ChatApp.Core;assembly=ChatApp.Core"
                 mc:Ignorable="d" 
                 x:Name="Page"
-                d:DesignHeight="700" d:DesignWidth="700"
-                Title="RegisterPage">
+                d:DesignHeight="700" d:DesignWidth="700">
 
     <Border>
         <Grid>
@@ -25,13 +24,16 @@
                             <TextBlock Text="It's about to get fun" FontSize="{StaticResource FontSizeLarge}" Foreground="{StaticResource ForegroundDarkBrush}" Margin="0 0 0 10"/>
 
                             <!-- Email -->
-                            <TextBox Text="{Binding Email}" Tag="Email"/>
+                            <TextBox Text="{Binding Email}"
+                                     local:IsFocusedProperty.Value="True"
+                                     Tag="Email"/>
 
                             <!-- Password -->
                             <PasswordBox x:Name="PasswordText" Tag="Password"/>
 
-                            <!-- Next button -->
+                            <!-- Register button -->
                             <Button Content="Register"
+                                    IsDefault="True"
                                     local:IsBusyProperty.Value="{Binding RegisterIsRunning}"
                                     Command="{Binding RegisterCommand}"
                                     CommandParameter="{Binding ElementName=Page}"

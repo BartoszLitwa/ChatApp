@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ChatApp.Core;
+using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -37,6 +39,12 @@ namespace ChatApp
         public PageHost()
         {
             InitializeComponent();
+
+            // If we are in DesignMode show the current Page
+            // as the dependency property does not fire
+            if(DesignerProperties.GetIsInDesignMode(this))
+                NewPage.Content = new ApplicationPageValueConverter().Convert(IoC.Get<ApplicationViewModel>().CurrentPage);
+
         }
 
         #endregion
@@ -66,7 +74,17 @@ namespace ChatApp
             // Animate out previous page when the loaded event fires
             // right after this call due to moving frames
             if (oldPageContent is BasePage oldPage)
+            {
+                // Tel old page to animate out
                 oldPage.ShouldAnimateOut = true;
+
+                // Once it is done, remove it
+                Task.Delay((int)(oldPage.SlideSeconds * 1000)).ContinueWith((t) =>
+                {
+                    // Jumps back to UI thread and Removes old page
+                    Application.Current.Dispatcher.Invoke(() => oldPageFrame.Content = null);
+                });
+            }
 
             // Set the new page content
             newPageFrame.Content = e.NewValue;

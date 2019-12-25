@@ -4,13 +4,14 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Media.Animation;
 using ChatApp.Core;
+using System.ComponentModel;
 
 namespace ChatApp
 {
     /// <summary>
     /// A base page for all pages to gain base functionality
     /// </summary>
-    public class BasePage : Page
+    public class BasePage : UserControl
     {
         #region Public Properties
 
@@ -44,6 +45,10 @@ namespace ChatApp
         /// </summary>
         public BasePage()
         {
+            // Dont bother animating in design time
+            if (DesignerProperties.GetIsInDesignMode(this))
+                return;
+
             //If we are animating in, hide to begin with
             if (PageLoadAnimation != PageAnimation.None)
                 Visibility = Visibility.Collapsed; //Invisible
@@ -87,7 +92,7 @@ namespace ChatApp
                 case PageAnimation.SlideAndFadeInFromRight:
 
                     // Start the animation
-                    await this.SlideAndFadeInFromRightAsync(SlideSeconds);
+                    await this.SlideAndFadeInFromRightAsync(SlideSeconds, width: (int)Application.Current.MainWindow.Width);
 
                     break;
                 default:
