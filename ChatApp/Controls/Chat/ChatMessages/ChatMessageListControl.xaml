@@ -8,7 +8,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="300">
     
-    <Grid DataContext="{x:Static core:ChatListDesignModel.Instance}">
+    <Grid DataContext="{x:Static core:ChatMessageListDesignModel.Instance}"
+          VerticalAlignment="Bottom">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <ItemsControl ItemsSource="{Binding Items}">
                 <ItemsControl.ItemTemplate>
