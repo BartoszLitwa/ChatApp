@@ -82,6 +82,9 @@
     <Compile Include="AttachedProperties\ButtonAttachedProperties.cs" />
     <Compile Include="AttachedProperties\FrameworkElementAnimationAttachedProperties.cs" />
     <Compile Include="AttachedProperties\PasswordBoxAttachedProperties.cs" />
+    <Compile Include="Controls\BubbleContent.xaml.cs">
+      <DependentUpon>BubbleContent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Chat\ChatMessages\ChatMessageListControl.xaml.cs">
       <DependentUpon>ChatMessageListControl.xaml</DependentUpon>
     </Compile>
@@ -110,8 +113,10 @@
     <Compile Include="Pages\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ValueConverters\VerticalAligmentConverter.cs" />
     <Compile Include="ValueConverters\SentByMeToBackgroundConverter.cs" />
     <Compile Include="ValueConverters\SentByMeToAlignmentConverter.cs" />
+    <Compile Include="ValueConverters\HorizontalAligmentConverter.cs" />
     <Compile Include="ValueConverters\TimeToReadTimeConverter.cs" />
     <Compile Include="ValueConverters\TimeToDisplayTimeConverter.cs" />
     <Compile Include="ValueConverters\IoCConverter.cs" />
@@ -122,6 +127,10 @@
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="ViewModel\WindowViewModel.cs" />
     <Compile Include="Window\WindowResizer.cs" />
+    <Page Include="Controls\BubbleContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Chat\ChatMessages\ChatMessageListControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -170,6 +179,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Styles\ScrollBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Styles\Colors.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -14,6 +14,7 @@ namespace ChatApp
     public partial class PageHost : UserControl
     {
         #region Dependency Property
+
         /// <summary>
         /// The current page to show in the page
         /// </summary>

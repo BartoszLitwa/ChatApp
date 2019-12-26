@@ -1,4 +1,4 @@
-﻿<local:BasePage x:TypeArguments="core:LoginViewModel" x:Class="ChatApp.ChatPage"
+﻿<local:BasePage x:TypeArguments="core:ChatMessageListViewModel" x:Class="ChatApp.ChatPage"
                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -49,6 +49,13 @@
         <!-- Chat messages -->
         <local:ChatMessageListControl Grid.Row="1"/>
 
+        <local:BubbleContent Grid.Row="1"
+                             VerticalAlignment="Bottom"
+                             DataContext="{Binding AttachmentMenu}"
+                             HorizontalAlignment="Left"
+                             local:AnimateSlideInFromBottomProperty.Value="{Binding ViewModel.AttachmentMenuVisible,
+                             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ChatPage}}}"/>
+
         <!-- Message Send text box -->
         <Grid Grid.Row="2"
               MinHeight="50"
@@ -71,6 +78,7 @@
                     Height="{Binding MinHeight, RelativeSource={RelativeSource AncestorType=Grid}}"
                     Content="{StaticResource FontAwesomePaperClipIcon}"
                     Foreground="{StaticResource ForegroundVeryDarkBrush}"
+                    Command="{Binding AttachmentButtonCommand}"
                     VerticalAlignment="Top"/>
 
             <!-- Text Entry Button -->

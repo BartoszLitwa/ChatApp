@@ -72,6 +72,23 @@ namespace ChatApp
     }
 
     /// <summary>
+    /// Animates a framework elemnt sliding it in from the right on show
+    /// and sliding out to the right
+    /// </summary>
+    public class AnimateSlideInFromRightProperty : AnimateBaseProperty<AnimateSlideInFromRightProperty>
+    {
+        protected override async void DoAnimation(FrameworkElement element, bool value)
+        {
+            if (value)
+                // Animate in
+                await element.SlideAndFadeInFromRightAsync(FirstLoad ? 0 : 0.3f, keepMargin: false);
+            else
+                // Animate out
+                await element.SlideAndFadeOutToRightAsync(FirstLoad ? 0 : 0.3f, keepMargin: false);
+        }
+    }
+
+    /// <summary>
     /// Animates a framework elemnt sliding it in from the left on show
     /// and sliding out to the left
     /// </summary>
@@ -85,6 +102,40 @@ namespace ChatApp
             else
                 // Animate out
                 await element.SlideAndFadeOutToLeftAsync(FirstLoad ? 0 : 0.3f, keepMargin: false);
+        }
+    }
+
+    /// <summary>
+    /// Animates a framework elemnt sliding up from the bottom on show
+    /// and sliding out to the bottom on hide
+    /// </summary>
+    public class AnimateSlideInFromBottomProperty : AnimateBaseProperty<AnimateSlideInFromBottomProperty>
+    {
+        protected override async void DoAnimation(FrameworkElement element, bool value)
+        {
+            if (value)
+                // Animate in
+                await element.SlideAndFadeInFromBottomAsync(FirstLoad ? 0 : 0.3f, keepMargin: false);
+            else
+                // Animate out
+                await element.SlideAndFadeOutToBottomAsync(FirstLoad ? 0 : 0.3f, keepMargin: false);
+        }
+    }
+
+    /// <summary>
+    /// Animates a framework elemnt sliding up from the top on show
+    /// and sliding out to the top on hide
+    /// </summary>
+    public class AnimateSlideInFromTopProperty : AnimateBaseProperty<AnimateSlideInFromTopProperty>
+    {
+        protected override async void DoAnimation(FrameworkElement element, bool value)
+        {
+            if (value)
+                // Animate in
+                await element.SlideAndFadeInFromTopAsync(FirstLoad ? 0 : 0.3f, keepMargin: false);
+            else
+                // Animate out
+                await element.SlideAndFadeOutToTopAsync(FirstLoad ? 0 : 0.3f, keepMargin: false);
         }
     }
 }
