@@ -25,6 +25,11 @@ namespace ChatApp.Core
         public bool AttachmentMenuVisible { get; set; }
 
         /// <summary>
+        /// True if any poup menus are visible
+        /// </summary>
+        public bool AnyPopupVisible => AttachmentMenuVisible;
+
+        /// <summary>
         /// The view model for the attachment menu
         /// </summary>
         public ChatAttachmentPopupMenuViewModel AttachmentMenu { get; set; }
@@ -38,6 +43,11 @@ namespace ChatApp.Core
         /// </summary>
         public ICommand AttachmentButtonCommand { get; set; }
 
+        /// <summary>
+        /// The command for when the area outside of any popup is clicked
+        /// </summary>
+        public ICommand PopupClickAwayCommand { get; set; }
+
         #endregion
 
         #region Constructor
@@ -49,6 +59,7 @@ namespace ChatApp.Core
         {
             // Create commands
             AttachmentButtonCommand = new RelayCommand(AttachmentButton);
+            PopupClickAwayCommand = new RelayCommand(PopupClickAway);
 
             // Make a default menu
             AttachmentMenu = new ChatAttachmentPopupMenuViewModel();
@@ -65,6 +76,15 @@ namespace ChatApp.Core
         {
             // Toggle menu visibility
             AttachmentMenuVisible ^= true;
+        }
+
+        /// <summary>
+        /// When the popup clickaway area is clicked show/hide any popups
+        /// </summary>
+        public void PopupClickAway()
+        {
+            // Hide attachment menu
+            AttachmentMenuVisible = false;
         }
 
         #endregion

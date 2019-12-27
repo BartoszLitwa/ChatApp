@@ -19,6 +19,18 @@
             <!-- Message Send text box -->
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        
+        <!-- Popup Overlay -->
+        <Border Background="Transparent"
+                Grid.RowSpan="2"
+                Panel.ZIndex="1"
+                Visibility="{Binding AnyPopupVisible, Converter={local:BooleanToVisibilityConverter}, ConverterParameter=True}">
+
+            <Border.InputBindings>
+                <MouseBinding MouseAction="LeftClick" Command="{Binding PopupClickAwayCommand}" />
+            </Border.InputBindings>
+            
+        </Border>
 
         <!-- Title Bar -->
         <Grid Height="50">
@@ -49,7 +61,9 @@
         <!-- Chat messages -->
         <local:ChatMessageListControl Grid.Row="1"/>
 
+        <!-- Attachment Menu Popup-->
         <local:BubbleContent Grid.Row="1"
+                             Panel.ZIndex="2"
                              VerticalAlignment="Bottom"
                              DataContext="{Binding AttachmentMenu}"
                              HorizontalAlignment="Left"
@@ -58,6 +72,7 @@
 
         <!-- Message Send text box -->
         <Grid Grid.Row="2"
+              Panel.ZIndex="3"
               MinHeight="50"
               MaxHeight="115"
               Background="{StaticResource ForegroundLightBrush}">

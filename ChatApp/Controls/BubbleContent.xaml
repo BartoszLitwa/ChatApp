@@ -20,7 +20,7 @@
 
         <!-- Speech bubble rectangle -->
         <Border CornerRadius="10"
-                Padding="15"
+                Padding="10"
                 Margin="5 0 0 0"
                 Background="{Binding BubbleBackground, Converter={local:StringRGBToBrushConverter}}">
 
@@ -29,11 +29,7 @@
             </Border.Effect>
 
             <!-- Message text -->
-            <TextBlock VerticalAlignment="Center"
-                           TextWrapping="Wrap"
-                           Foreground="{StaticResource WordDarkBlueBrush}"
-                           FontFamily="{StaticResource LatoRegular}"
-                           Text="test"/>
+            <ContentControl Content="{Binding Content, Converter={local:PopupContentConverter}}" />
 
         </Border>
 

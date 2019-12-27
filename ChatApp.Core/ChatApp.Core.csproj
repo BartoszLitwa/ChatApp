@@ -55,7 +55,10 @@
   <ItemGroup>
     <Compile Include="DataModels\ApplicationPage.cs" />
     <Compile Include="DataModels\ElementAlignment.cs" />
+    <Compile Include="DataModels\IconType.cs" />
+    <Compile Include="DataModels\MenuItemType.cs" />
     <Compile Include="Expressions\ExpressionHelpers.cs" />
+    <Compile Include="Icons\IconTypeExstensions.cs" />
     <Compile Include="IoC\IoC.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\SecureStringHelpers.cs" />
@@ -72,9 +75,13 @@
     <Compile Include="ViewModel\Chat\ChatList\Design\ChatListItemDesignModel.cs" />
     <Compile Include="ViewModel\Chat\ChatMessage\Design\ChatMessageListDesignModel.cs" />
     <Compile Include="ViewModel\Chat\ChatMessage\Design\ChatMessageListItemDesignModel.cs" />
+    <Compile Include="ViewModel\Menu\Design\MenuDesignModel.cs" />
+    <Compile Include="ViewModel\Menu\Design\MenuItemDesignModel.cs" />
+    <Compile Include="ViewModel\Menu\MenuViewModel.cs" />
+    <Compile Include="ViewModel\Menu\MenuItemViewModel.cs" />
     <Compile Include="ViewModel\PopUpMenu\Design\ChatAttachmentPopupMenuDesignModel.cs" />
     <Compile Include="ViewModel\PopUpMenu\ChatAttachmentPopupMenuViewModel.cs" />
-    <Compile Include="ViewModel\PopUpMenu\BasePopupMenuViewModel.cs" />
+    <Compile Include="ViewModel\PopUpMenu\BasePopupViewModel.cs" />
     <Compile Include="ViewModel\RegisterViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
   </ItemGroup>
