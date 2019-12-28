@@ -12,6 +12,30 @@ namespace ChatApp.Core
     /// </summary>
     public class SettingsViewModel : BaseViewModel
     {
+        #region Public Properties
+
+        /// <summary>
+        /// The current users name
+        /// </summary>
+        public TextEntryViewModel Name { get; set; }
+
+        /// <summary>
+        /// The current users Username
+        /// </summary>
+        public TextEntryViewModel Username { get; set; }
+
+        /// <summary>
+        /// The current users Password
+        /// </summary>
+        public TextEntryViewModel Password { get; set; }
+
+        /// <summary>
+        /// The current users Email
+        /// </summary>
+        public TextEntryViewModel Email { get; set; }
+
+        #endregion
+
         #region Public Commands
 
         /// <summary>
@@ -36,6 +60,11 @@ namespace ChatApp.Core
             // Set up commands
             CloseCommand = new RelayCommand(Close);
             OpenCommand = new RelayCommand(Open);
+
+            Name = new TextEntryViewModel { Label = "Name", OriginalText = "Bartosz Litwa" };
+            Username = new TextEntryViewModel { Label = "Username", OriginalText = "CRNYY" };
+            Password = new TextEntryViewModel { Label = "Password", OriginalText = "********" };
+            Email = new TextEntryViewModel { Label = "Email", OriginalText = "CRNYY@gmail.com" };
         }
 
         #endregion

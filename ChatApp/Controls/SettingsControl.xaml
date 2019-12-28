@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChatApp"
+             xmlns:core="clr-namespace:ChatApp.Core;assembly=ChatApp.Core"
+             d:DataContext="{x:Static core:SettingsDesignModel.Instance}"
              mc:Ignorable="d">
 
     <Border Background="{StaticResource ForegroundLightBrush}"
@@ -48,6 +50,7 @@
             </Grid>
 
             <!-- Main content -->
+            <!-- Main content -->
             <Grid Grid.Row="1"
                   Width="700"
                   VerticalAlignment="Top">
@@ -56,7 +59,7 @@
                     <ColumnDefinition Width="260" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                
+
                 <!-- Profile Picture -->
                 <Border CornerRadius="8" Grid.Column="0" 
                         Margin="0 0 10 0"
@@ -67,37 +70,16 @@
                 </Border>
 
                 <!-- Profile details -->
-                <Grid Grid.Column="1"
-                      local:PanelChildMarginProperty.Value="15 10">
+                <StackPanel Grid.Column="1"
+                      local:TextEntryWidthMatcherProperty.Value="True">
+                    
+                    <local:TextEntryControl DataContext="{Binding Name}" />
+                    <local:TextEntryControl DataContext="{Binding Username}"/>
+                    <local:TextEntryControl DataContext="{Binding Password}"/>
+                    <local:TextEntryControl DataContext="{Binding Email}"/>
+                    
+                </StackPanel>
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-
-                    <!-- Labels -->
-                    <TextBlock Text="Name" Grid.Row="0" FontFamily="{StaticResource LatoRegular}"/>
-                    <TextBlock Text="Username" Grid.Row="1" FontFamily="{StaticResource LatoRegular}"/>
-                    <TextBlock Text="Password" Grid.Row="2" FontFamily="{StaticResource LatoRegular}"/>
-                    <TextBlock Text="Email" Grid.Row="3" FontFamily="{StaticResource LatoRegular}"/>
-
-                    <!-- Content -->
-                    <TextBlock Text="Luke Malpass" Grid.Column="1" Grid.Row="0"/>
-                    <TextBlock Text="luke" Grid.Column="1" Grid.Row="1"/>
-                    <TextBlock Text="********" Grid.Column="1" Grid.Row="2"/>
-                    <TextBlock Text="CRNYY@gmail.com" Grid.Column="1" Grid.Row="3"/>
-
-                </Grid>
-                
             </Grid>
 
         </Grid>
