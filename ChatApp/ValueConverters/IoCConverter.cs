@@ -17,7 +17,7 @@ namespace ChatApp
             {
                 //Find the approparite page
                 case nameof(ApplicationViewModel):
-                    return IoC.Get<ApplicationViewModel>();
+                    return IoC.Application;
                 default:
                     Debugger.Break();
                     return null;

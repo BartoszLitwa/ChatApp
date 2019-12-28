@@ -17,9 +17,14 @@ namespace ChatApp.Core
         public ApplicationPage CurrentPage { get; private set; } = ApplicationPage.Chat;
 
         /// <summary>
-        /// True if the side menu is viisble
+        /// True if the side menu should be shown
         /// </summary>
-        public bool SIdeMenuVisible { get; set; } = true;
+        public bool SideMenuVisible { get; set; } = true;
+
+        /// <summary>
+        /// True if the settings menu should be shown
+        /// </summary>
+        public bool SettingsMenuVisible { get; set; } = false;
 
         /// <summary>
         /// Navigates to the specified page
@@ -31,7 +36,7 @@ namespace ChatApp.Core
             CurrentPage = page;
 
             // Show side menu or not
-            SIdeMenuVisible = CurrentPage == ApplicationPage.Chat;
+            SideMenuVisible = CurrentPage == ApplicationPage.Chat;
         }
     }
 }

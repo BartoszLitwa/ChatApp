@@ -28,13 +28,26 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel Orientation="Horizontal">
-                            <Button Style="{StaticResource IconButton}" Content="{StaticResource FontAwesomeChatIcon}"/>
-                            <Button Style="{StaticResource IconButton}" Content="{StaticResource FontAwesomeUserIcon}"/>
-                            <Button Style="{StaticResource IconButton}" Content="{StaticResource FontAwesomePictureIcon}"/>
+                        <!-- Main buttons-->
+                        <StackPanel Orientation="Horizontal" >
+                            <Button Style="{StaticResource IconButton}" 
+                                    Content="{StaticResource FontAwesomeChatIcon}"
+                                    Foreground="{StaticResource ForegroundLightBrush}"/>
+                            
+                            <Button Style="{StaticResource IconButton}"
+                                    Content="{StaticResource FontAwesomeUserIcon}"
+                                    Foreground="{StaticResource ForegroundLightBrush}"/>
+                            
+                            <Button Style="{StaticResource IconButton}"
+                                    Content="{StaticResource FontAwesomePictureIcon}"
+                                    Foreground="{StaticResource ForegroundLightBrush}"/>
                         </StackPanel>
 
-                        <Button Grid.Column="2" Foreground="{StaticResource WordDarkBlueBrush}" Style="{StaticResource IconButton}" Content="{StaticResource FontAwesomeCogIcon}"/>
+                        <!-- Settings button -->
+                        <Button Grid.Column="2" Foreground="{StaticResource WordDarkBlueBrush}" 
+                                Command="{Binding SettingsViewModel.OpenCommand, Source={x:Static local:ViewModelLocator.Instance}}"
+                                Style="{StaticResource IconButton}" 
+                                Content="{StaticResource FontAwesomeCogIcon}"/>
                     </Grid>
 
                     <!-- The user content -->

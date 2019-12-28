@@ -67,7 +67,7 @@ namespace ChatApp.Core
                 var pass = (parameter as IHavePassword).SecurePassword.Unsecure();
             });
 
-            IoC.Get<ApplicationViewModel>().GoToPage(ApplicationPage.Chat);
+            IoC.Application.GoToPage(ApplicationPage.Chat);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace ChatApp.Core
         /// <returns></returns>
         public async Task RegisterAsync()
         {
-            IoC.Get<ApplicationViewModel>().GoToPage(ApplicationPage.Register);
+            IoC.Application.GoToPage(ApplicationPage.Register);
 
             await Task.Delay(1);
         }

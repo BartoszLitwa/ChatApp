@@ -120,6 +120,7 @@
                 
                 <!-- Send Button -->
                 <Button Content="Send" 
+                        Command="{Binding SendCommand}"
                         Padding="8"
                         Background="{StaticResource WordGreenBrush}"
                         FontSize="{StaticResource FontSizeRegular}"/>

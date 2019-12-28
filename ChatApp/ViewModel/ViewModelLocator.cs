@@ -22,7 +22,13 @@ namespace ChatApp
         /// <summary>
         /// The application view model
         /// </summary>
-        public static ApplicationViewModel ApplicationViewModel => IoC.Get<ApplicationViewModel>() as ApplicationViewModel;
+        public static ApplicationViewModel ApplicationViewModel => IoC.Application as ApplicationViewModel;
+
+        /// <summary>
+        /// The application view model
+        /// </summary>
+        public static SettingsViewModel SettingsViewModel => IoC.Settings as SettingsViewModel;
+
 
         #endregion
     }

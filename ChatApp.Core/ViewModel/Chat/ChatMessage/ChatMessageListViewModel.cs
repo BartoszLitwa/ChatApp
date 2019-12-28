@@ -48,6 +48,12 @@ namespace ChatApp.Core
         /// </summary>
         public ICommand PopupClickAwayCommand { get; set; }
 
+        /// <summary>
+        /// The command for when the user clicks the send button
+        /// </summary>
+        public ICommand SendCommand { get; set; }
+
+
         #endregion
 
         #region Constructor
@@ -60,6 +66,7 @@ namespace ChatApp.Core
             // Create commands
             AttachmentButtonCommand = new RelayCommand(AttachmentButton);
             PopupClickAwayCommand = new RelayCommand(PopupClickAway);
+            SendCommand = new RelayCommand(Send);
 
             // Make a default menu
             AttachmentMenu = new ChatAttachmentPopupMenuViewModel();
@@ -85,6 +92,19 @@ namespace ChatApp.Core
         {
             // Hide attachment menu
             AttachmentMenuVisible = false;
+        }
+
+        /// <summary>
+        /// When the user clicks the send button sends the message
+        /// </summary>
+        public void Send()
+        {
+            IoC.UI.ShowMessage(new MessageBoxDialogViewModel
+            {
+                Title = "Send Message",
+                Message = "Thank you for writing a nice message :)",
+                OKText = "OK"
+            });
         }
 
         #endregion

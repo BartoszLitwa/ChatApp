@@ -74,7 +74,7 @@ namespace ChatApp.Core
         /// <returns></returns>
         public async Task LoginAsync()
         {
-            IoC.Get<ApplicationViewModel>().GoToPage(ApplicationPage.Login);
+            IoC.Application.GoToPage(ApplicationPage.Login);
 
             await Task.Delay(1);
         }

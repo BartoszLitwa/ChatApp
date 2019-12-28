@@ -44,7 +44,7 @@ namespace ChatApp
             // If we are in DesignMode show the current Page
             // as the dependency property does not fire
             if(DesignerProperties.GetIsInDesignMode(this))
-                NewPage.Content = new ApplicationPageValueConverter().Convert(IoC.Get<ApplicationViewModel>().CurrentPage);
+                NewPage.Content = new ApplicationPageValueConverter().Convert(IoC.Application.CurrentPage);
 
         }
 

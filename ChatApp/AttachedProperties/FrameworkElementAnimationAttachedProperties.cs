@@ -123,6 +123,23 @@ namespace ChatApp
     }
 
     /// <summary>
+    /// Animates a framework elemnt sliding up from the bottom keeping Margin on show
+    /// and sliding out to the bottom on hide
+    /// </summary>
+    public class AnimateSlideInFromBottomMarginProperty : AnimateBaseProperty<AnimateSlideInFromBottomMarginProperty>
+    {
+        protected override async void DoAnimation(FrameworkElement element, bool value)
+        {
+            if (value)
+                // Animate in
+                await element.SlideAndFadeInFromBottomAsync(FirstLoad ? 0 : 0.3f, keepMargin: true);
+            else
+                // Animate out
+                await element.SlideAndFadeOutToBottomAsync(FirstLoad ? 0 : 0.3f, keepMargin: true);
+        }
+    }
+
+    /// <summary>
     /// Animates a framework elemnt sliding up from the top on show
     /// and sliding out to the top on hide
     /// </summary>
@@ -136,6 +153,23 @@ namespace ChatApp
             else
                 // Animate out
                 await element.SlideAndFadeOutToTopAsync(FirstLoad ? 0 : 0.3f, keepMargin: false);
+        }
+    }
+
+    /// <summary>
+    /// Animates a framework elemnt fading in on show
+    /// and fading out on hide
+    /// </summary>
+    public class AnimateFadeInProperty : AnimateBaseProperty<AnimateFadeInProperty>
+    {
+        protected override async void DoAnimation(FrameworkElement element, bool value)
+        {
+            if (value)
+                // Animate in
+                await element.FadeInAsync(FirstLoad ? 0 : 0.3f);
+            else
+                // Animate out
+                await element.FadeOutAsync(FirstLoad ? 0 : 0.3f);
         }
     }
 }
