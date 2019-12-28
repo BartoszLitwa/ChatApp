@@ -57,6 +57,42 @@ namespace ChatApp.Core
                     MessageSentTime = DateTimeOffset.UtcNow,
                     SentByMe = false,
                 },
+                new ChatMessageListItemViewModel
+                {
+                    SenderName = "Luke",
+                    Initials = "LM",
+                    Message = "Thats amazing how good this application is! Its really Fast and nice-looking!",
+                    ProfilePictureRGB = "00ff00",
+                    MessageSentTime = DateTimeOffset.UtcNow,
+                    SentByMe = true,
+                },
+                new ChatMessageListItemViewModel
+                {
+                    SenderName = "Parnell",
+                    Initials = "PL",
+                    Message = "Im really happy that u like my application! That motivates me to keep up the good work!",
+                    ProfilePictureRGB = "00ff00",
+                    MessageSentTime = DateTimeOffset.UtcNow,
+                    SentByMe = false,
+                },
+                new ChatMessageListItemViewModel
+                {
+                    SenderName = "Parnell",
+                    Initials = "PL",
+                    Message = "I really appreciate the work u do! Keep up working on it!",
+                    ProfilePictureRGB = "00ff00",
+                    MessageSentTime = DateTimeOffset.UtcNow,
+                    SentByMe = true,
+                },
+                new ChatMessageListItemViewModel
+                {
+                    SenderName = "Parnell",
+                    Initials = "PL",
+                    Message = "Thanks!",
+                    ProfilePictureRGB = "00ff00",
+                    MessageSentTime = DateTimeOffset.UtcNow,
+                    SentByMe = false,
+                },
             };
         }
 

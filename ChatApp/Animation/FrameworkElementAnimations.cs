@@ -64,7 +64,8 @@ namespace ChatApp
             sb.Begin(element);
 
             // Make page visible
-            element.Visibility = Visibility.Visible;
+            if(seconds != 0)
+                element.Visibility = Visibility.Visible;
 
             // Wait for it to finish
             await Task.Delay((int)(seconds * 1000));
@@ -129,7 +130,8 @@ namespace ChatApp
             sb.Begin(element);
 
             // Make page visible
-            element.Visibility = Visibility.Visible;
+            if (seconds != 0)
+                element.Visibility = Visibility.Visible;
 
             // Wait for it to finish
             await Task.Delay((int)(seconds * 1000));
@@ -181,6 +183,7 @@ namespace ChatApp
         /// <returns></returns>
         public static async Task SlideAndFadeOutToBottomAsync(this FrameworkElement element, float seconds = 0.3f, bool keepMargin = true, int height = 0)
         {
+
             // Create the storyboard
             var sb = new Storyboard();
 
@@ -194,7 +197,8 @@ namespace ChatApp
             sb.Begin(element);
 
             // Make page visible
-            element.Visibility = Visibility.Visible;
+            if (seconds != 0)
+                element.Visibility = Visibility.Visible;
 
             // Wait for it to finish
             await Task.Delay((int)(seconds * 1000));
@@ -259,7 +263,8 @@ namespace ChatApp
             sb.Begin(element);
 
             // Make page visible
-            element.Visibility = Visibility.Visible;
+            if (seconds != 0)
+                element.Visibility = Visibility.Visible;
 
             // Wait for it to finish
             await Task.Delay((int)(seconds * 1000));
@@ -318,7 +323,8 @@ namespace ChatApp
             sb.Begin(element);
 
             // Make page visible
-            element.Visibility = Visibility.Visible;
+            if (seconds != 0)
+                element.Visibility = Visibility.Visible;
 
             // Wait for it to finish
             await Task.Delay((int)(seconds * 1000));
