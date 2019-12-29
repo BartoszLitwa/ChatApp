@@ -63,8 +63,22 @@ namespace ChatApp.Core
             await RunCommandAsync(() => LoginIsRunning, async () =>
             {
                 await Task.Delay(500);
+
+                // Ok succesfully logged in. Get the users data
+                // TODO: ask server for users info
+
+                // TODO: Remove when the back end server is ready
+                IoC.Settings.Name = new TextEntryViewModel { Label = "Name", OriginalText = $"Bartosz Litwa {DateTime.Now.ToLocalTime()}" };
+                IoC.Settings.Username = new TextEntryViewModel { Label = "Username", OriginalText = "CRNYY" };
+                IoC.Settings.Password = new PasswordEntryViewModel { Label = "Password", FakePassword = "********" };
+                IoC.Settings.Email = new TextEntryViewModel { Label = "Email", OriginalText = "CRNYY@gmail.com" };
+
+                // IMPORTANT:Never store this in variables like this
                 var email = Email;
                 var pass = (parameter as IHavePassword).SecurePassword.Unsecure();
+
+                // Go to Login Page
+                IoC.Application.GoToPage(ApplicationPage.Chat);
             });
 
             IoC.Application.GoToPage(ApplicationPage.Chat);

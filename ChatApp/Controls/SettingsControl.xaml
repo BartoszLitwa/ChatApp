@@ -50,7 +50,6 @@
             </Grid>
 
             <!-- Main content -->
-            <!-- Main content -->
             <Grid Grid.Row="1"
                   Width="700"
                   VerticalAlignment="Top">
@@ -60,14 +59,26 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <!-- Profile Picture -->
-                <Border CornerRadius="8" Grid.Column="0" 
-                        Margin="0 0 10 0"
-                        Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}}">
-                    <Border.Background>
-                        <ImageBrush ImageSource="/Images/Samples/rusty.jpg" Stretch="UniformToFill"/>
-                    </Border.Background>
-                </Border>
+                <StackPanel Grid.Column="0" >
+                    
+                    <!-- Profile Picture -->
+                    <Border CornerRadius="8" 
+                            Margin="0 0 10 0"
+                            Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
+                            VerticalAlignment="Top">
+                        <Border.Background>
+                            <ImageBrush ImageSource="/Images/Samples/rusty.jpg" Stretch="UniformToFill"/>
+                        </Border.Background>
+                    </Border>
+
+                    <!-- Log Out Button -->
+                    <Button Content="{Binding LogOutButtonText}"
+                            Margin="20"
+                            Command="{Binding LogOutCommand}"
+                            FontSize="{StaticResource FontSizeRegular}"
+                            VerticalAlignment="Center"/>
+                    
+                </StackPanel>
 
                 <!-- Profile details -->
                 <StackPanel Grid.Column="1"
@@ -75,7 +86,7 @@
                     
                     <local:TextEntryControl DataContext="{Binding Name}" />
                     <local:TextEntryControl DataContext="{Binding Username}"/>
-                    <local:TextEntryControl DataContext="{Binding Password}"/>
+                    <local:PasswordEntryControl DataContext="{Binding Password}"/>
                     <local:TextEntryControl DataContext="{Binding Email}"/>
                     
                 </StackPanel>
