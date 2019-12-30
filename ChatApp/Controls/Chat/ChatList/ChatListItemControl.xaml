@@ -14,8 +14,15 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ContentControl}">
+                        
                         <!-- Content -->
                         <Border x:Name="Background" Background="{StaticResource ForegroundLightBrush}">
+
+                            <!-- Click to open message -->
+                            <Border.InputBindings>
+                                <MouseBinding MouseAction="LeftClick" Command="{Binding OpenMessageCommand}" />
+                            </Border.InputBindings>
+                            
                             <Grid x:Name="Container" Background="Transparent">
 
                                 <Grid.ColumnDefinitions>
