@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -77,9 +78,15 @@ namespace ChatApp.Core
         /// </summary>
         public void OpenMessage()
         {
+            IsSelected = true;
+
             IoC.Application.GoToPage(ApplicationPage.Chat, new ChatMessageListViewModel
             {
-                Items = new List<ChatMessageListItemViewModel>
+                SenderName = Name,
+                SenderInitials = Initials,
+                SenderProfilePictureRGB = ProfilePictureRGB,
+
+                Items = new ObservableCollection<ChatMessageListItemViewModel>
                 {
                     new ChatMessageListItemViewModel
                     {

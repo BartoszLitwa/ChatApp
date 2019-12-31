@@ -131,10 +131,13 @@
             </Grid.Background>
 
             <!-- Settings page -->
-            <local:SettingsControl Grid.ColumnSpan="2"
-                                   Panel.ZIndex="9"
-                                   local:AnimateSlideInFromBottomMarginProperty.Value="{Binding ApplicationViewModel.SettingsMenuVisible,
+            <Border Grid.ColumnSpan="2"
+                    Panel.ZIndex="9">
+                
+                <local:SettingsControl local:AnimateSlideInFromBottomMarginProperty.Value="{Binding ApplicationViewModel.SettingsMenuVisible,
                                       Source={x:Static local:ViewModelLocator.Instance}}"/>
+                
+            </Border>
 
             <!-- Dimmed overlay -->
             <Border Grid.ColumnSpan="2"

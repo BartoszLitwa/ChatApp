@@ -32,11 +32,13 @@ namespace ChatApp
                 foreach (FrameworkElement child in panel.Children)
                 {
                     // Ignore any non text entry controls
-                    if (!(child is TextEntryControl control))
+                    if (!(child is TextEntryControl) && !(child is PasswordEntryControl))
                         continue;
 
+                    var Label = child is TextEntryControl ? (child as TextEntryControl).Label : (child as PasswordEntryControl).Label;
+
                     // Sets its margin to the given value
-                    control.Label.SizeChanged += (sss, eee) =>
+                    Label.SizeChanged += (sss, eee) =>
                     {
                         // Update Widths
                         SetWidths(panel);
@@ -61,11 +63,13 @@ namespace ChatApp
             foreach (var child in panel.Children)
             {
                 // Ignore any non text entry controls
-                if (!(child is TextEntryControl control))
+                if (!(child is TextEntryControl) && !(child is PasswordEntryControl))
                     continue;
 
+                var Label = child is TextEntryControl ? (child as TextEntryControl).Label : (child as PasswordEntryControl).Label;
+
                 // Find if this value is larger than the other control
-                maxSize = Math.Max(maxSize, control.Label.RenderSize.Width + control.Label.Margin.Left + control.Label.Margin.Right);
+                maxSize = Math.Max(maxSize, Label.RenderSize.Width + Label.Margin.Left + Label.Margin.Right);
             }
 
             // Create a grid length converter
@@ -74,12 +78,11 @@ namespace ChatApp
             // Loop each child
             foreach (var child in panel.Children)
             {
-                // Ignore any non text entry controls
-                if (!(child is TextEntryControl control))
-                    continue;
+                if (child is TextEntryControl text)
+                    text.LabelWidth = gridLength;
 
-                // Set each controls LabelWidth to the max size
-                control.LabelWidth = gridLength;
+                else if (child is PasswordEntryControl pass)
+                    pass.LabelWidth = gridLength;
             }
         }
     }

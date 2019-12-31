@@ -7,17 +7,23 @@
              xmlns:core="clr-namespace:ChatApp.Core;assembly=ChatApp.Core"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="300">
-    
+
     <Grid d:DataContext="{x:Static core:ChatMessageListDesignModel.Instance}"
           VerticalAlignment="Bottom">
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      local:ScrollToBottomOnLoadProperty.Value="True"
+                      local:AutoScrollToBottomProperty.Value="True">
+
             <ItemsControl ItemsSource="{Binding Items}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <local:ChatMessageListItemControl />
+                        <local:ChatMessageListItemControl local:AnimateSlideInFromBottomOnLoadProperty.Value="{Binding NewItem}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+            
         </ScrollViewer>
+        
     </Grid>
 </UserControl>

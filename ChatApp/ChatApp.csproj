@@ -78,6 +78,8 @@
     <Compile Include="Animation\FrameworkElementAnimations.cs" />
     <Compile Include="Animation\StoryBoardHelpers.cs" />
     <Compile Include="AttachedProperties\BaseAttachedProperty.cs" />
+    <Compile Include="AttachedProperties\AutoScrollToBottomProperty.cs" />
+    <Compile Include="AttachedProperties\ScrollViewerAttachedProperties.cs" />
     <Compile Include="AttachedProperties\TextEntryWidthMatcherProperty.cs" />
     <Compile Include="AttachedProperties\PanelChildMarginProperty.cs" />
     <Compile Include="AttachedProperties\TextAttachedProperties.cs" />

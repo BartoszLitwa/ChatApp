@@ -90,6 +90,7 @@
 
                 <!-- Tiem conatiner -->
                 <Grid Grid.Row="2" 
+                      Opacity="0"
                       x:Name="TimeDetails">
 
                     <!-- Read time -->

@@ -56,5 +56,11 @@ namespace ChatApp.Core
         /// The time the message was sent
         /// </summary>
         public DateTimeOffset MessageSentTime { get; set; }
+
+        /// <summary>
+        /// A flag idnicating if this item was added since the first main list of item was created
+        /// Used as a flag for animating in
+        /// </summary>
+        public bool NewItem { get; set; } = false;
     }
 }

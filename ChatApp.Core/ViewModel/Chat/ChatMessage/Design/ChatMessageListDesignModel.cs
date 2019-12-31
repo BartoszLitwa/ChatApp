@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,14 +28,18 @@ namespace ChatApp.Core
         /// </summary>
         public ChatMessageListDesignModel()
         {
-            Items = new List<ChatMessageListItemViewModel> {
+            SenderName = "Parnell";
+            SenderInitials = "PL";
+            SenderProfilePictureRGB = "00ff00";
+
+            Items = new ObservableCollection<ChatMessageListItemViewModel> {
 
                 new ChatMessageListItemViewModel
                 {
-                    SenderName = "Parnell",
-                    Initials = "PL",
+                    SenderName = SenderName,
+                    Initials = SenderInitials,
                     Message = "I'm about to wipe this old server. We need to update the old server to Windows 2016",
-                    ProfilePictureRGB = "00ff00",
+                    ProfilePictureRGB = SenderProfilePictureRGB,
                     MessageSentTime = DateTimeOffset.UtcNow,
                     SentByMe = false,
                 },

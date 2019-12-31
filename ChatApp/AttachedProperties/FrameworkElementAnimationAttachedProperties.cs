@@ -143,6 +143,18 @@ namespace ChatApp
     }
 
     /// <summary>
+    /// Animates a framework element sliding up from the bottom on load
+    /// if the value is true
+    /// </summary>
+    public class AnimateSlideInFromBottomOnLoadProperty : AnimateBaseProperty<AnimateSlideInFromBottomOnLoadProperty>
+    {
+        protected override async void DoAnimation(FrameworkElement element, bool value, bool firstLoad)
+        {
+            await element.SlideAndFadeInAsync(AnimationSlideInDirection.Bottom, !value, !value ? 0 : 0.3f, keepMargin: false);
+        }
+    }
+
+    /// <summary>
     /// Animates a framework element fading in on show
     /// and fading out on hide
     /// </summary>

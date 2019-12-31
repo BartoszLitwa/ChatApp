@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace ChatApp.Core
         /// <summary>
         /// The chat list thread items for the list
         /// </summary>
-        public List<ChatMessageListItemViewModel> Items { get; set; }
+        public ObservableCollection<ChatMessageListItemViewModel> Items { get; set; }
 
         /// <summary>
         /// True to show the attachment menu, false to hide it
@@ -33,6 +34,27 @@ namespace ChatApp.Core
         /// The view model for the attachment menu
         /// </summary>
         public ChatAttachmentPopupMenuViewModel AttachmentMenu { get; set; }
+
+        /// <summary>
+        /// The display name of the sender name
+        /// </summary>
+        public string SenderName { get; set; }
+
+        /// <summary>
+        /// The initials to show for the profile backgorund
+        /// </summary>
+        public string SenderInitials { get; set; }
+
+        /// <summary>
+        /// The RGB values (in hex) for the background color of the profile picture
+        /// For example #ffffff white
+        /// </summary>
+        public string SenderProfilePictureRGB { get; set; }
+
+        /// <summary>
+        /// The text for the current message being written
+        /// </summary>
+        public string PednigMessageText { get; set; }
 
         #endregion
 
@@ -99,12 +121,23 @@ namespace ChatApp.Core
         /// </summary>
         public void Send()
         {
-            IoC.UI.ShowMessage(new MessageBoxDialogViewModel
+            if (Items == null)
+                Items = new ObservableCollection<ChatMessageListItemViewModel>();
+
+            // Send fake new message
+            Items.Add(new ChatMessageListItemViewModel
             {
-                Title = "Send Message",
-                Message = "Thank you for writing a nice message :)",
-                OKText = "OK"
+                Initials = "BL",
+                Message = PednigMessageText,
+                MessageSentTime = DateTime.UtcNow,
+                ProfilePictureRGB = "ffffff",
+                SentByMe = true,
+                SenderName = "Bartosz Litwa",
+                NewItem = true,
             });
+
+            // Clear the pending message text
+            PednigMessageText = string.Empty;
         }
 
         #endregion

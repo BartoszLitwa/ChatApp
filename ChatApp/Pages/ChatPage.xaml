@@ -7,7 +7,8 @@
                 xmlns:core="clr-namespace:ChatApp.Core;assembly=ChatApp.Core"
                 mc:Ignorable="d" 
                 x:Name="Page"
-                d:DesignHeight="700" d:DesignWidth="700">
+                d:DesignHeight="700" d:DesignWidth="700"
+                DataContext="{x:Static core:ChatMessageListDesignModel.Instance}">
 
     <Grid>
 
@@ -41,14 +42,38 @@
             </Grid.ColumnDefinitions>
             
             <!-- title Text -->
-            <TextBlock Grid.Column="0"
+            <StackPanel Grid.Column="0"
                        Grid.ColumnSpan="2"
-                       Text="Paranell"
-                       Foreground="{StaticResource ForegroundLightBrush}"
-                       FontSize="{StaticResource FontSizeXXLarge}"
-                       FontFamily="{StaticResource LatoRegular}"
                        HorizontalAlignment="Center"
-                       VerticalAlignment="Center"/>
+                       VerticalAlignment="Center"
+                       Orientation="Horizontal">
+
+                <!-- Profile Picture -->
+                <Border VerticalAlignment="Center"
+                    HorizontalAlignment="Left"
+                    Margin="7"
+                    CornerRadius="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
+                    Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
+                    Width="35"
+                    Background="{Binding SenderProfilePictureRGB, Converter={local:StringRGBToBrushConverter}}"
+                    BorderBrush="{StaticResource ForegroundLightBrush}"
+                    BorderThickness="1">
+
+                    <TextBlock Text="{Binding SenderInitials}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Foreground="{StaticResource ForegroundLightBrush}"
+                           FontFamily="{StaticResource LatoRegular}"/>
+
+                </Border>
+
+                <TextBlock Text="{Binding SenderName}"
+                           Foreground="{StaticResource ForegroundLightBrush}"
+                           FontSize="{StaticResource FontSizeXXLarge}"
+                           FontFamily="{StaticResource LatoRegular}"
+                           VerticalAlignment="Center"/>
+                
+            </StackPanel>
 
             <!-- Buttons -->
             <StackPanel Orientation="Horizontal" Grid.Column="1">
@@ -59,16 +84,19 @@
         </Grid>
         
         <!-- Chat messages -->
-        <local:ChatMessageListControl Grid.Row="1"/>
+        <local:ChatMessageListControl x:Name="ChatMessageList"
+                                      Grid.Row="1"/>
 
         <!-- Attachment Menu Popup-->
-        <local:BubbleContent Grid.Row="1"
-                             Panel.ZIndex="2"
-                             VerticalAlignment="Bottom"
-                             DataContext="{Binding AttachmentMenu}"
-                             HorizontalAlignment="Left"
-                             local:AnimateSlideInFromBottomProperty.Value="{Binding ViewModel.AttachmentMenuVisible,
-                             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ChatPage}}}"/>
+        <Border local:AnimateSlideInFromBottomProperty.Value="{Binding AttachmentMenuVisible}"
+                Grid.Row="1"
+                Panel.ZIndex="2"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Left">
+
+            <local:BubbleContent DataContext="{Binding AttachmentMenu}"/>
+
+        </Border>
 
         <!-- Message Send text box -->
         <Grid Grid.Row="2"
@@ -97,7 +125,11 @@
                     VerticalAlignment="Top"/>
 
             <!-- Text Entry Button -->
-            <TextBox Grid.Column="1"
+            <TextBox x:Name="MessageText"
+                     Grid.Column="1"
+                     Text="{Binding PednigMessageText, UpdateSourceTrigger=PropertyChanged}"
+                     PreviewKeyDown="MessageText_PreviewKeyDown"
+                     local:IsFocusedProperty.Value="True"
                      VerticalAlignment="Center"
                      Tag="Write a message..."
                      FontSize="{StaticResource FontSizeRegular}"
@@ -123,7 +155,8 @@
                         Command="{Binding SendCommand}"
                         Padding="8"
                         Background="{StaticResource WordGreenBrush}"
-                        FontSize="{StaticResource FontSizeRegular}"/>
+                        FontSize="{StaticResource FontSizeRegular}"
+                        Focusable="False"/>
 
             </StackPanel>
 

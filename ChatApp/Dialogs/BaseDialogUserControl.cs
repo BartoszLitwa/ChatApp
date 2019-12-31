@@ -104,6 +104,10 @@ namespace ChatApp
                     // Setup this control data context binding to thew view model
                     DataContext = viewModel;
 
+                    // Show in the centre if the parent
+                    mDialogWindow.Owner = Application.Current.MainWindow;
+                    mDialogWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+
                     // Show dialog
                     mDialogWindow.ShowDialog();
                 }
