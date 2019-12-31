@@ -60,24 +60,43 @@
                 </Grid.Triggers>
                 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                
-                <!-- Speech bubble rectangle -->
-                <Border CornerRadius="10"
-                        Padding="15"
-                        Background="{Binding SentByMe, Converter={local:SentByMeToBackgroundConverter}}">
 
-                    <!-- Message text -->
-                    <TextBlock VerticalAlignment="Center"
-                           TextWrapping="Wrap"
-                           Foreground="{StaticResource WordDarkBlueBrush}"
-                           FontFamily="{StaticResource LatoRegular}"
-                           Text="{Binding Message}"/>
+                <!-- Message text / attachment grid-->
+                <StackPanel Grid.Row="0"
+                            Orientation="Vertical">
 
-                </Border>
+                    <!-- Speech bubble rectangle -->
+                    <Border CornerRadius="10"
+                            Padding="15"
+                            Background="{Binding SentByMe, Converter={local:SentByMeToBackgroundConverter}}"
+                            Visibility="{Binding HasMessage, Converter={local:BooleanToVisibilityGoneConverter}}">
+
+                            <!-- Message text -->
+                            <TextBlock VerticalAlignment="Center"
+                               TextWrapping="Wrap"
+                               Foreground="{StaticResource WordDarkBlueBrush}"
+                               FontFamily="{StaticResource LatoRegular}"
+                               Text="{Binding Message}"/>
+
+                    </Border>
+
+                    <!-- Image Attahcment -->
+                    <Border CornerRadius="10"
+                            Visibility="{Binding HasImageAttachment, Converter={local:BooleanToVisibilityGoneConverter}}">
+
+                        <Image DataContext="{Binding ImageAttachment}"
+                               local:ClipFromBorderProperty.Value="True"
+                               MaxWidth="600"
+                               MaxHeight="600"
+                               Source="{Binding LocalFilePath}"/>
+
+                    </Border>
+                    
+                </StackPanel>
 
                 <!-- Chat bubble anchor -->
                 <Path Grid.Row="1"

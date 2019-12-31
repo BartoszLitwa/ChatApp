@@ -79,6 +79,7 @@
     <Compile Include="Animation\StoryBoardHelpers.cs" />
     <Compile Include="AttachedProperties\BaseAttachedProperty.cs" />
     <Compile Include="AttachedProperties\AutoScrollToBottomProperty.cs" />
+    <Compile Include="AttachedProperties\BorderAttachedProperites.cs" />
     <Compile Include="AttachedProperties\ScrollViewerAttachedProperties.cs" />
     <Compile Include="AttachedProperties\TextEntryWidthMatcherProperty.cs" />
     <Compile Include="AttachedProperties\PanelChildMarginProperty.cs" />
@@ -139,6 +140,7 @@
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValueConverters\BooleanInvertConverter.cs" />
+    <Compile Include="ValueConverters\BooleanToVisibilityGoneConverter.cs" />
     <Compile Include="ValueConverters\IconTypeToFontAwesomeConverter.cs" />
     <Compile Include="ValueConverters\MenuItemTypeToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\PopupContentConverter.cs" />

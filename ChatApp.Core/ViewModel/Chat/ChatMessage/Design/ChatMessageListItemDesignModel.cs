@@ -29,6 +29,10 @@ namespace ChatApp.Core
         {
             Initials = "LM";
             SenderName = "Luke";
+            ImageAttachment = new ChatMessageListItemImageAttachmentViewModel
+            {
+                ThumbnailUrl = "http://anywhere.com",
+            };
             Message = "Some design time visual text!";
             ProfilePictureRGB = "ff0000";
             SentByMe = true;
