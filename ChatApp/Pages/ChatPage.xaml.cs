@@ -96,7 +96,7 @@ namespace ChatApp
                 }
                 else
                     //Send the message
-                    ViewModel.Send();
+                    ViewModel.SendMessage();
 
                 // Mark this key as handled by us
                 e.Handled = true;

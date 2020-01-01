@@ -65,41 +65,57 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- Message text / attachment grid-->
-                <StackPanel Grid.Row="0"
-                            Orientation="Vertical">
+                <!-- Image loading Glyph -->
+                <Grid Visibility="{Binding HasImageAttachment, Converter={local:BooleanToVisibilityGoneConverter}}"
+                      Grid.Row="0"
+                      Margin="15 0"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="{Binding SentByMe, Converter={local:SentByMeToAlignmentConverter}}">
+                    
+                    <TextBlock Style="{StaticResource SpinningText}"
+                           Foreground="{StaticResource ForegroundLightBrush}"
+                           DataContext="{Binding ImageAttachment}"
+                           Visibility="{Binding ImageLoaded, Converter={local:BooleanToVisibilityGoneConverter}, ConverterParameter=True}"
+                           Padding="10"/>
+                    
+                </Grid>
 
-                    <!-- Speech bubble rectangle -->
-                    <Border CornerRadius="10"
+                <!-- Speech bubble rectangle -->
+                <Border CornerRadius="10"
+                        Grid.Row="1"
                             Padding="15"
                             Background="{Binding SentByMe, Converter={local:SentByMeToBackgroundConverter}}"
                             Visibility="{Binding HasMessage, Converter={local:BooleanToVisibilityGoneConverter}}">
 
-                            <!-- Message text -->
-                            <TextBlock VerticalAlignment="Center"
+                    <StackPanel>
+                        
+                        <!-- Message text -->
+                        <TextBlock VerticalAlignment="Center"
                                TextWrapping="Wrap"
                                Foreground="{StaticResource WordDarkBlueBrush}"
                                FontFamily="{StaticResource LatoRegular}"
                                Text="{Binding Message}"/>
 
-                    </Border>
+                        <!-- Image Attahcment -->
+                        <Border CornerRadius="10"
+                                Margin="0 10 0 0"
+                                Visibility="{Binding HasImageAttachment, Converter={local:BooleanToVisibilityGoneConverter}}">
+                            
+                                <Image DataContext="{Binding ImageAttachment}"
+                                       local:FadeInImageOnLoadProperty.Value="True"
+                                       local:ClipFromBorderProperty.Value="True"
+                                       MaxWidth="500"
+                                       MaxHeight="500"
+                                       Source="{Binding LocalFilePath, NotifyOnTargetUpdated=True}"/>
+                            
+                        </Border>
+                        
+                    </StackPanel>
 
-                    <!-- Image Attahcment -->
-                    <Border CornerRadius="10"
-                            Visibility="{Binding HasImageAttachment, Converter={local:BooleanToVisibilityGoneConverter}}">
-
-                        <Image DataContext="{Binding ImageAttachment}"
-                               local:ClipFromBorderProperty.Value="True"
-                               MaxWidth="600"
-                               MaxHeight="600"
-                               Source="{Binding LocalFilePath}"/>
-
-                    </Border>
-                    
-                </StackPanel>
+                </Border>
 
                 <!-- Chat bubble anchor -->
-                <Path Grid.Row="1"
+                <Path Grid.Row="2"
                       HorizontalAlignment="{Binding SentByMe, Converter={local:SentByMeToAlignmentConverter}}"
                       Panel.ZIndex="1"
                       Margin="15 -1 15 0"
@@ -110,6 +126,7 @@
                 <!-- Tiem conatiner -->
                 <Grid Grid.Row="2" 
                       Opacity="0"
+                      Margin="0 10 0 0"
                       x:Name="TimeDetails">
 
                     <!-- Read time -->

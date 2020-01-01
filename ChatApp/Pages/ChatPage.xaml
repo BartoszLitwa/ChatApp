@@ -34,7 +34,7 @@
         </Border>
 
         <!-- Title Bar -->
-        <Grid Height="50">
+        <Grid Height="55">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -77,9 +77,50 @@
 
             <!-- Buttons -->
             <StackPanel Orientation="Horizontal" Grid.Column="1">
-                <Button Style="{StaticResource IconGrowButton}" Content="{StaticResource FontAwesomeSearchIcon}" />
-                <Button Style="{StaticResource IconGrowButton}" Content="{StaticResource FontAwesomeEllipsisVerticalIcon}" />
+                <!-- Search Button -->
+                <Button Style="{StaticResource IconGrowButton}"
+                        Content="{StaticResource FontAwesomeSearchIcon}"
+                        Command="{Binding OpenSearchCommand}"/>
+                
+                <Button Style="{StaticResource IconGrowButton}"
+                        Content="{StaticResource FontAwesomeEllipsisVerticalIcon}" />
             </StackPanel>
+
+            <!-- Search Overlay -->
+            <Grid Grid.ColumnSpan="2"
+                  local:AnimateSlideInFromRightMarginProperty.Value="{Binding SearchIsOpen}">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Close Button -->
+                <Button Style="{StaticResource IconGrowButton}"
+                        Content="{StaticResource FontAwesomeCancelIcon}"
+                        Command="{Binding CloseSearchCommand}"
+                        Foreground="{StaticResource WordOrangeBrush}"/>
+
+                <!-- Search box -->
+                <TextBox x:Name="SearchText"
+                         local:FocusProperty.Value="{Binding SearchIsOpen}"
+                         Margin="0 5 5 5"
+                         VerticalAlignment="Center"
+                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                         Grid.Column="2"
+                         Tag="Search text..."
+                         FontSize="{StaticResource FontSizeRegular}">
+
+                    <TextBox.InputBindings>
+                        <!-- Clear text on ESC -->
+                        <KeyBinding Command="{Binding ClearSearchCommand}" Key="Esc" />
+                        <!-- Search text on Enter -->
+                        <KeyBinding Command="{Binding SearchCommand}" Key="Return" />
+                    </TextBox.InputBindings>
+                    
+                </TextBox>
+
+            </Grid>
 
         </Grid>
         

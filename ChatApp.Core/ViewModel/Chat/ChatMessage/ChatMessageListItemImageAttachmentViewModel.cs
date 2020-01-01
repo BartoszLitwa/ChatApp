@@ -64,6 +64,11 @@ namespace ChatApp.Core
         /// </summary>
         public string LocalFilePath { get; set; }
 
+        /// <summary>
+        /// Indicates if any image has loaded
+        /// </summary>
+        public bool ImageLoaded => LocalFilePath != null;
+
         #endregion
     }
 }

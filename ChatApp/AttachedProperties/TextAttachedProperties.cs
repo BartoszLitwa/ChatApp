@@ -23,6 +23,24 @@ namespace ChatApp
     }
 
     /// <summary>
+    /// Focuses (keyboard focus) this element on load
+    /// </summary>
+    public class FocusProperty : BaseAttachedProperty<FocusProperty, bool>
+    {
+        public override void OnValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            // If we dont have a control, return
+            if (!(sender is TextBox control))
+                return;
+
+            if((bool)e.NewValue)
+                // Focus this control
+                control.Focus();
+        }
+
+    }
+
+    /// <summary>
     /// Focuses (keyboard focus) and sleectes all text in this element if true
     /// </summary>
     public class FocusAndSelectProperty : BaseAttachedProperty<FocusAndSelectProperty, bool>
