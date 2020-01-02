@@ -52,11 +52,18 @@ namespace ChatApp.Core
         #region Constrcutor
 
         /// <summary>
-        /// Default COnstructor
+        /// Default Constructor
         /// </summary>
-        public BaseLogFactory()
+        /// <param name="loggers">The loggers to add to the factory, on top of the stack loggers already included</param>
+        public BaseLogFactory(ILogger[] loggers = null)
         {
+            // Add console logger
             AddLogger(new ConsoleLogger());
+
+            // Add any others passed in
+            if (loggers != null)
+                foreach (var log in loggers)
+                    AddLogger(log);
         }
 
         #endregion

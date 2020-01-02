@@ -27,12 +27,7 @@ namespace ChatApp
             ApplicationSetup();
 
             // Log it
-            IoC.Logger.Log("This is Debug", LogLevel.Debug);
-            IoC.Logger.Log("This is Verbose", LogLevel.Verbose);
-            IoC.Logger.Log("This is Informative", LogLevel.Informative);
-            IoC.Logger.Log("This is Warning", LogLevel.Warning);
-            IoC.Logger.Log("This is Error", LogLevel.Error);
-            IoC.Logger.Log("This is Success", LogLevel.Success);
+            IoC.Logger.Log("Application starting", LogLevel.Debug);
 
             //Show the main window
             Current.MainWindow = new MainWindow();
@@ -47,11 +42,23 @@ namespace ChatApp
             // Setup IoC
             IoC.Setup();
 
+            // Bind a logger
+            IoC.Kernel.Bind<ILogFactory>().ToConstant(new BaseLogFactory(new[]
+            { 
+                // TODO: Add ApplicationSetings so we can set/edit a log location
+                // For now just log to the path where this application is
+                new FileLogger("log.txt"),
+            }));
+
+            // Bind a Task Manager
+            IoC.Kernel.Bind<ITaskManager>().ToConstant(new TaskManager());
+
+            // Bind a File Manager
+            IoC.Kernel.Bind<IFileManager>().ToConstant(new FileManager());
+
             // Bind a UI manager
             IoC.Kernel.Bind<IUIManager>().ToConstant(new UIManager());
 
-            // Bind a logger
-            IoC.Kernel.Bind<ILogFactory>().ToConstant(new BaseLogFactory());
         }
     }
 }

@@ -14,7 +14,7 @@ namespace ChatApp.Core
         /// </summary>
         public ConsoleLogger()
         {
-            Console.
+            
         }
 
         #endregion
@@ -41,12 +41,12 @@ namespace ChatApp.Core
                     // Verbose is Gray
                 case LogLevel.Verbose:
                     OldConsoleColor = ConsoleColor.Gray;
-                    category = "Verbose";
+                    category = "Information";
                     break;
 
                 case LogLevel.Informative:
                     OldConsoleColor = ConsoleColor.Yellow;
-                    category = "Informative";
+                    category = "Information";
                     break;
 
                     // Warning is dark Yellow
@@ -72,7 +72,7 @@ namespace ChatApp.Core
             Console.ForegroundColor = OldConsoleColor;
 
             // Write message to console
-            Console.WriteLine($"[{level}]".ToString().PadRight(13, ' ') + message);
+            Console.WriteLine($"{category}[{level}]".ToString().PadRight(13, ' ') + message);
 
             // Reset console color
             Console.ForegroundColor = OldConsoleColor;
