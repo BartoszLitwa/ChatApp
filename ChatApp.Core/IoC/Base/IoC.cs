@@ -21,6 +21,11 @@ namespace ChatApp.Core
         public static IUIManager UI => IoC.Get<IUIManager>();
 
         /// <summary>
+        /// A shortcut to accces the <see cref="IUIManager"/>
+        /// </summary>
+        public static ILogFactory Logger => IoC.Get<ILogFactory>();
+
+        /// <summary>
         /// A shortcut to accces the <see cref="ApplicationViewModel"/>
         /// </summary>
         public static ApplicationViewModel Application => IoC.Get<ApplicationViewModel>();
