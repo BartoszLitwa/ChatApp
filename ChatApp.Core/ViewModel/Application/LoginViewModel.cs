@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Dna;
+using System;
+using System.IO;
 using System.Security;
 using System.Threading.Tasks;
 using System.Windows;
@@ -62,26 +64,58 @@ namespace ChatApp.Core
         {
             await RunCommandAsync(() => LoginIsRunning, async () =>
             {
-                await Task.Delay(500);
+                // Call the server and attempt to login
+                // TODO: Move all URLs and API routes to static class in core
+                var result = await WebRequests.PostAsync<ApiResponse<LoginResultApiModel>>(
+                    "https://localhost:5001/api/login",
+                    new LoginCredentialsApiModel
+                    {
+                        UsernameOrEmail = Email,
+                        Password = (parameter as IHavePassword).SecurePassword.Unsecure()
+                    });
+
+                // If there was no response, bad data or a response with a error message
+                if (result == null || result.ServerResponse == null || !result.ServerResponse.Succesful)
+                {
+                    // Default Error message
+                    // TODO: Localize strings
+                    var message = "Unknown error from server call";
+
+                    // If we got a resposne from the server
+                    if (result?.ServerResponse != null)
+                        message = result.ServerResponse.ErrorMessage;
+                    // If we have a result but deserialize failed
+                    else if(string.IsNullOrWhiteSpace(result?.RawServerResponse))
+                        // Set error message
+                        message = $"Unexpected response from server. {result.RawServerResponse}";
+                    // If we have a result but no server response details at all
+                    else if (result != null)
+                        // Set message to standard HTTP server response details
+                        message = $"Failed to communicate with server. Status code {result.StatusCode}. {result.StatusDescription}";
+
+                    // Display error
+                    await IoC.UI.ShowMessage(new MessageBoxDialogViewModel
+                    {
+                        // TODO: Localize Strings
+                        Title = "Login Failed",
+                        Message = message
+                    });
+
+                    //We are done
+                    return;
+                }
 
                 // Ok succesfully logged in. Get the users data
-                // TODO: ask server for users info
+                var userData = result.ServerResponse.Response;
 
-                // TODO: Remove when the back end server is ready
-                IoC.Settings.Name = new TextEntryViewModel { Label = "Name", OriginalText = $"Bartosz Litwa {DateTime.Now.ToLocalTime()}" };
-                IoC.Settings.Username = new TextEntryViewModel { Label = "Username", OriginalText = "CRNYY" };
+                IoC.Settings.Name = new TextEntryViewModel { Label = "Name", OriginalText = $"{userData.FirstName} {userData.LastName}" };
+                IoC.Settings.Username = new TextEntryViewModel { Label = "Username", OriginalText = $"{userData.Username}" };
                 IoC.Settings.Password = new PasswordEntryViewModel { Label = "Password", FakePassword = "********" };
-                IoC.Settings.Email = new TextEntryViewModel { Label = "Email", OriginalText = "CRNYY@gmail.com" };
-
-                // IMPORTANT:Never store this in variables like this
-                var email = Email;
-                var pass = (parameter as IHavePassword).SecurePassword.Unsecure();
+                IoC.Settings.Email = new TextEntryViewModel { Label = "Email", OriginalText = $"{userData.Email}" };
 
                 // Go to Login Page
                 IoC.Application.GoToPage(ApplicationPage.Chat);
             });
-
-            IoC.Application.GoToPage(ApplicationPage.Chat);
         }
 
         /// <summary>
