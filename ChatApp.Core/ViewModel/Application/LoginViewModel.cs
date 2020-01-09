@@ -74,56 +74,16 @@ namespace ChatApp.Core
                         Password = (parameter as IHavePassword).SecurePassword.Unsecure()
                     });
 
-                // If there was no response, bad data or a response with a error message
-                if (result == null || result.ServerResponse == null || !result.ServerResponse.Succesful)
-                {
-                    // Default Error message
-                    // TODO: Localize strings
-                    var message = "Unknown error from server call";
-
-                    // If we got a resposne from the server
-                    if (result?.ServerResponse != null)
-                        message = result.ServerResponse.ErrorMessage;
-                    // If we have a result but deserialize failed
-                    else if(string.IsNullOrWhiteSpace(result?.RawServerResponse))
-                        // Set error message
-                        message = $"Unexpected response from server. {result.RawServerResponse}";
-                    // If we have a result but no server response details at all
-                    else if (result != null)
-                        // Set message to standard HTTP server response details
-                        message = $"Failed to communicate with server. Status code {result.StatusCode}. {result.StatusDescription}";
-
-                    // Display error
-                    await IoC.UI.ShowMessage(new MessageBoxDialogViewModel
-                    {
-                        // TODO: Localize Strings
-                        Title = "Login Failed",
-                        Message = message
-                    });
-
-                    //We are done
+                // If the result has an error
+                if (await result.DisplayErrorIfFailedAsync("Login failed"))
+                    // We are done
                     return;
-                }
 
                 // Ok succesfully logged in. Get the users data
-                var userData = result.ServerResponse.Response;
+                var loginResult = result.ServerResponse.Response;
 
-                // Store this in the client data store
-                await IoC.ClientDataStore.SaveLoginCredentialsAsync(new LoginCredentialsDataModel
-                {
-                    Id = "Developer",
-                    Email = userData.Email,
-                    FirstName = userData.FirstName,
-                    LastName = userData.LastName,
-                    Username = userData.Username,
-                    Token = userData.Token
-                });
-
-                // Load new settings
-                await IoC.Settings.LoadAsync();
-
-                // Go to Login Page
-                IoC.Application.GoToPage(ApplicationPage.Chat);
+                // Let the application view model handle what happens
+                await IoC.Application.HandleSuccessfulLoginAsync(loginResult);
             });
         }
 

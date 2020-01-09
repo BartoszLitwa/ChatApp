@@ -9,8 +9,6 @@ namespace ChatApp.Web.Server
     /// </summary>
     public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     {
-        public string Id = Guid.NewGuid().ToString("N");
-
         #region Public Properties
 
         /// <summary>

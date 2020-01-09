@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,6 +52,86 @@ namespace ChatApp.Web.Server
 
         #endregion
 
+        #region Pages Method
+
+        /// <summary>
+        /// Tries to register for a new account on the server
+        /// </summary>
+        /// <param name="registerCredentials">The registration details</param>
+        /// <returns>Returns teh result of the register request</returns>
+        [Route("api/register")]
+        public async Task<ApiResponse<RegisterResultApiModel>> RegisterAsync([FromBody] RegisterCredentialsApiModel registerCredentials)
+        {
+            // TODO: Localize all strings
+            // The message when we failed to login
+            var invalidErrorMessage = "Please provide all required details to register an account";
+
+            // The error message for a failed login
+            var errorResponse = new ApiResponse<RegisterResultApiModel>
+            {
+                // Set error message
+                ErrorMessage = invalidErrorMessage
+            };
+
+            // Make sure we have a register credentials
+            if (registerCredentials == null)
+                // Return failed response
+                return errorResponse;
+
+            // Make sure we have a user name
+            if (string.IsNullOrWhiteSpace(registerCredentials.Username))
+                return errorResponse;
+
+                // Create the desired user from the given details
+            var user = new ApplicationUser
+            {
+                UserName = registerCredentials.Username,
+                FirstName = registerCredentials.FirstName,
+                LastName = registerCredentials.LastName,
+                Email = registerCredentials.Email,
+            };
+
+            // Try and create a user
+            var result = await mUserManager.CreateAsync(user, registerCredentials.Password);
+
+            // If the registration was succesful
+            if (result.Succeeded)
+            {
+                // Get the user details
+                var userIdentity = await mUserManager.FindByNameAsync(registerCredentials.Username);
+
+                // Generate an email verification code
+                var emailVerificationCode = await mUserManager.GenerateEmailConfirmationTokenAsync(user);
+
+                // TODO: Email the user the verification code
+                // return valid response conataining all users details
+                return new ApiResponse<RegisterResultApiModel>
+                {
+                    Response = new RegisterResultApiModel
+                    {
+                        FirstName = userIdentity.FirstName,
+                        LastName = userIdentity.LastName,
+                        Email = userIdentity.Email,
+                        Username = userIdentity.UserName,
+                        Token = userIdentity.GenerateJwtToken()
+                    }
+                };
+            }
+            // Otherwise
+            else
+                // Return the failed error
+                return new ApiResponse<RegisterResultApiModel>
+                {
+                    // Aggregate all errors into a single error string
+                    ErrorMessage = result.Errors.ToList().Select(f => f.Description).Aggregate((a,b) => $"{a}{Environment.NewLine}{b}")
+                };
+        }
+
+        /// <summary>
+        /// Logs in a user using token based authentication
+        /// </summary>
+        /// <param name="loginCredentials"></param>
+        /// <returns></returns>
         [Route("api/login")]
         public async Task<ApiResponse<LoginResultApiModel>> LoginAsync([FromBody]LoginCredentialsApiModel loginCredentials)
         {
@@ -78,7 +159,7 @@ namespace ChatApp.Web.Server
             var user = isEmail ? await mUserManager.FindByEmailAsync(loginCredentials.UsernameOrEmail) : await mUserManager.FindByNameAsync(loginCredentials.UsernameOrEmail);
 
             // If we failed to find an user
-            if(user == null)
+            if (user == null)
                 return errorResponse;
 
             // If we got here we have a user. Validate the users password
@@ -89,29 +170,8 @@ namespace ChatApp.Web.Server
                 return errorResponse;
 
             // If we got there the user passed correct login details
-            var username = user.UserName;
 
-            // Set out tokens claims
-            var Claims = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                new Claim(ClaimsIdentity.DefaultNameClaimType, username),
-            };
-
-            // Create Credentials used to generate the token
-            var credentials = new SigningCredentials(
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(IoCContainer.Configuration["Jwt:SecretKey"])),
-                SecurityAlgorithms.HmacSha256);
-
-            // Generate the Jwt Token
-            var token = new JwtSecurityToken(
-                issuer: IoCContainer.Configuration["Jwt:Issuer"],
-                audience: IoCContainer.Configuration["Jwt:Issuer"],
-                claims: Claims,
-                expires: DateTime.Now.AddMonths(3),
-                signingCredentials: credentials );
-
-            // return token to user
+            // return valid response conataining all users details
             return new ApiResponse<LoginResultApiModel>
             {
                 Response = new LoginResultApiModel
@@ -120,7 +180,7 @@ namespace ChatApp.Web.Server
                     LastName = user.LastName,
                     Email = user.Email,
                     Username = user.UserName,
-                    Token = new JwtSecurityTokenHandler().WriteToken(token)
+                    Token = user.GenerateJwtToken()
                 }
             };
         }
@@ -132,6 +192,8 @@ namespace ChatApp.Web.Server
             var user = HttpContext.User;
 
             return Ok(new { privateData = $"The most secret private data handled by api for {user.Identity.Name}!" });
-        }
+        } 
+
+        #endregion
     }
 }

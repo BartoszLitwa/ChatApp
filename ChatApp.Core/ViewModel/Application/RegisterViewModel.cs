@@ -19,6 +19,11 @@ namespace ChatApp.Core
         public string Email { get; set; }
 
         /// <summary>
+        /// The username of the user
+        /// </summary>
+        public string Username { get; set; }
+
+        /// <summary>
         /// A flag indicating if the register command is running
         /// </summary>
         public bool RegisterIsRunning { get; set; }
@@ -62,9 +67,27 @@ namespace ChatApp.Core
         {
             await RunCommandAsync(() => RegisterIsRunning, async () =>
             {
-                await Task.Delay(500);
-                var email = Email;
-                var pass = (parameter as IHavePassword).SecurePassword.Unsecure();
+                // Call the server and attempt to register with the provided credentials
+                // TODO: Move all URLs and API routes to static class in core
+                var result = await Dna.WebRequests.PostAsync<ApiResponse<RegisterResultApiModel>>(
+                    "https://localhost:5001/api/register",
+                    new RegisterCredentialsApiModel
+                    {
+                        Username = Username,
+                        Email = Email,
+                        Password = (parameter as IHavePassword).SecurePassword.Unsecure()
+                    });
+
+                // If the result has an error
+                if (await result.DisplayErrorIfFailedAsync("Register failed"))
+                    // We are done
+                    return;
+
+                // Ok succesfully registered and logged in. Get the users data
+                var loginResult = result.ServerResponse.Response;
+
+                // Let the application view model handle what happens
+                await IoC.Application.HandleSuccessfulLoginAsync(loginResult);
             });
         }
 

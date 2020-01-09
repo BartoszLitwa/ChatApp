@@ -53,5 +53,30 @@ namespace ChatApp.Core
             // Show side menu or not
             SideMenuVisible = CurrentPage == ApplicationPage.Chat;
         }
+
+        /// <summary>
+        /// Handles what happens when we have successfully logged in
+        /// </summary>
+        /// <param name="loginResult">The result from the successful login</param>
+        /// <returns></returns>
+        public async Task HandleSuccessfulLoginAsync(LoginResultApiModel loginResult)
+        {
+            // Store this in the client data store
+            await IoC.ClientDataStore.SaveLoginCredentialsAsync(new LoginCredentialsDataModel
+            {
+                Id = Guid.NewGuid().ToString("N"),
+                Email = loginResult.Email,
+                FirstName = loginResult.FirstName,
+                LastName = loginResult.LastName,
+                Username = loginResult.Username,
+                Token = loginResult.Token
+            });
+
+            // Load new settings
+            await IoC.Settings.LoadAsync();
+
+            // Go to Login Page
+            IoC.Application.GoToPage(ApplicationPage.Chat);
+        }
     }
 }

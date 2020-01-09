@@ -23,13 +23,16 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Window}">
                         <!-- Outer border with the dropshadow margin -->
+                        <!-- TODO: Change color of outline when resizing -->
                         <Border Padding="{Binding OuterMarginSizeThickness, FallbackValue=10}">
                             
                             <!-- Main window outline -->
-                            <Grid>
+                            <Grid >
                                 
                                 <!-- Opacity mask for corners on grid -->
-                                <Border x:Name="Container" Background="{StaticResource BackgroundLightBrush}" CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}"/>
+                                <Border x:Name="Container"
+                                        Background="{StaticResource BackgroundLightBrush}"
+                                        CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}"/>
 
                                 <!-- Window border and dropshadow -->
                                 <Border CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}" 

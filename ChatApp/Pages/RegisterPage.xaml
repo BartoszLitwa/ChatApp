@@ -6,22 +6,26 @@
                 xmlns:local="clr-namespace:ChatApp"
                 xmlns:core="clr-namespace:ChatApp.Core;assembly=ChatApp.Core"
                 mc:Ignorable="d" 
-                x:Name="Page"
-                d:DesignHeight="700" d:DesignWidth="700">
+                x:Name="Page">
 
     <Border>
         <Grid>
             <!-- Login main content with white box-->
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" TextBlock.TextAlignment="Center">
-                    <Border Background="{StaticResource ForegroundLightBrush}" CornerRadius="10" Padding="15 50 15 15" Width="330" Height="350" Margin="50 50 50 0">
+                    <Border Background="{StaticResource ForegroundLightBrush}" CornerRadius="10" Padding="15 50 15 15" Width="330" Margin="50 50 50 0">
 
                         <StackPanel>
-                            <!-- Sign In header -->
+                            <!-- Sign Up header -->
                             <TextBlock Text="Sign Up" FontSize="{StaticResource FontSizeXXLarge}" FontFamily="{StaticResource LatoRegular}" Foreground="{StaticResource WordBlueBrush}"/>
 
-                            <!-- Sign In subtext -->
+                            <!-- Sign Up subtext -->
                             <TextBlock Text="It's about to get fun" FontSize="{StaticResource FontSizeLarge}" Foreground="{StaticResource ForegroundDarkBrush}" Margin="0 0 0 10"/>
+
+                            <!-- Username -->
+                            <TextBox Text="{Binding Username}"
+                                     local:IsFocusedProperty.Value="True"
+                                     Tag="Username"/>
 
                             <!-- Email -->
                             <TextBox Text="{Binding Email}"
