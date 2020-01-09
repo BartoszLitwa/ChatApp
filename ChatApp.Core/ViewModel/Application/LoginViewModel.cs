@@ -66,7 +66,7 @@ namespace ChatApp.Core
             {
                 // Call the server and attempt to login
                 // TODO: Move all URLs and API routes to static class in core
-                var result = await WebRequests.PostAsync<ApiResponse<LoginResultApiModel>>(
+                var result = await Dna.WebRequests.PostAsync<ApiResponse<LoginResultApiModel>>(
                     "https://localhost:5001/api/login",
                     new LoginCredentialsApiModel
                     {
@@ -108,10 +108,19 @@ namespace ChatApp.Core
                 // Ok succesfully logged in. Get the users data
                 var userData = result.ServerResponse.Response;
 
-                IoC.Settings.Name = new TextEntryViewModel { Label = "Name", OriginalText = $"{userData.FirstName} {userData.LastName}" };
-                IoC.Settings.Username = new TextEntryViewModel { Label = "Username", OriginalText = $"{userData.Username}" };
-                IoC.Settings.Password = new PasswordEntryViewModel { Label = "Password", FakePassword = "********" };
-                IoC.Settings.Email = new TextEntryViewModel { Label = "Email", OriginalText = $"{userData.Email}" };
+                // Store this in the client data store
+                await IoC.ClientDataStore.SaveLoginCredentialsAsync(new LoginCredentialsDataModel
+                {
+                    Id = "Developer",
+                    Email = userData.Email,
+                    FirstName = userData.FirstName,
+                    LastName = userData.LastName,
+                    Username = userData.Username,
+                    Token = userData.Token
+                });
+
+                // Load new settings
+                await IoC.Settings.LoadAsync();
 
                 // Go to Login Page
                 IoC.Application.GoToPage(ApplicationPage.Chat);

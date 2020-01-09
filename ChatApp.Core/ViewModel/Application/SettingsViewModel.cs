@@ -63,6 +63,11 @@ namespace ChatApp.Core
         /// </summary>
         public ICommand ClearUserDataCommand { get; set; }
 
+        /// <summary>
+        /// Loads the settings data from the client data store
+        /// </summary>
+        public ICommand LoadCommand { get; set; }
+
         #endregion
 
         #region Constructor
@@ -77,11 +82,7 @@ namespace ChatApp.Core
             OpenCommand = new RelayCommand(Open);
             LogOutCommand = new RelayCommand(LogOut);
             ClearUserDataCommand = new RelayCommand(ClearUserData);
-
-            Name = new TextEntryViewModel { Label = "Name", OriginalText = "Bartosz Litwa" };
-            Username = new TextEntryViewModel { Label = "Username", OriginalText = "CRNYY" };
-            Password = new PasswordEntryViewModel { Label = "Password", FakePassword = "********" };
-            Email = new TextEntryViewModel { Label = "Email", OriginalText = "CRNYY@gmail.com" };
+            LoadCommand = new RelayCommand(async () => await LoadAsync());
 
             LogOutButtonText = "Log Out";
         }
@@ -133,6 +134,20 @@ namespace ChatApp.Core
             Username = null;
             Password = null;
             Email = null;
+        }
+
+        /// <summary>
+        /// Sets the settings view model properties based on the data in the client data store
+        /// </summary>
+        public async Task LoadAsync()
+        {
+            // Get the stored credentials
+            var storedCredentials = await IoC.ClientDataStore.GetLoginCredentialsAsync();
+
+            Name = new TextEntryViewModel { Label = "Name", OriginalText = $"{storedCredentials?.FirstName} {storedCredentials?.LastName}" };
+            Username = new TextEntryViewModel { Label = "Username", OriginalText = $"{storedCredentials?.Username}" };
+            Password = new PasswordEntryViewModel { Label = "Name", FakePassword = $"********" };
+            Email = new TextEntryViewModel { Label = "Name", OriginalText = $"{storedCredentials?.Email}" };
         }
     }
 }
