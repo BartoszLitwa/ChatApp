@@ -1,5 +1,5 @@
-﻿using ChatApp.Core;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
+using static ChatApp.DI;
 
 namespace ChatApp
 {
@@ -13,7 +13,7 @@ namespace ChatApp
             InitializeComponent();
 
             // Set data context to settings view model
-            DataContext = IoC.Settings;
+            DataContext = ViewModelSettings;
         }
     }
 }

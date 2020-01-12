@@ -1,10 +1,8 @@
-﻿using ChatApp.Core;
-using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-
+using static ChatApp.DI;
 
 namespace ChatApp
 {
@@ -59,7 +57,7 @@ namespace ChatApp
             // If we are in DesignMode show the current Page
             // as the dependency property does not fire
             if (DesignerProperties.GetIsInDesignMode(this))
-                NewPage.Content = IoC.Application.CurrentPage.ToBasePage();
+                NewPage.Content = ViewModelApplication.CurrentPage.ToBasePage();
 
         }
 

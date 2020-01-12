@@ -50,7 +50,7 @@ namespace ChatApp.Core
             var timeLogString = LogTime ? $"[{currentTime}]" : "";
 
             // Write message to the file
-            IoC.File.WriteTextToFileAsync($"{timeLogString} {message}{Environment.NewLine}", FilePath, append: true);
+            CoreDI.FileManager.WriteTextToFileAsync($"{timeLogString} {message}{Environment.NewLine}", FilePath, append: true);
         }
 
         #endregion

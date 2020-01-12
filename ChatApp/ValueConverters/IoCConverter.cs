@@ -1,8 +1,7 @@
-﻿using ChatApp.Core;
-using Ninject;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using static ChatApp.DI;
 
 namespace ChatApp
 {
@@ -17,7 +16,7 @@ namespace ChatApp
             {
                 //Find the approparite page
                 case nameof(ApplicationViewModel):
-                    return IoC.Application;
+                    return ViewModelApplication;
                 default:
                     Debugger.Break();
                     return null;

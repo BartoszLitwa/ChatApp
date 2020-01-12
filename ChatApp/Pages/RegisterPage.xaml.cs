@@ -1,8 +1,6 @@
 ﻿using ChatApp.Core;
 using System.Security;
 
-
-
 namespace ChatApp
 {
     /// <summary>

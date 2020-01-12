@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChatApp"
              xmlns:core="clr-namespace:ChatApp.Core;assembly=ChatApp.Core"
-             d:DataContext="{x:Static core:SettingsDesignModel.Instance}"
+             d:DataContext="{x:Static local:SettingsDesignModel.Instance}"
              mc:Ignorable="d">
 
     <Border Background="{StaticResource ForegroundLightBrush}"

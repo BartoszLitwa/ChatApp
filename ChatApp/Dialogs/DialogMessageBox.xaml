@@ -8,7 +8,7 @@
              mc:Ignorable="d" >
     
     <StackPanel Background="{StaticResource ForegroundLightBrush}"
-                d:DataContext="{x:Static core:MessageBoxDialogDesignModel.Instance}">
+                d:DataContext="{x:Static local:MessageBoxDialogDesignModel.Instance}">
         
         <TextBlock Text="{Binding Message, FallbackValue=Test}"
                    Padding="5"

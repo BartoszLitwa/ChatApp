@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ChatApp"
              xmlns:core="clr-namespace:ChatApp.Core;assembly=ChatApp.Core"
              mc:Ignorable="d" 
-             d:DataContext="{x:Static core:ChatAttachmentPopupMenuDesignModel.Instance}">
+             d:DataContext="{x:Static local:ChatAttachmentPopupMenuDesignModel.Instance}">
     
     
     <!-- Chat message container -->
