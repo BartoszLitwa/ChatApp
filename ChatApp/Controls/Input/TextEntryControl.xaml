@@ -10,6 +10,7 @@
     
     <!-- Grey underline -->
     <Border BorderBrush="{StaticResource ForegroundDarkBrush}"
+            IsEnabled="{Binding Working, Converter={local:BooleanInvertConverter}}"
             BorderThickness="0 0 0 0.4">
 
         <Grid Background="{StaticResource ForegroundLightBrush}">
@@ -79,10 +80,11 @@
                        VerticalAlignment="Center"
                        ToolTip="{Binding OriginalText}"/>
             
-            <!-- Edit Button -->
+            <!-- Edit Button container -->
             <Grid Grid.Column="2"
                   local:AnimateFadeInProperty.Value="{Binding Editing, Converter={local:BooleanInvertConverter}}"
-                  HorizontalAlignment="Left">
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center">
                 
                 <!-- Edit Button -->
                 <Button Content="{StaticResource FontAwesomeEllipsisHorizontalIcon}"
@@ -94,6 +96,19 @@
                         FontSize="{StaticResource FontSizeSmall}"
                         FontFamily="{StaticResource FontAwesome}"
                         VerticalAlignment="Center"/>
+
+            </Grid>
+
+            <!-- Working spinner container -->
+            <Grid Grid.Column="2"
+                  local:AnimateFadeInProperty.Value="{Binding Working}"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center">
+
+                <Border Padding="0 0 8 0">
+                    <TextBlock Style="{StaticResource SpinningText}"
+                               Foreground="{StaticResource WordOrangeBrush}"/>
+                </Border>
 
             </Grid>
 

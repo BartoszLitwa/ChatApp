@@ -1,0 +1,51 @@
+/* Body */
+body{
+    margin: 0;
+    padding: 0;
+}
+
+img{
+    border: 0 none;
+    height: auto;
+    line-height: 100%;
+    outline: none;
+    text-decoration: none;
+}
+
+a{
+    border: 0 none;
+}
+
+table{
+    border-collapse: collapse;
+    padding: 0;
+}
+
+td{
+    border-collapse: collapse;
+    padding: 0;
+}
+
+h1{
+    margin: 0;
+}
+
+h2{
+    margin: 0;
+}
+
+h3{
+    margin: 0;
+}
+
+h4{
+    margin: 0;
+}
+
+h5{
+    margin: 0;
+}
+
+h6{
+    margin: 0;
+}

@@ -66,6 +66,26 @@ namespace ChatApp
         /// </summary>
         public ICommand LoadCommand { get; set; }
 
+        /// <summary>
+        /// Saves the current name to the server
+        /// </summary>
+        public ICommand SaveNameCommand { get; set; }
+
+        /// <summary>
+        /// Saves the current username to the server
+        /// </summary>
+        public ICommand SaveUsernameCommand { get; set; }
+
+        /// <summary>
+        /// Saves the current username to the server
+        /// </summary>
+        public ICommand SavePasswordCommand { get; set; }
+
+        /// <summary>
+        /// Saves the current email to the server
+        /// </summary>
+        public ICommand SaveEmailCommand { get; set; }
+
         #endregion
 
         #region Constructor
@@ -81,6 +101,10 @@ namespace ChatApp
             LogOutCommand = new RelayCommand(LogOutAsync);
             ClearUserDataCommand = new RelayCommand(ClearUserData);
             LoadCommand = new RelayCommand(async () => await LoadAsync());
+            SaveNameCommand = new RelayCommand(async () => await SaveNameAsync());
+            SaveUsernameCommand = new RelayCommand(async () => await SaveUsernameAsync());
+            SavePasswordCommand = new RelayCommand(async () => await SavePasswordAsync());
+            SaveEmailCommand = new RelayCommand(async () => await SaveEmailAsync());
 
             LogOutButtonText = "Log Out";
         }
@@ -148,10 +172,82 @@ namespace ChatApp
             // Get the stored credentials
             var storedCredentials = await ClientDataStore.GetLoginCredentialsAsync();
 
-            Name = new TextEntryViewModel { Label = "Name", OriginalText = $"{storedCredentials?.FirstName} {storedCredentials?.LastName}" };
-            Username = new TextEntryViewModel { Label = "Username", OriginalText = $"{storedCredentials?.Username}" };
-            Password = new PasswordEntryViewModel { Label = "Name", FakePassword = $"********" };
-            Email = new TextEntryViewModel { Label = "Name", OriginalText = $"{storedCredentials?.Email}" };
+            Name = new TextEntryViewModel
+            {
+                Label = "Name",
+                OriginalText = $"{storedCredentials?.FirstName} {storedCredentials?.LastName}",
+                CommitAction = SaveNameAsync
+            };
+            Username = new TextEntryViewModel
+            {
+                Label = "Username",
+                OriginalText = $"{storedCredentials?.Username}",
+                CommitAction = SaveUsernameAsync
+            };
+            Password = new PasswordEntryViewModel
+            { 
+                Label = "Name",
+                FakePassword = $"********",
+                CommitAction = SavePasswordAsync
+            };
+            Email = new TextEntryViewModel
+            { 
+                Label = "Name",
+                OriginalText = $"{storedCredentials?.Email}",
+                CommitAction = SaveEmailAsync
+            };
+        }
+
+        /// <summary>
+        /// Saves the new Name to the server
+        /// </summary>
+        /// <returns>Returns true if successful, false otherwise</returns>
+        public async Task<bool> SaveNameAsync()
+        {
+            // TODO: Update with server
+            await Task.Delay(3000);
+
+            // Return success
+            return true;
+        }
+
+        /// <summary>
+        /// Saves the new Username to the server
+        /// </summary>
+        /// <returns>Returns true if successful, false otherwise</returns>
+        public async Task<bool> SaveUsernameAsync()
+        {
+            // TODO: Update with server
+            await Task.Delay(3000);
+
+            // Return success
+            return true;
+        }
+
+        /// <summary>
+        /// Saves the new Password to the server
+        /// </summary>
+        /// <returns>Returns true if successful, false otherwise</returns>
+        public async Task<bool> SavePasswordAsync()
+        {
+            // TODO: Update with server
+            await Task.Delay(3000);
+
+            // Return success
+            return true;
+        }
+
+        /// <summary>
+        /// Saves the new Email to the server
+        /// </summary>
+        /// <returns>Returns true if successful, false otherwise</returns>
+        public async Task<bool> SaveEmailAsync()
+        {
+            // TODO: Update with server
+            await Task.Delay(3000);
+
+            // Return success
+            return true;
         }
     }
 }

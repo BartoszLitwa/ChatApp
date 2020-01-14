@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace ChatApp
 {
@@ -28,6 +30,17 @@ namespace ChatApp
         /// Indicates if the current text is in edit mode
         /// </summary>
         public bool Editing { get; set; } = false;
+
+        /// <summary>
+        /// Indicates if the current control is pending an update (in progress)
+        /// </summary>
+        public bool Working { get; set; }
+
+        /// <summary>
+        /// The action to run when saving the text
+        /// Returns true if the commit was succesful, or false otherwise
+        /// </summary>
+        public Func<Task<bool>> CommitAction { get; set; }
 
         #endregion
 
@@ -72,8 +85,10 @@ namespace ChatApp
         /// </summary>
         public void Edit()
         {
+            // Go into edit mode
             Editing = true;
 
+            // Set the edited text to the current value
             EditedText = OriginalText;
         }
 
@@ -92,11 +107,36 @@ namespace ChatApp
         /// </summary>
         public void Save()
         {
-            //TODO: Save content
+            // Store the result of a commit call
+            // Defaulting to true (if no CommitAction is declared
+            var result = default(bool);
 
-            Editing = false;
+            // Save currently saved value
+            var currentSavedValue = OriginalText;
 
-            OriginalText = EditedText;
+            RunCommandAsync(() => Working, async () => 
+            {
+                // While working, come out of edit mode
+                Editing = false;
+
+                // Commit the changed text
+                // So we can see it while it is working
+                OriginalText = EditedText;
+
+                // Try and do the work
+                result = CommitAction == null ? true : await CommitAction();
+            }).ContinueWith(t => 
+            {
+                // If we fail
+                if(!result)
+                {
+                    // Restore original value
+                    OriginalText = currentSavedValue;
+
+                    // Go back into edit mode
+                    Editing = true;
+                }
+            });
         }
 
         #endregion

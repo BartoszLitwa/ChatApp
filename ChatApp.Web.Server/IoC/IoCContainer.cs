@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using ChatApp.Core;
 
 namespace ChatApp.Web.Server
 {
@@ -13,6 +14,16 @@ namespace ChatApp.Web.Server
         /// The scoped instance of the <see cref="ApplicationDBContext"/>
         /// </summary>
         public static ApplicationDBContext ApplicationDBContext => IoCContainer.Provider.GetService<ApplicationDBContext>();
+
+        /// <summary>
+        /// The transient instance of the <see cref="IEmailSender"/>
+        /// </summary>
+        public static IEmailSender EmailSender => IoCContainer.Provider.GetService<IEmailSender>();
+
+        /// <summary>
+        /// The transient instance of the <see cref="IEmailTemplateSender"/>
+        /// </summary>
+        public static IEmailTemplateSender EmailTemplateSender => IoCContainer.Provider.GetService<IEmailTemplateSender>();
     }
 
     /// <summary>
@@ -23,7 +34,7 @@ namespace ChatApp.Web.Server
         /// <summary>
         /// The service provider for this application
         /// </summary>
-        public static ServiceProvider Provider { get; set; }
+        public static IServiceProvider Provider { get; set; }
 
         /// <summary>
         /// The configuration manager for the application

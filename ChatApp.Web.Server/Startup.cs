@@ -1,3 +1,4 @@
+using ChatApp.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +24,12 @@ namespace ChatApp.Web.Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add SendGrid email sender
+            services.AddSendGridEmailSender();
+
+            // Add General email template sender
+            services.AddEmailTemplateSender();
+
             // Add ApplicationDBContext to DI
             services.AddDbContext<ApplicationDBContext>(options =>
                 options.UseSqlServer(IoCContainer.Configuration.GetConnectionString("DefaultConnection")));
@@ -84,7 +91,7 @@ namespace ChatApp.Web.Server
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider service)
         {
             // Store instance of the DI service provider so our application can acces it anywhere
-            IoCContainer.Provider = app.ApplicationServices as ServiceProvider;
+            IoCContainer.Provider = app.ApplicationServices;
 
             // Setup Identity
             app.UseAuthentication();
@@ -112,6 +119,21 @@ namespace ChatApp.Web.Server
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            IoC.EmailTemplateSender.SendGeneralEmailAsync(new SendEmailDetails
+            {
+                Content = "This is our first HTML email <b>with some bold text </b>",
+                IsHTML = true,
+                FromEmail = "CRNYY@ChatApp.com",
+                FromName = "noreply.ChatApp",
+                ToEmail = "noreply.crnyychatapp@gmail.com",
+                Subject = "Verify Your Email!"
+            },
+            "Verify Your Email",
+            "Hi Bartosz,",
+            "Thanks for creating an account with us. <br/> To continue please verify your email.",
+            "Verify Email",
+            "http://www.google.com");
         }
     }
 }

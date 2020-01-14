@@ -1,0 +1,110 @@
+body{
+    font-family: sans-serif;
+    font-family: 'Quicksand';
+}
+
+/* Top most table inside the body */
+.container{
+    font-family: sans-serif;
+    font-family: 'Quicksand';
+    color: black;
+
+    margin: 0;
+    padding: 0;
+
+    background: url("/Images/emoji-background.png");
+    background-color: rgb(22, 145, 221);
+
+    width: 100% !important;
+    height: 100% !important;
+
+    font-size: 24px;
+
+    line-height: 1.5;
+
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* wraps contents to email width */
+.wrapper{
+    display: block;
+
+    padding: 32px;
+}
+
+.text-center{
+    text-align: center;
+    background: white;
+    padding: 16px;
+}
+
+.page-container{
+    background: white;
+
+    padding: 48px;
+}
+
+.button{
+
+}
+
+.button-td{
+    background-color: yellow;
+
+    border-radius: 16px;
+}
+
+.button-a{
+    background-color: yellow;
+
+    border-radius: 16px;
+
+    padding: 16px 24px;
+
+    color: red;
+
+    text-decoration: none;
+
+    display: inline-block;
+}
+
+.text-logo{
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    padding: 16px;
+}
+
+h1{
+    font-size: 48px;
+}
+
+.content-item{
+    padding: 24px;
+}
+
+.page-behind-1{
+    font-size: 0;
+    line-height: 0;
+    color: white;
+}
+
+.page-behind-2{
+    font-size: 0;
+    line-height: 0;
+    color: white;
+}
+
+.white-space-content{
+    font-size: 0;
+    line-height: 0;
+
+    width: 100%;
+
+    margin-bottom: 4px;
+
+    display: inline-block;
+
+    border-top: 4px solid white;
+}

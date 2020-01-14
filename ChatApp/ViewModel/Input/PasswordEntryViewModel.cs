@@ -1,4 +1,6 @@
-﻿using System.Security;
+﻿using System;
+using System.Security;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using ChatApp.Core;
 using static ChatApp.DI;
@@ -56,6 +58,17 @@ namespace ChatApp
         /// Indicates if the current text is in edit mode
         /// </summary>
         public bool Editing { get; set; } = false;
+
+        /// <summary>
+        /// Indicates if the current control is pending an update (in progress)
+        /// </summary>
+        public bool Working { get; set; }
+
+        /// <summary>
+        /// The action to run when saving the text
+        /// Returns true if the commit was succesful, or false otherwise
+        /// </summary>
+        public Func<Task<bool>> CommitAction { get; set; }
 
         #endregion
 
@@ -121,6 +134,10 @@ namespace ChatApp
             Editing = false;
 
             NewPassword = CurrentPassword;
+
+            // Clear all passwords
+            NewPassword = new SecureString();
+            ConfirmPassword = new SecureString();
         }
 
         /// <summary>
@@ -128,60 +145,25 @@ namespace ChatApp
         /// </summary>
         public void Save()
         {
-            //TODO: Save content
+            // Store the result of a commit call
+            // Defaulting to true (if no CommitAction is declared
+            var result = default(bool);
 
-            // Make sure current password is correct
-            var storedPassword = "Testing";
-
-            // Confirm current password is a match
-            if (storedPassword != CurrentPassword.Unsecure())
+            RunCommandAsync(() => Working, async () =>
             {
-                UI.ShowMessage(new MessageBoxDialogViewModel
+                // While working, come out of edit mode
+                Editing = false;
+
+                // Try and do the work
+                result = CommitAction == null ? true : await CommitAction();
+            }).ContinueWith(t =>
+            {
+                // If we fail
+                if (!result)
                 {
-                    Title = "Wrong password!",
-                    Message = "Current password is invalid!",
-                });
-
-                return;
-            }
-
-            // Check if the new and confirm password are the same and are actually a password
-            if (NewPassword.Unsecure() != ConfirmPassword.Unsecure())
-            {
-                UI.ShowMessage(new MessageBoxDialogViewModel
-                {
-                    Title = "Password mismatch",
-                    Message = "The new and confirm password do not macth",
-                });
-
-                return;
-            }
-
-            if(NewPassword.Unsecure().Length < 1)
-            {
-                UI.ShowMessage(new MessageBoxDialogViewModel
-                {
-                    Title = "Password too short",
-                    Message = "You must enter a password!",
-                });
-
-                return;
-            }
-
-            // Set the edited password to the current value
-            CurrentPassword = new SecureString();
-            foreach(var c in NewPassword.Unsecure().ToCharArray())
-            {
-                CurrentPassword.AppendChar(c);
-            }
-
-
-            Editing = false;
-
-            UI.ShowMessage(new MessageBoxDialogViewModel
-            {
-                Title = "Success",
-                Message = "Current password has been changed succesfully!",
+                    // Go back into edit mode
+                    Editing = true;
+                }
             });
         }
 
