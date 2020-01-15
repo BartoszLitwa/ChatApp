@@ -119,21 +119,6 @@ namespace ChatApp.Web.Server
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            IoC.EmailTemplateSender.SendGeneralEmailAsync(new SendEmailDetails
-            {
-                Content = "This is our first HTML email <b>with some bold text </b>",
-                IsHTML = true,
-                FromEmail = "CRNYY@ChatApp.com",
-                FromName = "noreply.ChatApp",
-                ToEmail = "noreply.crnyychatapp@gmail.com",
-                Subject = "Verify Your Email!"
-            },
-            "Verify Your Email",
-            "Hi Bartosz,",
-            "Thanks for creating an account with us. <br/> To continue please verify your email.",
-            "Verify Email",
-            "http://www.google.com");
         }
     }
 }

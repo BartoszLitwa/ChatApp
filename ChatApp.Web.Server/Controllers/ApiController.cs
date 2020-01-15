@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace ChatApp.Web.Server
 {
@@ -99,7 +100,12 @@ namespace ChatApp.Web.Server
                 // Generate an email verification code
                 var emailVerificationCode = await mUserManager.GenerateEmailConfirmationTokenAsync(user);
 
-                // TODO: Email the user the verification code
+                // TODO: Replace with APIRoutes that will contain the static routes to use
+                var confirmationUrl = $"https://{Request.Host.Value}/api/verify/email/{HttpUtility.UrlEncode(userIdentity.Id)}/{HttpUtility.UrlEncode(emailVerificationCode)}";
+
+                // Email the user the verification code
+                await ChatAppEmailSender.SendUserVerificationEmailAsync(userIdentity.FirstName, userIdentity.Email, confirmationUrl);
+
                 // return valid response conataining all users details
                 return new ApiResponse<RegisterResultApiModel>
                 {
@@ -121,6 +127,36 @@ namespace ChatApp.Web.Server
                     // Aggregate all errors into a single error string
                     ErrorMessage = result.Errors.ToList().Select(f => f.Description).Aggregate((a,b) => $"{a}{Environment.NewLine}{b}")
                 };
+        }
+
+        [HttpGet]
+        [Route("api/verify/email/{userId}/{emailToken}")]
+        public async Task<ActionResult> VerifyEmailAsync(string userId, string emailToken)
+        {
+            // Get the user
+            var user = await mUserManager.FindByIdAsync(userId);
+
+            // NOTE: Issue at the minute with Url Decoding that contains /'s does not replace them
+            //       https://github.com/aspnet/Home/issues/2669
+            //       For now, manually fix that
+            emailToken = emailToken.Replace("%2f", "/").Replace("%2F", "/");
+
+            // If the user is null
+            if (user == null)
+                // TODO: Nice UI
+                return Content("User not found");
+
+            // If we have the user...
+            // Verify the email token
+            var result = await mUserManager.ConfirmEmailAsync(user, emailToken);
+
+            // If succeeded...
+            if (result.Succeeded)
+                // TODO: Nice UI
+                return Content("Email Verified :)");
+
+            // TODO: Nice UI
+            return Content("Invalid Email Verification Token :(");
         }
 
         /// <summary>

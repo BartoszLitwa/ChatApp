@@ -17,7 +17,8 @@ namespace ChatApp.Core
         /// <param name="Content">the second line content</param>
         /// <param name="ButtonText">The button text</param>
         /// <param name="ButtonUrl">The button URL</param>
+        /// <param name="Type">The type of service to send emails</param>
         /// <returns></returns>
-        Task<SendEmailResponse> SendGeneralEmailAsync(SendEmailDetails details, string title, string Username, string Content, string ButtonText, string ButtonUrl);
+        Task<SendEmailResponse> SendGeneralEmailAsync(SendEmailDetails details, string title, string Username, string Content, string ButtonText, string ButtonUrl, TemplateEmailSenderType Type = TemplateEmailSenderType.SendGrid);
     }
 }

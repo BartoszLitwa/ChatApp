@@ -48,7 +48,7 @@ namespace ChatApp
             // Setup the Dna Framework
             Framework.Construct<DefaultFrameworkConstruction>()
                 .AddFileLogger("DNAlog.txt")
-                .UseClientDataStore()
+                .AddClientDataStore()
                 .AddChatAppViewModels()
                 .AddChatAppClientServices()
                 .Build();

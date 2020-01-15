@@ -5,8 +5,10 @@ using SendGrid.Helpers.Mail;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace ChatApp.Web.Server
@@ -84,6 +86,53 @@ namespace ChatApp.Web.Server
                     Errors = new List<string>(new[] { "Unknown error occured" })
                 };
             }
+        }
+
+        public async Task<SendEmailResponse> SendSmtpEmailAsync(SendEmailDetails details)
+        {
+            // Get the email
+            var email = IoCContainer.Configuration["SmtpEmailSettings:Username"];
+
+            // Create the new message
+            var msg = new MailMessage(email, details.ToEmail)
+            {
+                Subject = details.Subject,
+                Body = details.Content,
+                IsBodyHtml = details.IsHTML
+            };
+
+            try
+            {
+                // Create new smtp client
+                var smtp = new SmtpClient
+                {
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(email, IoCContainer.Configuration["SmtpEmailSettings:Password"]),
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true
+                };
+
+                // Send the message
+                await smtp.SendMailAsync(msg);
+            }
+            catch (Exception ex)
+            {
+                // TODO: Localize texts
+
+                // Break if we are debugging
+                if (Debugger.IsAttached)
+                    Debugger.Break();
+
+                // If something unexpected happend, return the message
+                return new SendEmailResponse
+                {
+                    Errors = new List<string>(new[] { "Unknown error occured" })
+                };
+            }
+
+            // Return the success
+            return new SendEmailResponse();
         }
     }
 }

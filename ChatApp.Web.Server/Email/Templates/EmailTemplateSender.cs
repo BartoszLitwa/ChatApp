@@ -11,7 +11,7 @@ namespace ChatApp.Web.Server
     /// </summary>
     public class EmailTemplateSender : IEmailTemplateSender
     {
-        public async Task<SendEmailResponse> SendGeneralEmailAsync(SendEmailDetails details, string title, string Username, string Content, string ButtonText, string ButtonUrl)
+        public async Task<SendEmailResponse> SendGeneralEmailAsync(SendEmailDetails details, string title, string Username, string Content, string ButtonText, string ButtonUrl, TemplateEmailSenderType Type = TemplateEmailSenderType.SendGrid)
         {
             var templateText = default(string);
             // Read the general template from file
@@ -33,7 +33,19 @@ namespace ChatApp.Web.Server
             details.Content = templateText;
 
             // Send Email
-            return await IoC.EmailSender.SendEmailAsync(details);
+            switch (Type)
+            {
+                // Send using SendGrid
+                case TemplateEmailSenderType.SendGrid:
+                    return await IoC.EmailSender.SendEmailAsync(details);
+
+                // Send usign SMTP Client
+                case TemplateEmailSenderType.Smtp:
+                    return await IoC.EmailSender.SendSmtpEmailAsync(details);
+
+                default:
+                    return await IoC.EmailSender.SendEmailAsync(details);
+            }
         }
     }
 }
