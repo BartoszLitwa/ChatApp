@@ -1,7 +1,9 @@
 ﻿using ChatApp.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -11,6 +13,7 @@ namespace ChatApp.Web.Server
     /// <summary>
     /// Manages the WEB API Calls
     /// </summary>
+    [AuthorizeToken]
     public class ApiController : Controller
     {
         #region Protected Members
@@ -49,13 +52,14 @@ namespace ChatApp.Web.Server
 
         #endregion
 
-        #region Pages Method
+        #region Login / Register / Verify
 
         /// <summary>
         /// Tries to register for a new account on the server
         /// </summary>
         /// <param name="registerCredentials">The registration details</param>
         /// <returns>Returns teh result of the register request</returns>
+        [AllowAnonymous]
         [Route("api/register")]
         public async Task<ApiResponse<RegisterResultApiModel>> RegisterAsync([FromBody] RegisterCredentialsApiModel registerCredentials)
         {
@@ -95,16 +99,10 @@ namespace ChatApp.Web.Server
             if (result.Succeeded)
             {
                 // Get the user details
-                var userIdentity = await mUserManager.FindByNameAsync(registerCredentials.Username);
+                var userIdentity = await mUserManager.FindByNameAsync(user.UserName);
 
-                // Generate an email verification code
-                var emailVerificationCode = await mUserManager.GenerateEmailConfirmationTokenAsync(user);
-
-                // TODO: Replace with APIRoutes that will contain the static routes to use
-                var confirmationUrl = $"https://{Request.Host.Value}/api/verify/email/{HttpUtility.UrlEncode(userIdentity.Id)}/{HttpUtility.UrlEncode(emailVerificationCode)}";
-
-                // Email the user the verification code
-                await ChatAppEmailSender.SendUserVerificationEmailAsync(userIdentity.FirstName, userIdentity.Email, confirmationUrl);
+                // Send email verification
+                await SendUserEmailVerificationAsync(user);
 
                 // return valid response conataining all users details
                 return new ApiResponse<RegisterResultApiModel>
@@ -125,12 +123,13 @@ namespace ChatApp.Web.Server
                 return new ApiResponse<RegisterResultApiModel>
                 {
                     // Aggregate all errors into a single error string
-                    ErrorMessage = result.Errors.ToList().Select(f => f.Description).Aggregate((a,b) => $"{a}{Environment.NewLine}{b}")
+                    ErrorMessage = result.Errors.AggregateErrors()
                 };
         }
 
-        [HttpGet]
+        [AllowAnonymous]
         [Route("api/verify/email/{userId}/{emailToken}")]
+        [HttpGet]
         public async Task<ActionResult> VerifyEmailAsync(string userId, string emailToken)
         {
             // Get the user
@@ -164,15 +163,16 @@ namespace ChatApp.Web.Server
         /// </summary>
         /// <param name="loginCredentials"></param>
         /// <returns></returns>
+        [AllowAnonymous]
         [Route("api/login")]
-        public async Task<ApiResponse<LoginResultApiModel>> LoginAsync([FromBody]LoginCredentialsApiModel loginCredentials)
+        public async Task<ApiResponse<UserProfileDetailsApiModel>> LoginAsync([FromBody]LoginCredentialsApiModel loginCredentials)
         {
             // TODO: Localize all strings
             // The message when we failed to login
             var invalidErrorMessage = "Invalid username or password";
 
             // The error message for a failed login
-            var errorResponse = new ApiResponse<LoginResultApiModel>
+            var errorResponse = new ApiResponse<UserProfileDetailsApiModel>
             {
                 // Set error message
                 ErrorMessage = invalidErrorMessage
@@ -204,9 +204,9 @@ namespace ChatApp.Web.Server
             // If we got there the user passed correct login details
 
             // return valid response conataining all users details
-            return new ApiResponse<LoginResultApiModel>
+            return new ApiResponse<UserProfileDetailsApiModel>
             {
-                Response = new LoginResultApiModel
+                Response = new UserProfileDetailsApiModel
                 {
                     FirstName = user.FirstName,
                     LastName = user.LastName,
@@ -217,14 +217,147 @@ namespace ChatApp.Web.Server
             };
         }
 
-        [AuthorizeToken]
-        [Route("api/private")]
-        public IActionResult Private()
-        {
-            var user = HttpContext.User;
+        #endregion
 
-            return Ok(new { privateData = $"The most secret private data handled by api for {user.Identity.Name}!" });
-        } 
+        #region GetUserProfile
+
+        /// <summary>
+        /// Returns the users profile details based on the authenticated user
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ApiResponse<UserProfileDetailsApiModel>> GetUserProfileAsync()
+        {
+            // Get users claims
+            var user = await mUserManager.GetUserAsync(HttpContext.User);
+
+            // If we have no user
+            if (user == null)
+                // Return error
+                return new ApiResponse<UserProfileDetailsApiModel>
+                {
+                    // TODO: Localization
+                    ErrorMessage = "User not found"
+                };
+
+            // Return token to user
+            return new ApiResponse<UserProfileDetailsApiModel>
+            {
+                // Pass back 
+                Response = new UserProfileDetailsApiModel
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    Username = user.UserName,
+                }
+            };
+        }
+
+        /// <summary>
+        /// Attempst to update user profiles details
+        /// </summary>
+        /// <param name="model">The user profile details to update</param>
+        /// <returns>
+        ///     Returns successful response if the update was successful,
+        ///     otherwise returns the errors reasons for the failure
+        /// </returns>
+        public async Task<ApiResponse> UpdateUserProfileAsync([FromBody] UpdateUserProfileApiModel model)
+        {
+            // Make a list of empty errors
+            var errors = new List<string>();
+
+            // Keep track
+            var changedEmail = false;
+
+            // Get the current user
+            var user = await mUserManager.GetUserAsync(HttpContext.User);
+
+            // If we dont have a user
+            if (user == null)
+                return new ApiResponse
+                {
+                    // TODO: Localization
+                    ErrorMessage = "User not found!"
+                };
+
+            #region Update User Profile Details
+
+            // If we have a first name
+            if (model.FirstName != null)
+                // Update the profile details
+                user.FirstName = model.FirstName;
+
+            // If we have a last name
+            if (model.LastName != null)
+                // Update the profile details
+                user.LastName = model.LastName;
+
+            // If we have a Username
+            if (model.Username != null)
+                // Update the profile details
+                user.UserName = model.Username;
+
+            // If we have an Email and its not the same
+            if (model.Email != null && string.Equals(model.Email.Replace(" ", "").ToUpper(), user.NormalizedEmail))
+            {
+                // Update the profile details
+                user.Email = model.Email;
+
+                // Un-verify Email 
+                user.EmailConfirmed = false;
+
+                // Flag we have changed the email
+                changedEmail = true;
+            }
+
+            #endregion 
+
+            // Attempt to commit changes to data sotre
+            var result = await mUserManager.UpdateAsync(user);
+
+            // If Successfull, send out email verification
+            if (result.Succeeded && changedEmail)
+                // Send email verification
+                await SendUserEmailVerificationAsync(user);
+
+            if (result.Succeeded)
+                // Return successful response
+                return new ApiResponse();
+            // Otheriwse
+            else
+            {
+                // Return the failed response
+                return new ApiResponse
+                {
+                    ErrorMessage = result.Errors.AggregateErrors()
+                };
+            }
+        }
+
+        #endregion
+
+        #region Private Helpers
+
+
+        /// <summary>
+        /// Sends the given user a new verify email link
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        private async Task SendUserEmailVerificationAsync(ApplicationUser user)
+        {
+            // Get the user details
+            var userIdentity = await mUserManager.FindByNameAsync(user.UserName);
+
+            // Generate an email verification code
+            var emailVerificationCode = await mUserManager.GenerateEmailConfirmationTokenAsync(user);
+
+            // TODO: Replace with APIRoutes that will contain the static routes to use
+            var confirmationUrl = $"https://{Request.Host.Value}/api/verify/email/{HttpUtility.UrlEncode(userIdentity.Id)}/{HttpUtility.UrlEncode(emailVerificationCode)}";
+
+            // Email the user the verification code
+            await ChatAppEmailSender.SendUserVerificationEmailAsync(user.FirstName, userIdentity.Email, confirmationUrl);
+        }
 
         #endregion
     }

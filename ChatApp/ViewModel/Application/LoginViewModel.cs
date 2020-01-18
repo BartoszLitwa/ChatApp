@@ -64,7 +64,7 @@ namespace ChatApp
             {
                 // Call the server and attempt to login
                 // TODO: Move all URLs and API routes to static class in core
-                var result = await Dna.WebRequests.PostAsync<ApiResponse<LoginResultApiModel>>(
+                var result = await Dna.WebRequests.PostAsync<ApiResponse<UserProfileDetailsApiModel>>(
                     "https://localhost:5001/api/login",
                     new LoginCredentialsApiModel
                     {

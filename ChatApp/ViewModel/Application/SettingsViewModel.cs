@@ -186,13 +186,13 @@ namespace ChatApp
             };
             Password = new PasswordEntryViewModel
             { 
-                Label = "Name",
+                Label = "Password",
                 FakePassword = $"********",
                 CommitAction = SavePasswordAsync
             };
             Email = new TextEntryViewModel
             { 
-                Label = "Name",
+                Label = "Email",
                 OriginalText = $"{storedCredentials?.Email}",
                 CommitAction = SaveEmailAsync
             };

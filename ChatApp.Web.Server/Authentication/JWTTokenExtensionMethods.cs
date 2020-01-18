@@ -23,8 +23,12 @@ namespace ChatApp.Web.Server
             {
                 // Unique ID for this token
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
+
                 // The username using the Identity name so it fills out the HttpContext.User.Identity.Name value
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.UserName),
+
+                // Add user Id so that userManager.GetUserAsync can find the user based on Id
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
 
             // Create Credentials used to generate the token

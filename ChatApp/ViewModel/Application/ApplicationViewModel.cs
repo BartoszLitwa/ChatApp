@@ -61,7 +61,7 @@ namespace ChatApp
         /// </summary>
         /// <param name="loginResult">The result from the successful login</param>
         /// <returns></returns>
-        public async Task HandleSuccessfulLoginAsync(LoginResultApiModel loginResult)
+        public async Task HandleSuccessfulLoginAsync(UserProfileDetailsApiModel loginResult)
         {
             // Ensure the database ic created
             await ClientDataStore.EnsureDataStoreAsync();
