@@ -34,17 +34,5 @@
         public string Email { get; set; }
 
         #endregion
-
-        #region Constructor
-
-        /// <summary>
-        /// Default Constructor
-        /// </summary>
-        public UserProfileDetailsApiModel()
-        {
-
-        }
-
-        #endregion
     }
 }

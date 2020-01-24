@@ -61,6 +61,7 @@ namespace ChatApp.Web.Server
         /// <returns>Returns teh result of the register request</returns>
         [AllowAnonymous]
         [Route("api/register")]
+        [HttpPost]
         public async Task<ApiResponse<RegisterResultApiModel>> RegisterAsync([FromBody] RegisterCredentialsApiModel registerCredentials)
         {
             // TODO: Localize all strings
@@ -159,19 +160,18 @@ namespace ChatApp.Web.Server
         }
 
         /// <summary>
-        /// Logs in a user using token based authentication
+        /// Logs in a user using token-based authentication
         /// </summary>
-        /// <param name="loginCredentials"></param>
-        /// <returns></returns>
+        /// <returns>Returns the result of the login request</returns>
         [AllowAnonymous]
         [Route("api/login")]
-        public async Task<ApiResponse<UserProfileDetailsApiModel>> LoginAsync([FromBody]LoginCredentialsApiModel loginCredentials)
+        public async Task<ApiResponse<UserProfileDetailsApiModel>> LogInAsync([FromBody]LoginCredentialsApiModel loginCredentials)
         {
             // TODO: Localize all strings
-            // The message when we failed to login
+            // The message when we fail to login
             var invalidErrorMessage = "Invalid username or password";
 
-            // The error message for a failed login
+            // The error response for a failed login
             var errorResponse = new ApiResponse<UserProfileDetailsApiModel>
             {
                 // Set error message
@@ -180,32 +180,46 @@ namespace ChatApp.Web.Server
 
             // Make sure we have a user name
             if (loginCredentials?.UsernameOrEmail == null || string.IsNullOrWhiteSpace(loginCredentials.UsernameOrEmail))
+                // Return error message to user
                 return errorResponse;
 
-            // Validate if the user credentials are correct
+            // Validate if the user credentials are correct...
 
             // Is it an email?
             var isEmail = loginCredentials.UsernameOrEmail.Contains("@");
 
-            // Get the users details. If email find by email, otheriwse by name
-            var user = isEmail ? await mUserManager.FindByEmailAsync(loginCredentials.UsernameOrEmail) : await mUserManager.FindByNameAsync(loginCredentials.UsernameOrEmail);
+            // Get the user details
+            var user = isEmail ?
+                // Find by email
+                await mUserManager.FindByEmailAsync(loginCredentials.UsernameOrEmail) :
+                // Find by username
+                await mUserManager.FindByNameAsync(loginCredentials.UsernameOrEmail);
 
-            // If we failed to find an user
+            // If we failed to find a user...
             if (user == null)
+                // Return error message to user
                 return errorResponse;
 
-            // If we got here we have a user. Validate the users password
+            // If we got here we have a user...
+            // Let's validate the password
+
+            // Get if password is valid
             var isValidPassword = await mUserManager.CheckPasswordAsync(user, loginCredentials.Password);
 
-            // If the password is invalid
+            // If the password was wrong
             if (!isValidPassword)
+                // Return error message to user
                 return errorResponse;
 
-            // If we got there the user passed correct login details
+            // If we get here, we are valid and the user passed the correct login details
 
-            // return valid response conataining all users details
+            // Get username
+            var username = user.UserName;
+
+            // Return token to user
             return new ApiResponse<UserProfileDetailsApiModel>
             {
+                // Pass back the user details and the token
                 Response = new UserProfileDetailsApiModel
                 {
                     FirstName = user.FirstName,

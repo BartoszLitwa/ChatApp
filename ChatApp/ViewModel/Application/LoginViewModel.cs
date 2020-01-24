@@ -1,4 +1,5 @@
 ﻿using ChatApp.Core;
+using Dna;
 using System.Security;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -62,25 +63,26 @@ namespace ChatApp
         {
             await RunCommandAsync(() => LoginIsRunning, async () =>
             {
-                // Call the server and attempt to login
+                // Call the server and attempt to login with credentials
                 // TODO: Move all URLs and API routes to static class in core
-                var result = await Dna.WebRequests.PostAsync<ApiResponse<UserProfileDetailsApiModel>>(
-                    "https://localhost:5001/api/login",
+                var result = await WebRequests.PostAsync<ApiResponse<UserProfileDetailsApiModel>>(
+                    "http://localhost:5000/api/login",
                     new LoginCredentialsApiModel
                     {
                         UsernameOrEmail = Email,
                         Password = (parameter as IHavePassword).SecurePassword.Unsecure()
                     });
 
-                // If the result has an error
-                if (await result.DisplayErrorIfFailedAsync("Login failed"))
+                // If the response has an error...
+                if (await result.DisplayErrorIfFailedAsync("Login Failed"))
                     // We are done
                     return;
 
-                // Ok succesfully logged in. Get the users data
+                // OK successfully logged in... now get users data
                 var loginResult = result.ServerResponse.Response;
 
                 // Let the application view model handle what happens
+                // with the successful login
                 await ViewModelApplication.HandleSuccessfulLoginAsync(loginResult);
             });
         }

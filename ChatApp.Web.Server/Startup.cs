@@ -85,6 +85,9 @@ namespace ChatApp.Web.Server
             });
 
             services.AddControllersWithViews();
+
+            // Set Newtonsoft Json as default formatter for output and input
+            services.AddControllers().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
