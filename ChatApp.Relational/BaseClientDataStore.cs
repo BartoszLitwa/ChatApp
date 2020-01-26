@@ -1,4 +1,5 @@
 ﻿using ChatApp.Core;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -74,6 +75,9 @@ namespace ChatApp.Relational
             // Clear all entries
             mDbContext.LoginCredentials.RemoveRange(mDbContext.LoginCredentials);
 
+            // Add new ID
+            loginCredentials.Id = Guid.NewGuid().ToString("N");
+
             // Add new one
             mDbContext.LoginCredentials.Add(loginCredentials);
 
@@ -82,13 +86,16 @@ namespace ChatApp.Relational
         }
 
         /// <summary>
-        /// Removes all login credentials form the database
+        /// Removes all login credentials stored in the database
         /// </summary>
         /// <returns>Returns a task that will finish once setup is complete</returns>
-        public async Task RemoveLoginCredentialsAsync()
+        public async Task ClearAllLoginCredentialsAsync()
         {
-            // Clear all entries
-            await mDbContext.Database.EnsureDeletedAsync();
+            // Remove all entries from Login Credentials
+            mDbContext.LoginCredentials.RemoveRange(mDbContext.LoginCredentials);
+
+            // Save changes
+            await mDbContext.SaveChangesAsync();
         }
 
         #endregion

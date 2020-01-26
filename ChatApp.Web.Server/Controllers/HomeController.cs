@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using ChatApp.Core;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -74,7 +75,7 @@ namespace ChatApp.Web.Server
         /// Creates our single user for now
         /// </summary>
         /// <returns></returns>
-        [Route("create")]
+        [Route(WebRoutes.CreateUser)]
         public async Task<IActionResult> CreateUserAsync()
         {
             var result = await mUserManager.CreateAsync(new ApplicationUser
@@ -96,7 +97,7 @@ namespace ChatApp.Web.Server
         /// </summary>
         /// <returns></returns>
         [Authorize]
-        [Route("private")]
+        [Route(WebRoutes.Private)]
         public IActionResult Private()
         {
             return Content($"This is private area. Welcome {HttpContext.User.Identity.Name}", "text/html");
@@ -107,7 +108,7 @@ namespace ChatApp.Web.Server
         /// </summary>
         /// <param name="ReturnUrl">The url to return to if succesfully logged in</param>
         /// <returns></returns>
-        [Route("login")]
+        [Route(WebRoutes.Login)]
         public async Task<IActionResult> LoginAsync(string ReturnUrl)
         {
             // Sing out any previous sessions
@@ -124,17 +125,11 @@ namespace ChatApp.Web.Server
             return Content("Failed to Login!", "text/html");
         }
 
-        [Route("logout")]
+        [Route(WebRoutes.LogOut)]
         public async Task<IActionResult> LogOutAsync()
         {
             await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
             return Content("Signed Out!");
-        }
-
-        [Route("test")]
-        public SettingsDataModel Test([FromBody]SettingsDataModel model)
-        {
-            return new SettingsDataModel { ID = "some id", Name = "Luke", Value = "10" };
         }
     }
 }

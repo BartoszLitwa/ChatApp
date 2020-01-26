@@ -85,21 +85,19 @@ namespace ChatApp
         /// </summary>
         public void Edit()
         {
-            // Go into edit mode
-            Editing = true;
-
             // Set the edited text to the current value
             EditedText = OriginalText;
+
+            // Go into edit mode
+            Editing = true;
         }
 
         /// <summary>
-        /// Cancels out of the edit mode
+        /// Cancels out of edit mode
         /// </summary>
         public void Cancel()
         {
             Editing = false;
-
-            EditedText = OriginalText;
         }
 
         /// <summary>
@@ -108,13 +106,12 @@ namespace ChatApp
         public void Save()
         {
             // Store the result of a commit call
-            // Defaulting to true (if no CommitAction is declared
             var result = default(bool);
 
             // Save currently saved value
             var currentSavedValue = OriginalText;
 
-            RunCommandAsync(() => Working, async () => 
+            RunCommandAsync(() => Working, async () =>
             {
                 // While working, come out of edit mode
                 Editing = false;
@@ -125,10 +122,13 @@ namespace ChatApp
 
                 // Try and do the work
                 result = CommitAction == null ? true : await CommitAction();
-            }).ContinueWith(t => 
+
+            }).ContinueWith(t =>
             {
-                // If we fail
-                if(!result)
+                // If we succeeded...
+                // Nothing to do
+                // If we fail...
+                if (!result)
                 {
                     // Restore original value
                     OriginalText = currentSavedValue;

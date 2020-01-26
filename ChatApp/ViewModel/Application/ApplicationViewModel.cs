@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static ChatApp.DI;
+using static ChatApp.Core.CoreDI;
 
 namespace ChatApp
 {
@@ -13,6 +14,14 @@ namespace ChatApp
     /// </summary>
     public class ApplicationViewModel : BaseViewModel
     {
+        #region Private members
+
+        private bool mSettingsMenuVisible;
+
+        #endregion
+
+        #region Public Properties
+
         /// <summary>
         /// The current Page 
         /// </summary>
@@ -31,7 +40,27 @@ namespace ChatApp
         /// <summary>
         /// True if the settings menu should be shown
         /// </summary>
-        public bool SettingsMenuVisible { get; set; } = false;
+        public bool SettingsMenuVisible
+        {
+            get => mSettingsMenuVisible;
+            set 
+            {
+                // If property has not changed
+                if (mSettingsMenuVisible == value)
+                    // Ignore
+                    return;
+
+                // Set the backing field
+                mSettingsMenuVisible = value;
+
+                // If the settings menu is now visible
+                if (value)
+                    // Reload Settings
+                    TaskManager.RunAndForget(ViewModelSettings.LoadAsync);
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// Navigates to the specified page
@@ -63,19 +92,8 @@ namespace ChatApp
         /// <returns></returns>
         public async Task HandleSuccessfulLoginAsync(UserProfileDetailsApiModel loginResult)
         {
-            // Ensure the database ic created
-            await ClientDataStore.EnsureDataStoreAsync();
-
             // Store this in the client data store
-            await ClientDataStore.SaveLoginCredentialsAsync(new LoginCredentialsDataModel
-            {
-                Id = Guid.NewGuid().ToString("N"),
-                Email = loginResult.Email,
-                FirstName = loginResult.FirstName,
-                LastName = loginResult.LastName,
-                Username = loginResult.Username,
-                Token = loginResult.Token
-            });
+            await ClientDataStore.SaveLoginCredentialsAsync(loginResult.ToLoginCredentialsDataModel());
 
             // Load new settings
             await ViewModelSettings.LoadAsync();

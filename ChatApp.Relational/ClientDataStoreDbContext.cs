@@ -42,7 +42,7 @@ namespace ChatApp.Relational
             // --------------------------
             //
             // Set Id as primary key
-            modelBuilder.Entity<LoginCredentialsDataModel>().HasKey(a => a.Username);
+            modelBuilder.Entity<LoginCredentialsDataModel>().HasKey(a => a.Id);
 
             // TODO: Set up limits
             //modelBuilder.Entity<LoginCredentialsDataModel>().Property(a => a.FirstName).HasMaxLength(50);

@@ -21,7 +21,9 @@ namespace ChatApp.Relational
             {
                 // Setup connection string
                 options.UseSqlite("Data Source=ChatApp.db");
-            });
+            },
+            // Every time when asked for a data it creates a new 'connection' to data store
+            contextLifetime: ServiceLifetime.Transient);
 
             // Add client data store for easy access/use of the backing data store
             // Make it scoped so we can inject the scoped DbContext

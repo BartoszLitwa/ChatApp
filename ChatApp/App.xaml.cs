@@ -3,6 +3,7 @@ using Dna;
 using System.Threading.Tasks;
 using System.Windows;
 using static ChatApp.DI;
+using static ChatApp.Core.CoreDI;
 
 namespace ChatApp
 {

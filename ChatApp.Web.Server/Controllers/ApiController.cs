@@ -55,12 +55,84 @@ namespace ChatApp.Web.Server
         #region Login / Register / Verify
 
         /// <summary>
+        /// Logs in a user using token-based authentication
+        /// </summary>
+        /// <returns>Returns the result of the login request</returns>
+        [AllowAnonymous]
+        [Route(ApiRoutes.Login)]
+        public async Task<ApiResponse<UserProfileDetailsApiModel>> LogInAsync([FromBody]LoginCredentialsApiModel loginCredentials)
+        {
+            // TODO: Localize all strings
+            // The message when we fail to login
+            var invalidErrorMessage = "Invalid username or password";
+
+            // The error response for a failed login
+            var errorResponse = new ApiResponse<UserProfileDetailsApiModel>
+            {
+                // Set error message
+                ErrorMessage = invalidErrorMessage
+            };
+
+            // Make sure we have a user name
+            if (loginCredentials?.UsernameOrEmail == null || string.IsNullOrWhiteSpace(loginCredentials.UsernameOrEmail))
+                // Return error message to user
+                return errorResponse;
+
+            // Validate if the user credentials are correct...
+
+            // Is it an email?
+            var isEmail = loginCredentials.UsernameOrEmail.Contains("@");
+
+            // Get the user details
+            var user = isEmail ?
+                // Find by email
+                await mUserManager.FindByEmailAsync(loginCredentials.UsernameOrEmail) :
+                // Find by username
+                await mUserManager.FindByNameAsync(loginCredentials.UsernameOrEmail);
+
+            // If we failed to find a user...
+            if (user == null)
+                // Return error message to user
+                return errorResponse;
+
+            // If we got here we have a user...
+            // Let's validate the password
+
+            // Get if password is valid
+            var isValidPassword = await mUserManager.CheckPasswordAsync(user, loginCredentials.Password);
+
+            // If the password was wrong
+            if (!isValidPassword)
+                // Return error message to user
+                return errorResponse;
+
+            // If we get here, we are valid and the user passed the correct login details
+
+            // Get username
+            var username = user.UserName;
+
+            // Return token to user
+            return new ApiResponse<UserProfileDetailsApiModel>
+            {
+                // Pass back the user details and the token
+                Response = new UserProfileDetailsApiModel
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    Username = user.UserName,
+                    Token = user.GenerateJwtToken()
+                }
+            };
+        }
+
+        /// <summary>
         /// Tries to register for a new account on the server
         /// </summary>
         /// <param name="registerCredentials">The registration details</param>
         /// <returns>Returns teh result of the register request</returns>
         [AllowAnonymous]
-        [Route("api/register")]
+        [Route(ApiRoutes.Register)]
         [HttpPost]
         public async Task<ApiResponse<RegisterResultApiModel>> RegisterAsync([FromBody] RegisterCredentialsApiModel registerCredentials)
         {
@@ -129,7 +201,7 @@ namespace ChatApp.Web.Server
         }
 
         [AllowAnonymous]
-        [Route("api/verify/email/{userId}/{emailToken}")]
+        [Route(ApiRoutes.VerifyEmail)]
         [HttpGet]
         public async Task<ActionResult> VerifyEmailAsync(string userId, string emailToken)
         {
@@ -159,78 +231,6 @@ namespace ChatApp.Web.Server
             return Content("Invalid Email Verification Token :(");
         }
 
-        /// <summary>
-        /// Logs in a user using token-based authentication
-        /// </summary>
-        /// <returns>Returns the result of the login request</returns>
-        [AllowAnonymous]
-        [Route("api/login")]
-        public async Task<ApiResponse<UserProfileDetailsApiModel>> LogInAsync([FromBody]LoginCredentialsApiModel loginCredentials)
-        {
-            // TODO: Localize all strings
-            // The message when we fail to login
-            var invalidErrorMessage = "Invalid username or password";
-
-            // The error response for a failed login
-            var errorResponse = new ApiResponse<UserProfileDetailsApiModel>
-            {
-                // Set error message
-                ErrorMessage = invalidErrorMessage
-            };
-
-            // Make sure we have a user name
-            if (loginCredentials?.UsernameOrEmail == null || string.IsNullOrWhiteSpace(loginCredentials.UsernameOrEmail))
-                // Return error message to user
-                return errorResponse;
-
-            // Validate if the user credentials are correct...
-
-            // Is it an email?
-            var isEmail = loginCredentials.UsernameOrEmail.Contains("@");
-
-            // Get the user details
-            var user = isEmail ?
-                // Find by email
-                await mUserManager.FindByEmailAsync(loginCredentials.UsernameOrEmail) :
-                // Find by username
-                await mUserManager.FindByNameAsync(loginCredentials.UsernameOrEmail);
-
-            // If we failed to find a user...
-            if (user == null)
-                // Return error message to user
-                return errorResponse;
-
-            // If we got here we have a user...
-            // Let's validate the password
-
-            // Get if password is valid
-            var isValidPassword = await mUserManager.CheckPasswordAsync(user, loginCredentials.Password);
-
-            // If the password was wrong
-            if (!isValidPassword)
-                // Return error message to user
-                return errorResponse;
-
-            // If we get here, we are valid and the user passed the correct login details
-
-            // Get username
-            var username = user.UserName;
-
-            // Return token to user
-            return new ApiResponse<UserProfileDetailsApiModel>
-            {
-                // Pass back the user details and the token
-                Response = new UserProfileDetailsApiModel
-                {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    Username = user.UserName,
-                    Token = user.GenerateJwtToken()
-                }
-            };
-        }
-
         #endregion
 
         #region GetUserProfile
@@ -239,6 +239,7 @@ namespace ChatApp.Web.Server
         /// Returns the users profile details based on the authenticated user
         /// </summary>
         /// <returns></returns>
+        [Route(ApiRoutes.GetUserProfile)]
         public async Task<ApiResponse<UserProfileDetailsApiModel>> GetUserProfileAsync()
         {
             // Get users claims
@@ -275,10 +276,11 @@ namespace ChatApp.Web.Server
         ///     Returns successful response if the update was successful,
         ///     otherwise returns the errors reasons for the failure
         /// </returns>
+        [Route(ApiRoutes.UpdateUserProfile)]
         public async Task<ApiResponse> UpdateUserProfileAsync([FromBody] UpdateUserProfileApiModel model)
         {
             // Make a list of empty errors
-            var errors = new List<string>();
+            //var errors = new List<string>();
 
             // Keep track
             var changedEmail = false;
@@ -312,7 +314,7 @@ namespace ChatApp.Web.Server
                 user.UserName = model.Username;
 
             // If we have an Email and its not the same
-            if (model.Email != null && string.Equals(model.Email.Replace(" ", "").ToUpper(), user.NormalizedEmail))
+            if (model.Email != null && !string.Equals(model.Email.Replace(" ", "").ToUpper(), user.NormalizedEmail))
             {
                 // Update the profile details
                 user.Email = model.Email;
@@ -348,10 +350,51 @@ namespace ChatApp.Web.Server
             }
         }
 
+        /// <summary>
+        /// Attempst to update user password
+        /// </summary>
+        /// <param name="model">The user password details to update</param>
+        /// <returns>
+        ///     Returns successful response if the update was successful,
+        ///     otherwise returns the errors reasons for the failure
+        /// </returns>
+        [Route(ApiRoutes.UpdateUserPassword)]
+        public async Task<ApiResponse> UpdateUserPasswordAsync([FromBody] UpdateUserPasswordApiModel model)
+        {
+            // Make a list of empty errors
+            //var errors = new List<string>();
+
+            // Get the current user
+            var user = await mUserManager.GetUserAsync(HttpContext.User);
+
+            // If we dont have a user
+            if (user == null)
+                return new ApiResponse
+                {
+                    // TODO: Localization
+                    ErrorMessage = "User not found!"
+                };
+
+            // Attempt to commit changes to data store
+            var result = await mUserManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+            if (result.Succeeded)
+                // Return successful response
+                return new ApiResponse();
+            // Otheriwse
+            else
+            {
+                // Return the failed response
+                return new ApiResponse
+                {
+                    ErrorMessage = result.Errors.AggregateErrors()
+                };
+            }
+        }
+
         #endregion
 
         #region Private Helpers
-
 
         /// <summary>
         /// Sends the given user a new verify email link
@@ -370,7 +413,7 @@ namespace ChatApp.Web.Server
             var confirmationUrl = $"https://{Request.Host.Value}/api/verify/email/{HttpUtility.UrlEncode(userIdentity.Id)}/{HttpUtility.UrlEncode(emailVerificationCode)}";
 
             // Email the user the verification code
-            await ChatAppEmailSender.SendUserVerificationEmailAsync(user.FirstName, userIdentity.Email, confirmationUrl);
+            await ChatAppEmailSender.SendUserVerificationEmailAsync(user.UserName, userIdentity.Email, confirmationUrl);
         }
 
         #endregion

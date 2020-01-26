@@ -5,6 +5,8 @@
     /// </summary>
     public class UpdateUserProfileApiModel
     {
+        #region Public Properties
+
         /// <summary>
         /// The new first name, or null to leave unchanged
         /// </summary>
@@ -23,6 +25,8 @@
         /// <summary>
         /// The new Username, or null to leave unchanged
         /// </summary>
-        public string Username { get; set; }
+        public string Username { get; set; } 
+
+        #endregion
     }
 }

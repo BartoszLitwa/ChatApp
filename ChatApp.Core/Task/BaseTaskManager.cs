@@ -12,6 +12,50 @@ namespace ChatApp.Core
     /// </summary>
     public class BaseTaskManager : ITaskManager
     {
+        #region void RunAndForget
+
+        public async void RunAndForget(Func<Task> function, [CallerMemberName] string origin = "", [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
+        {
+            await Run(function, origin, filePath, lineNumber);
+        }
+
+        public async void RunAndForget<TResult>(Func<Task<TResult>> function, CancellationToken cancellationToken, [CallerMemberName] string origin = "", [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
+        {
+            await Run(function, cancellationToken, origin, filePath, lineNumber);
+        }
+
+        public async void RunAndForget<TResult>(Func<Task<TResult>> function, [CallerMemberName] string origin = "", [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
+        {
+            await Run(function, origin, filePath, lineNumber);
+        }
+
+        public async void RunAndForget<TResult>(Func<TResult> function, CancellationToken cancellationToken, [CallerMemberName] string origin = "", [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
+        {
+            await Run(function, cancellationToken, origin, filePath, lineNumber);
+        }
+
+        public async void RunAndForget<TResult>(Func<TResult> function, [CallerMemberName] string origin = "", [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
+        {
+            await Run(function, origin, filePath, lineNumber);
+        }
+
+        public async void RunAndForget(Func<Task> function, CancellationToken cancellationToken, [CallerMemberName] string origin = "", [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
+        {
+            await Run(function, cancellationToken, origin, filePath, lineNumber);
+        }
+
+        public async void RunAndForget(Action action, CancellationToken cancellationToken, [CallerMemberName] string origin = "", [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
+        {
+            await Run(action, cancellationToken, origin, filePath, lineNumber);
+        }
+
+        public async void RunAndForget(Action action, [CallerMemberName] string origin = "", [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
+        {
+            await Run(action, origin, filePath, lineNumber);
+        }
+
+        #endregion
+
         #region Task Methods
 
         public async Task Run(Func<Task> function, [CallerMemberName] string origin = "", [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)

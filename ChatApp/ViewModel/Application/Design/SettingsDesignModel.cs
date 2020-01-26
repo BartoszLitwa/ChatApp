@@ -27,7 +27,8 @@ namespace ChatApp
         /// </summary>
         public SettingsDesignModel()
         {
-            Name = new TextEntryViewModel { Label = "Name", OriginalText = "Bartosz Litwa" };
+            FirstName = new TextEntryViewModel { Label = "First Name", OriginalText = "Bartosz" };
+            LastName = new TextEntryViewModel { Label = "Last Name", OriginalText = "Litwa" };
             Username = new TextEntryViewModel { Label = "Username", OriginalText = "CRNYY" };
             Password = new PasswordEntryViewModel { Label = "Password", FakePassword = "********" };
             Email = new TextEntryViewModel { Label = "Email", OriginalText = "CRNYY@gmail.com" };

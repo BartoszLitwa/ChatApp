@@ -10,7 +10,7 @@
         /// <summary>
         /// Indicates if the API call was succesful
         /// </summary>
-        public bool Succesful => ErrorMessage == null;
+        public bool Successful => ErrorMessage == null;
 
         /// <summary>
         /// The error message for a failed API call

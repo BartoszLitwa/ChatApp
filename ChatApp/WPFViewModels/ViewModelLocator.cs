@@ -18,12 +18,12 @@ namespace ChatApp
         /// <summary>
         /// The application view model
         /// </summary>
-        public static ApplicationViewModel ApplicationViewModel => ViewModelApplication;
+        public ApplicationViewModel ApplicationViewModel => ViewModelApplication;
 
         /// <summary>
         /// The application view model
         /// </summary>
-        public static SettingsViewModel SettingsViewModel => ViewModelSettings;
+        public SettingsViewModel SettingsViewModel => ViewModelSettings;
 
 
         #endregion

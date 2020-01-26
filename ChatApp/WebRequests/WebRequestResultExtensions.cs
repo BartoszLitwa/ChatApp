@@ -13,43 +13,45 @@ namespace ChatApp
         /// <summary>
         /// Checks the web request result for any errors, displaying them if there are any
         /// </summary>
-        /// <typeparam name="T">The type of Api response</typeparam>
-        /// <param name="result">The response to check</param>
-        /// <param name="title">The title of the dialogbox if there was an error</param>
-        /// <returns>Return true if there was an error, or false if all is ok</returns>
-        public static async Task<bool> DisplayErrorIfFailedAsync<T>(this WebRequestResult<ApiResponse<T>> result, string title)
+        /// <typeparam name="T">The type of Api Response</typeparam>
+        /// <param name="response">The response to check</param>
+        /// <param name="title">The title of the error dialog if there is an error</param>
+        /// <returns>Returns true if there was an error, or false if all was OK</returns>
+        public static async Task<bool> DisplayErrorIfFailedAsync(this WebRequestResult response, string title)
         {
-            // If there was no response, bad data or a response with a error message
-            if (result == null || result.ServerResponse == null || !result.ServerResponse.Succesful)
+            // If there was no response, bad data, or a response with a error message...
+            if (response == null || response.ServerResponse == null || (response.ServerResponse as ApiResponse)?.Successful == false)
             {
-                // Default Error message
+                // Default error message
                 // TODO: Localize strings
                 var message = "Unknown error from server call";
 
-                // If we got a resposne from the server
-                if (result?.ServerResponse != null)
-                    message = result.ServerResponse.ErrorMessage;
-                // If we have a result but deserialize failed
-                else if (string.IsNullOrWhiteSpace(result?.RawServerResponse))
+                // If we got a response from the server...
+                if (response?.ServerResponse is ApiResponse apiResponse)
+                    // Set message to servers response
+                    message = apiResponse.ErrorMessage;
+                // If we have a result but deserialize failed...
+                else if (!string.IsNullOrWhiteSpace(response?.RawServerResponse))
                     // Set error message
-                    message = $"Unexpected response from server. {result.RawServerResponse}";
-                // If we have a result but no server response details at all
-                else if (result != null)
+                    message = $"Unexpected response from server. {response.RawServerResponse}";
+                // If we have a result but no server response details at all...
+                else if (response != null)
                     // Set message to standard HTTP server response details
-                    message = $"Failed to communicate with server. Status code {result.StatusCode}. {result.StatusDescription}";
+                    message = response.ErrorMessage ?? $"{response.StatusDescription} ({response.StatusCode})";
 
                 // Display error
                 await UI.ShowMessage(new MessageBoxDialogViewModel
                 {
-                    // TODO: Localize Strings
+                    // TODO: Localize strings
                     Title = title,
                     Message = message
                 });
 
-                // Return we had an error
+                // Return that we had an error
                 return true;
             }
-            // Everything was ok
+
+            // All was OK, so return false for no error
             return false;
         }
     }

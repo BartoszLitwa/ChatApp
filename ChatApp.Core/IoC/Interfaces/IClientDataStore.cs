@@ -33,9 +33,9 @@ namespace ChatApp.Core
         Task SaveLoginCredentialsAsync(LoginCredentialsDataModel loginCredentials);
 
         /// <summary>
-        /// Removes all login credentials form the database
+        /// Removes all login credentials stored in the database
         /// </summary>
         /// <returns>Returns a task that will finish once setup is complete</returns>
-        Task RemoveLoginCredentialsAsync();
+        Task ClearAllLoginCredentialsAsync();
     }
 }
