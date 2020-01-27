@@ -3,7 +3,7 @@ using Dna;
 using System.Threading.Tasks;
 using System.Windows;
 using static ChatApp.DI;
-using static ChatApp.Core.CoreDI;
+using static Dna.FrameworkDI;
 
 namespace ChatApp
 {
@@ -25,7 +25,7 @@ namespace ChatApp
             await ApplicationSetupAsync();
 
             // Log it
-            FrameworkDI.Logger.LogDebugSource("Application starting");
+            Logger.LogDebugSource("Application starting");
 
             // Setup the application view model based on if we are logged in
             ViewModelApplication.GoToPage(
@@ -48,7 +48,7 @@ namespace ChatApp
         {
             // Setup the Dna Framework
             Framework.Construct<DefaultFrameworkConstruction>()
-                .AddFileLogger("DNAlog.txt")
+                .AddFileLogger()
                 .AddClientDataStore()
                 .AddChatAppViewModels()
                 .AddChatAppClientServices()

@@ -68,9 +68,8 @@ namespace ChatApp
             await RunCommandAsync(() => RegisterIsRunning, async () =>
             {
                 // Call the server and attempt to register with the provided credentials
-                // TODO: Move all URLs and API routes to static class in core
                 var result = await Dna.WebRequests.PostAsync<ApiResponse<RegisterResultApiModel>>(
-                    "https://localhost:5001/api/register",
+                    RouteHelpers.GetAbsoluteRoute(ApiRoutes.Register),
                     new RegisterCredentialsApiModel
                     {
                         Username = Username,

@@ -89,6 +89,16 @@ namespace ChatApp
         /// </summary>
         public bool EmailIsSaving { get; set; }
 
+        /// <summary>
+        /// Indicates if the settings details are currently being loaded
+        /// </summary>
+        public bool SettingsLoading { get; set; }
+
+        /// <summary>
+        /// Indicates if the user is logging out
+        /// </summary>
+        public bool LoggingOut { get; set; }
+
         #endregion
 
         #region Public Commands
@@ -234,22 +244,26 @@ namespace ChatApp
         /// </summary>
         public async Task LogOutAsync()
         {
-            // Confirm the user wants to logout
-            await UI.ShowMessage(new MessageBoxDialogViewModel
+            // Lock this command to ignore any other requests while processing
+            await RunCommandAsync(() => LoggingOut, async () =>
             {
-                Title = "Log out",
-                Message = "Do you really want to log out?"
+                // Confirm the user wants to logout
+                await UI.ShowMessage(new MessageBoxDialogViewModel
+                {
+                    Title = "Log out",
+                    Message = "Do you really want to log out?"
+                });
+
+                // Clear any user data/cache
+                await ClientDataStore.ClearAllLoginCredentialsAsync();
+
+                // Clean all application level view models that contain
+                // any information about the current user
+                ClearUserData();
+
+                // Go to login page
+                ViewModelApplication.GoToPage(ApplicationPage.Login);
             });
-
-            // Clear any user data/cache
-            await ClientDataStore.ClearAllLoginCredentialsAsync();
-
-            // Clean all application level view models that contain
-            // any information about the current user
-            ClearUserData();
-
-            // Go to login page
-            ViewModelApplication.GoToPage(ApplicationPage.Login);
         }
 
         /// <summary>
@@ -261,7 +275,9 @@ namespace ChatApp
             FirstName.OriginalText = mLoadingText;
             LastName.OriginalText = mLoadingText;
             Username.OriginalText = mLoadingText;
-            //Password.FakePassword = mLoadingPassword;
+            Password.CurrentPassword = null;
+            Password.ConfirmPassword = null;
+            Password.NewPassword = null;
             Email.OriginalText = mLoadingText;
         }
 
@@ -270,39 +286,43 @@ namespace ChatApp
         /// </summary>
         public async Task LoadAsync()
         {
-            // Update values from local cache
-            await UpdateValuesFromLocalStoreAsync();
-
-            // Get the locala values from local cache
-            var LoginCredentials = await ClientDataStore.GetLoginCredentialsAsync();
-
-            // If we don't have a login credetnails or token...
-            if (LoginCredentials == null || string.IsNullOrEmpty(LoginCredentials.Token))
-                // Then do nothing more
-                return;
-
-            // Load user profile details from the server
-            var result = await WebRequests.PostAsync<ApiResponse<UserProfileDetailsApiModel>>(
-                "https://localhost:5001/api/user/profile",
-                // Pass the token
-                bearerToken: LoginCredentials.Token);
-
-            // If it was successful...
-            if(result.Successful)
+            // Lock this command to ignore any other requests while processing
+            await RunCommandAsync(() => SettingsLoading, async () =>
             {
-                // TODO: Should we check if the values are diffrent before saving?
-                // Create the data model form the server's response
-                var dataModel = result.ServerResponse.Response.ToLoginCredentialsDataModel();
-
-                // Re-Add our known token
-                dataModel.Token = LoginCredentials.Token;
-
-                // Save the new information in the data store
-                await ClientDataStore.SaveLoginCredentialsAsync(dataModel);
-
                 // Update values from local cache
                 await UpdateValuesFromLocalStoreAsync();
-            }
+
+                // Get the locala values from local cache
+                var LoginCredentials = await ClientDataStore.GetLoginCredentialsAsync();
+
+                // If we don't have a login credetnails or token...
+                if (LoginCredentials == null || string.IsNullOrEmpty(LoginCredentials.Token))
+                    // Then do nothing more
+                    return;
+
+                // Load user profile details from the server
+                var result = await WebRequests.PostAsync<ApiResponse<UserProfileDetailsApiModel>>(
+                    RouteHelpers.GetAbsoluteRoute(ApiRoutes.GetUserProfile),
+                    // Pass the token
+                    bearerToken: LoginCredentials.Token);
+
+                // If it was successful...
+                if (result.Successful)
+                {
+                    // TODO: Should we check if the values are diffrent before saving?
+                    // Create the data model form the server's response
+                    var dataModel = result.ServerResponse.Response.ToLoginCredentialsDataModel();
+
+                    // Re-Add our known token
+                    dataModel.Token = LoginCredentials.Token;
+
+                    // Save the new information in the data store
+                    await ClientDataStore.SaveLoginCredentialsAsync(dataModel);
+
+                    // Update values from local cache
+                    await UpdateValuesFromLocalStoreAsync();
+                }
+            });
         }
 
         /// <summary>
@@ -377,11 +397,60 @@ namespace ChatApp
         /// <returns>Returns true if successful, false otherwise</returns>
         public async Task<bool> SavePasswordAsync()
         {
-            // TODO: Update with server
-            await Task.Delay(3000);
+            // Lock this command to ignore any other requests while processing
+            return await RunCommandAsync(() => PasswordIsSaving, async () =>
+            {
+                // Log It
+                Logger.LogDebugSource($"Changing password");
 
-            // Return success
-            return true;
+                // Get the current known credentials
+                var credentials = await ClientDataStore.GetLoginCredentialsAsync();
+
+                // Make sure the user has entered the same password
+                if(Password.NewPassword.Unsecure() != Password.ConfirmPassword.Unsecure())
+                {
+                    await UI.ShowMessage(new MessageBoxDialogViewModel
+                    {
+                        // TODO: Localize
+                        Title = "Password Mismatch",
+                        Message = "New password and confirm password must match!"
+                    });
+
+                    return false;
+                }
+
+                // Update the server with the new password
+                var result = await WebRequests.PostAsync<ApiResponse>(
+                    // Set the URL
+                    RouteHelpers.GetAbsoluteRoute(ApiRoutes.UpdateUserPassword),
+                    // Create the API model
+                    new UpdateUserPasswordApiModel
+                    {
+                        CurrentPassword = Password.CurrentPassword.Unsecure(),
+                        NewPassword = Password.NewPassword.Unsecure()
+                    },
+                    // Pass in The user Token
+                    bearerToken: credentials.Token);
+
+                // If the response has the error
+                if (await result.DisplayErrorIfFailedAsync($"Change Password"))
+                {
+                    // Log it
+                    Logger.LogDebugSource($"Failed to change the Password. {result.ErrorMessage}");
+
+                    // Return false
+                    return false;
+                }
+
+                // Log it
+                Logger.LogDebugSource($"Successfuly changed Password. Saving to local database...");
+
+                // Store the new users credentials to data Store
+                await ClientDataStore.SaveLoginCredentialsAsync(credentials);
+
+                // Return Successful
+                return true;
+            });
         }
 
         /// <summary>
@@ -455,8 +524,8 @@ namespace ChatApp
 
             // Update the server with the details
             var result = await WebRequests.PostAsync<ApiResponse>(
-                // TODO: Move URLs into better place
-                "https://localhost:5001/api/user/profile/update",
+                // Pass the URL
+                RouteHelpers.GetAbsoluteRoute(ApiRoutes.UpdateUserProfile),
                 // Pass the Api model
                 updateApiModel,
                 // Pass the JWT token

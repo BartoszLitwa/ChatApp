@@ -30,15 +30,18 @@
 
                         <!-- Main buttons-->
                         <StackPanel Orientation="Horizontal" >
-                            <Button Style="{StaticResource IconButton}" 
+                            <Button Style="{StaticResource IconButton}"
+                                    Command="{Binding OpenChatCommand}"
                                     Content="{StaticResource FontAwesomeChatIcon}"
                                     Foreground="{StaticResource ForegroundLightBrush}"/>
                             
                             <Button Style="{StaticResource IconButton}"
+                                    Command="{Binding OpenContactsCommand}"
                                     Content="{StaticResource FontAwesomeUserIcon}"
                                     Foreground="{StaticResource ForegroundLightBrush}"/>
                             
                             <Button Style="{StaticResource IconButton}"
+                                    Command="{Binding OpenMediaCommand}"
                                     Content="{StaticResource FontAwesomePictureIcon}"
                                     Foreground="{StaticResource ForegroundLightBrush}"/>
                         </StackPanel>

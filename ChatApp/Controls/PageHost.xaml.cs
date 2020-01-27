@@ -57,7 +57,7 @@ namespace ChatApp
             // If we are in DesignMode show the current Page
             // as the dependency property does not fire
             if (DesignerProperties.GetIsInDesignMode(this))
-                NewPage.Content = ViewModelApplication.CurrentPage.ToBasePage();
+                NewPage.Content = new ApplicationViewModel().CurrentPage.ToBasePage();
 
         }
 

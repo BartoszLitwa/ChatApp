@@ -1,8 +1,8 @@
 ﻿using ChatApp.Core;
 using Dna;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using static Dna.FrameworkDI;
 
 namespace ChatApp.Relational
 {
@@ -20,7 +20,7 @@ namespace ChatApp.Relational
             construction.Services.AddDbContext<ClientDataStoreDbContext>(options =>
             {
                 // Setup connection string
-                options.UseSqlite("Data Source=ChatApp.db");
+                options.UseSqlite(Configuration["ConnectionStrings:ClientDataStoreConnection"]);
             },
             // Every time when asked for a data it creates a new 'connection' to data store
             contextLifetime: ServiceLifetime.Transient);

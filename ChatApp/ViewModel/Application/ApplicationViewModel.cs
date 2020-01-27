@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static ChatApp.DI;
 using static ChatApp.Core.CoreDI;
+using System.Windows.Input;
 
 namespace ChatApp
 {
@@ -26,6 +27,11 @@ namespace ChatApp
         /// The current Page 
         /// </summary>
         public ApplicationPage CurrentPage { get; private set; } = ApplicationPage.Login;
+
+        /// <summary>
+        /// Determines the currently visible side menu content
+        /// </summary>
+        public SideMenuContent CurrentSideMenuContent { get; set; } = SideMenuContent.Chat;
 
         /// <summary>
         /// The view model to use for the current page when the CurrentPage changes
@@ -61,6 +67,73 @@ namespace ChatApp
         }
 
         #endregion
+
+        #region Public Commands
+
+        /// <summary>
+        /// The command to change the side Menu Content to the Chat
+        /// </summary>
+        public ICommand OpenChatCommand { get; set; }
+
+        /// <summary>
+        /// The command to change the side Menu Content to the Contacts
+        /// </summary>
+        public ICommand OpenContactsCommand { get; set; }
+
+        /// <summary>
+        /// The command to change the side Menu Content to the Media
+        /// </summary>
+        public ICommand OpenMediaCommand { get; set; }
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
+        public ApplicationViewModel()
+        {
+            // Create the commands
+            OpenChatCommand = new RelayCommand(OpenChat);
+            OpenContactsCommand = new RelayCommand(OpenContacts);
+            OpenMediaCommand = new RelayCommand(OpenMedia);
+        }
+
+        #endregion
+
+        #region Command Methods
+
+        /// <summary>
+        /// Changes the current side menu to Chat
+        /// </summary>
+        public void OpenChat()
+        {
+            // Set the current side menu to Chat
+            CurrentSideMenuContent = SideMenuContent.Chat;
+        }
+
+        /// <summary>
+        /// Changes the current side menu to Contacts
+        /// </summary>
+        public void OpenContacts()
+        {
+            // Set the current side menu to Contacts
+            CurrentSideMenuContent = SideMenuContent.Contacts;
+        }
+
+        /// <summary>
+        /// Changes the current side menu to Media
+        /// </summary>
+        public void OpenMedia()
+        {
+            // Set the current side menu to Media
+            CurrentSideMenuContent = SideMenuContent.Media;
+        }
+
+        #endregion
+
+        #region Public Helper Methods
 
         /// <summary>
         /// Navigates to the specified page
@@ -100,6 +173,8 @@ namespace ChatApp
 
             // Go to Login Page
             ViewModelApplication.GoToPage(ApplicationPage.Chat);
-        }
+        } 
+
+        #endregion
     }
 }
