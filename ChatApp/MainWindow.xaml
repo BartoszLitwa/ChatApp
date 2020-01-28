@@ -54,6 +54,9 @@
                                         <!-- Title Bar -->
                                         <RowDefinition Height="{Binding TitleHeightGridLength, FallbackValue=42}"/>
 
+                                        <!-- Internet Connection Bar -->
+                                        <RowDefinition Height="Auto"/>
+
                                         <!-- Window content -->
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
@@ -79,10 +82,16 @@
                                         <!-- Title -->
                                         <Viewbox Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
                                             <StackPanel>
-                                                <TextBlock FontFamily="{StaticResource LatoBold}" FontSize="{StaticResource FontSizeLarge}" Margin="0,0,0,-5">
-                                                    <Run Text="W" Foreground="{StaticResource WordOrangeBrush}"/><Run Text="O" Foreground="{StaticResource WordBlueBrush}"/><Run Text="R" Foreground="{StaticResource WordRedBrush}"/><Run Text="D" Foreground="{StaticResource WordGreenBrush}"/>
+                                                <TextBlock FontFamily="{StaticResource LatoBold}"
+                                                           FontSize="{StaticResource FontSizeLarge}" Margin="0,0,0,-5">
+                                                    <Run Text="W" Foreground="{StaticResource WordOrangeBrush}"/>
+                                                    <Run Text="O" Foreground="{StaticResource WordBlueBrush}"/>
+                                                    <Run Text="R" Foreground="{StaticResource WordRedBrush}"/>
+                                                    <Run Text="D" Foreground="{StaticResource WordGreenBrush}"/>
                                                 </TextBlock>
-                                                <TextBlock Text="by CRNYY" Foreground="{StaticResource ForegroundDarkBrush}" TextAlignment="Center"/>
+                                                <TextBlock Text="by CRNYY"
+                                                           Foreground="{StaticResource ForegroundDarkBrush}"
+                                                           TextAlignment="Center"/>
                                             </StackPanel>
                                         </Viewbox>
 
@@ -98,8 +107,25 @@
 
                                     </Grid>
 
+                                    <!-- Internet Connection Bar -->
+                                    <Border Background="{StaticResource WordOrangeBrush}"
+                                            local:AnimateSlideInFromTopProperty.Value="{Binding ApplicationViewModel.ServerReachable, Source={x:Static local:ViewModelLocator.Instance}, Converter={local:BooleanInvertConverter}}"
+                                            Grid.Row="1"
+                                            Padding="10"
+                                            Panel.ZIndex="1">
+
+                                        <Label FontFamily="{StaticResource LatoBold}"
+                                                   FontSize="{StaticResource FontSizeLarge}"
+                                                   Foreground="{StaticResource ForegroundLightBrush}"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center">
+                                            No Internet Connection. Please check your network.
+                                        </Label>
+                                        
+                                    </Border>
+
                                     <!-- Page Content -->
-                                    <Border Grid.Row="1" Padding="{Binding InnerContentPadding}" ClipToBounds="True">
+                                    <Border Grid.Row="2" Padding="{Binding InnerContentPadding}" ClipToBounds="True">
                                         <ContentPresenter Content="{TemplateBinding Content}"/>
                                     </Border>
 
@@ -130,7 +156,10 @@
 
             <!-- Blue Background -->
             <Grid.Background>
-                <ImageBrush TileMode="Tile" ViewportUnits="Absolute" Viewport="0 0 500 500" ImageSource="/Images/Backgrounds/emoji-background.png"/>
+                <ImageBrush TileMode="Tile"
+                            ViewportUnits="Absolute"
+                            Viewport="0 0 500 500"
+                            ImageSource="/Images/Backgrounds/emoji-background.png"/>
             </Grid.Background>
 
             <!-- Settings page -->

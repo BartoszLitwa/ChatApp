@@ -13,6 +13,8 @@ namespace ChatApp
     [AddINotifyPropertyChangedInterface]
     public class BaseViewModel : INotifyPropertyChanged
     {
+        protected object mGlobalLock = new object();
+
         /// <summary>
         /// The event that is fired when any child property changes it value
         /// </summary>
@@ -41,7 +43,7 @@ namespace ChatApp
         protected async Task RunCommandAsync(Expression<Func<bool>> updatingFlag, Func<Task> action)
         {
             // Lock to ensure single access to check
-            lock (updatingFlag)
+            lock (mGlobalLock)
             {
                 //Checking if the flag property is true (meaning the function is already running
                 if (updatingFlag.GetPropertyValue<bool>())
@@ -76,7 +78,7 @@ namespace ChatApp
         protected async Task<T> RunCommandAsync<T>(Expression<Func<bool>> updatingFlag, Func<Task<T>> action, T defaultValue = default(T))
         {
             // Lock to ensure single access to check
-            lock (updatingFlag)
+            lock (mGlobalLock)
             {
                 //Checking if the flag property is true (meaning the function is already running
                 if (updatingFlag.GetPropertyValue<bool>())

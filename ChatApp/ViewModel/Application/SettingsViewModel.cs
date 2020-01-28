@@ -289,11 +289,14 @@ namespace ChatApp
             // Lock this command to ignore any other requests while processing
             await RunCommandAsync(() => SettingsLoading, async () =>
             {
+                // Get the scoped instance of ClientDataStore
+                var scopedClientDataStore = ClientDataStore;
+
                 // Update values from local cache
-                await UpdateValuesFromLocalStoreAsync();
+                await UpdateValuesFromLocalStoreAsync(scopedClientDataStore);
 
                 // Get the locala values from local cache
-                var LoginCredentials = await ClientDataStore.GetLoginCredentialsAsync();
+                var LoginCredentials = await scopedClientDataStore.GetLoginCredentialsAsync();
 
                 // If we don't have a login credetnails or token...
                 if (LoginCredentials == null || string.IsNullOrEmpty(LoginCredentials.Token))
@@ -317,10 +320,10 @@ namespace ChatApp
                     dataModel.Token = LoginCredentials.Token;
 
                     // Save the new information in the data store
-                    await ClientDataStore.SaveLoginCredentialsAsync(dataModel);
+                    await scopedClientDataStore.SaveLoginCredentialsAsync(dataModel);
 
                     // Update values from local cache
-                    await UpdateValuesFromLocalStoreAsync();
+                    await UpdateValuesFromLocalStoreAsync(scopedClientDataStore);
                 }
             });
         }
@@ -556,10 +559,10 @@ namespace ChatApp
         /// to this viewmodel
         /// </summary>
         /// <returns></returns>
-        private async Task UpdateValuesFromLocalStoreAsync()
+        private async Task UpdateValuesFromLocalStoreAsync(IClientDataStore scopedClientDataStore)
         {
             // Get the stored credentials
-            var storedCredentials = await ClientDataStore.GetLoginCredentialsAsync();
+            var storedCredentials = await scopedClientDataStore.GetLoginCredentialsAsync();
 
             // Set First Name
             FirstName.OriginalText = $"{storedCredentials?.FirstName}";

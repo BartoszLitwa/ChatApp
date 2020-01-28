@@ -1,5 +1,4 @@
-﻿using ChatApp.Core;
-using static ChatApp.DI;
+﻿using static ChatApp.DI;
 
 namespace ChatApp
 {

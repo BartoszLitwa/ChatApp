@@ -67,7 +67,7 @@
                             Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
                             VerticalAlignment="Top">
                         <Border.Background>
-                            <ImageBrush ImageSource="/Images/Samples/rusty.jpg" Stretch="UniformToFill"/>
+                            <ImageBrush ImageSource="/ChatApp;component/Images/Samples/rusty.jpg" Stretch="UniformToFill"/>
                         </Border.Background>
                     </Border>
 

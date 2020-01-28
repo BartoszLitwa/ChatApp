@@ -66,6 +66,11 @@ namespace ChatApp
             }
         }
 
+        /// <summary>
+        /// Determines if the Application has network access to the server
+        /// </summary>
+        public bool ServerReachable { get; set; } = false;
+
         #endregion
 
         #region Public Commands
