@@ -64,7 +64,10 @@ namespace ChatApp
                 // Set the column definition to the new value
                 (d as TextEntryControl).LabelColumnDefinition.Width = (GridLength)e.NewValue;
             }
+            // Making ex variable for developers on break
+#pragma warning disable CS0168
             catch (Exception ex)
+#pragma warning restore CS0168 
             {
                 // Make developer aware of potential issue
                 Debugger.Break();

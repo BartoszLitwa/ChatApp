@@ -55,19 +55,6 @@ namespace ChatApp.Web.Server
             // Make sure we have the database
             mContext.Database.EnsureCreated();
 
-            if (!mContext.Settings.Any())
-            {
-                mContext.Settings.Add(new SettingsDataModel
-                {
-                    ID = Guid.NewGuid().ToString("N"),
-                    Name = "BackgroundColor",
-                    Value = "Red"
-                });
-
-                // Save local changes to online database
-                mContext.SaveChanges();
-            }
-
             return View();
         }
 

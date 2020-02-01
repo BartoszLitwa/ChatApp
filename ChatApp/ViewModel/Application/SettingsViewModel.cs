@@ -436,7 +436,7 @@ namespace ChatApp
                     bearerToken: credentials.Token);
 
                 // If the response has the error
-                if (await result.DisplayErrorIfFailedAsync($"Change Password"))
+                if (await result.HandleErrorIfFailedAsync($"Change Password"))
                 {
                     // Log it
                     Logger.LogDebugSource($"Failed to change the Password. {result.ErrorMessage}");
@@ -535,7 +535,7 @@ namespace ChatApp
                 bearerToken: credentials.Token);
 
             // If the response has the error
-            if (await result.DisplayErrorIfFailedAsync($"Update {displayName}"))
+            if (await result.HandleErrorIfFailedAsync($"Update {displayName}"))
             {
                 // Log it
                 Logger.LogDebugSource($"Failed to update the {displayName}. {result.ErrorMessage}");

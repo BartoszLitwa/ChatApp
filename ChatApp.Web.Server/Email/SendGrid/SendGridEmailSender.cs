@@ -72,7 +72,10 @@ namespace ChatApp.Web.Server
                 // Return the response
                 return errorResponse;
             }
+            // Making ex variable for developers on break
+#pragma warning disable CS0168
             catch (Exception ex)
+#pragma warning restore CS0168 
             {
                 // TODO: Localize texts
 
@@ -116,7 +119,10 @@ namespace ChatApp.Web.Server
                 // Send the message
                 await smtp.SendMailAsync(msg);
             }
+            // Making ex variable for developers on break
+#pragma warning disable CS0168
             catch (Exception ex)
+#pragma warning restore CS0168 
             {
                 // TODO: Localize texts
 

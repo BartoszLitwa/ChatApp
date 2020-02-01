@@ -78,7 +78,7 @@ namespace ChatApp
                     });
 
                 // If the result has an error
-                if (await result.DisplayErrorIfFailedAsync("Register failed"))
+                if (await result.HandleErrorIfFailedAsync("Register failed"))
                     // We are done
                     return;
 

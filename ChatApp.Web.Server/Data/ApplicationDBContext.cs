@@ -13,7 +13,7 @@ namespace ChatApp.Web.Server
         /// <summary>
         /// The Settings for the application
         /// </summary>
-        public DbSet<SettingsDataModel> Settings { get; set; }
+        public DbSet<ContactsFriendListDataModel> ContactsFriendList { get; set; }
 
         #endregion
 
@@ -31,7 +31,7 @@ namespace ChatApp.Web.Server
             base.OnModelCreating(modelBuilder);
 
             // Fluent API
-            modelBuilder.Entity<SettingsDataModel>().HasIndex(a => a.Name).IsUnique();
+            modelBuilder.Entity<ContactsFriendListDataModel>().HasIndex(a => a.Username).IsUnique();
         }
 
         

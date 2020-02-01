@@ -2,9 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -409,7 +406,7 @@ namespace ChatApp.Web.Server
             // Generate an email verification code
             var emailVerificationCode = await mUserManager.GenerateEmailConfirmationTokenAsync(user);
 
-            // TODO: Replace with APIRoutes that will contain the static routes to use
+            // Generate the URL for confiramtion
             var confirmationUrl = $"https://{Request.Host.Value}/api/verify/email/{HttpUtility.UrlEncode(userIdentity.Id)}/{HttpUtility.UrlEncode(emailVerificationCode)}";
 
             // Email the user the verification code

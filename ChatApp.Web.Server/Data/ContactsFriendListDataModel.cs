@@ -5,13 +5,13 @@ namespace ChatApp.Web.Server
     /// <summary>
     /// Our Settings database table representational model
     /// </summary>
-    public class SettingsDataModel
+    public class ContactsFriendListDataModel
     {
         /// <summary>
-        /// Unique ID for this entry
+        /// Unique Username for this entry
         /// </summary>
         [Key]
-        public string ID { get; set; }
+        public string Username { get; set; }
 
         /// <summary>
         /// The settings name

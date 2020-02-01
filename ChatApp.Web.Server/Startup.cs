@@ -80,8 +80,8 @@ namespace ChatApp.Web.Server
                 // Redirect to /login
                 options.LoginPath = "/login";
 
-                // Change cookie timeout to expire in 15 seconds
-                options.ExpireTimeSpan = TimeSpan.FromSeconds(1500);
+                // Change cookie timeout to expire in 30 days
+                options.ExpireTimeSpan = TimeSpan.FromDays(30);
             });
 
             services.AddControllersWithViews();
