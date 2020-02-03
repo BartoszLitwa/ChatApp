@@ -2,8 +2,6 @@
 using System.Security;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using ChatApp.Core;
-using static ChatApp.DI;
 
 namespace ChatApp
 {

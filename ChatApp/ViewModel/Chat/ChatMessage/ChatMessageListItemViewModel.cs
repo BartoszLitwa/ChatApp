@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ChatApp
+namespace ChatApp.Core
 {
     /// <summary>
     /// A view model for each chat list message thread item in a chat thread

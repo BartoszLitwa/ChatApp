@@ -168,7 +168,7 @@
             <!-- Text Entry Button -->
             <TextBox x:Name="MessageText"
                      Grid.Column="1"
-                     Text="{Binding PednigMessageText, UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding PendingMessageText, UpdateSourceTrigger=PropertyChanged}"
                      PreviewKeyDown="MessageText_PreviewKeyDown"
                      local:IsFocusedProperty.Value="True"
                      VerticalAlignment="Center"

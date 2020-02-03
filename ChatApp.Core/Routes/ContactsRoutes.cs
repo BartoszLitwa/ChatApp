@@ -9,5 +9,10 @@
         /// The route to the Create Contacts method
         /// </summary>
         public const string Create = "/api/contacts/create";
+
+        /// <summary>
+        /// The route to the Send Message method
+        /// </summary>
+        public const string SendMessage = "/api/contacts/sendMessage";
     }
 }

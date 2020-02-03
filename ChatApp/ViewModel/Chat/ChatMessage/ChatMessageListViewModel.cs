@@ -1,8 +1,10 @@
-﻿using System;
+﻿using ChatApp.Core;
+using Dna;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using ChatApp.Core;
 using static ChatApp.DI;
 
 namespace ChatApp
@@ -99,7 +101,7 @@ namespace ChatApp
         /// <summary>
         /// The text for the current message being written
         /// </summary>
-        public string PednigMessageText { get; set; }
+        public string PendingMessageText { get; set; }
 
         /// <summary>
         /// The text to search for when we do a search
@@ -195,7 +197,7 @@ namespace ChatApp
             // Create commands
             AttachmentButtonCommand = new RelayCommand(AttachmentButton);
             PopupClickAwayCommand = new RelayCommand(PopupClickAway);
-            SendCommand = new RelayCommand(SendMessage);
+            SendCommand = new RelayCommand(async () => await SendMessageAsync());
             SearchCommand = new RelayCommand(Search);
             OpenSearchCommand = new RelayCommand(OpenSearch);
             CloseSearchCommand = new RelayCommand(CloseSearch);
@@ -230,18 +232,12 @@ namespace ChatApp
         /// <summary>
         /// When the user clicks the send button sends the message
         /// </summary>
-        public void SendMessage()
+        public async Task SendMessageAsync()
         {
-            if(string.IsNullOrEmpty(PednigMessageText))
-            {
-                UI.ShowMessage(new MessageBoxDialogViewModel
-                {
-                    Message = "Your Message can not be empty!",
-                    Title = "Empty Message",
-                });
-
+            // If message is empty
+            if(string.IsNullOrEmpty(PendingMessageText))
+                // Dont do anything
                 return;
-            }
 
             // Ensure lists are not null
             if (Items == null)
@@ -250,23 +246,71 @@ namespace ChatApp
             if (FilteredItems == null)
                 FilteredItems = new ObservableCollection<ChatMessageListItemViewModel>();
 
-            // Send fake new message
+            // Get login Credentials
+            var loginCredentials = await ClientDataStore.GetLoginCredentialsAsync();
+
+            // If we dont have stored login credentials
+            if (loginCredentials == null || string.IsNullOrEmpty(loginCredentials.Token))
+                return;
+
+            // Create new message
             var message = new ChatMessageListItemViewModel
             {
                 Initials = "BL",
-                Message = PednigMessageText,
+                Message = PendingMessageText,
                 MessageSentTime = DateTime.UtcNow,
                 ProfilePictureRGB = "ffffff",
                 SentByMe = true,
-                SenderName = "Bartosz Litwa",
+                SenderName = loginCredentials.Username,
                 NewItem = true,
             };
 
-            Items.Add(message);
-            FilteredItems.Add(message);
+            // Create the 
+            var result = new Dna.WebRequestResult<ApiResponse>();
 
-            // Clear the pending message text
-            PednigMessageText = string.Empty;
+            if (Items.Count != 0)
+            {
+                 result = await WebRequests.PostAsync<ApiResponse>(RouteHelpers.GetAbsoluteRoute(ContactsRoutes.Create),
+                    new CreateMessageHisotryApiModel
+                    {
+                        FirstUser = message.SentByMe ? loginCredentials.Username : SenderName,
+                        SecondUser = message.SentByMe ? SenderName : loginCredentials.Username
+                    },
+                    bearerToken: loginCredentials.Token);
+            }
+            else
+            {
+                result = await WebRequests.PostAsync<ApiResponse>(RouteHelpers.GetAbsoluteRoute(ContactsRoutes.SendMessage),
+                    new SendMessageApiModel
+                    {
+                        SendTo = SenderName,
+                        SendBy = loginCredentials.Username,
+                        Message = PendingMessageText,
+                        MessageSentTime = DateTimeOffset.UtcNow,
+                        MessageReadTime = DateTimeOffset.MinValue,
+                        ImageAttachment = message.ImageAttachment != null,
+                        ImageAttachmentURL = message.ImageAttachment != null ? message.ImageAttachment.ThumbnailUrl : ""
+                    },
+                    bearerToken: loginCredentials.Token);
+            }
+
+            // If it was successful
+            if (result.Successful)
+            {
+                Items.Add(message);
+                FilteredItems.Add(message);
+
+                // Clear the pending message text
+                PendingMessageText = string.Empty;
+            }
+            else
+            {
+                await UI.ShowMessage(new MessageBoxDialogViewModel
+                {
+                    Title = "Unsuccessful sending message",
+                    Message = $"{result.ServerResponse.Response ?? "Error occured while sending"}"
+                });
+            }
         }
 
         /// <summary>

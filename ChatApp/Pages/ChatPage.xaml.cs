@@ -58,7 +58,7 @@ namespace ChatApp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MessageText_PreviewKeyDown(object sender, KeyEventArgs e)
+        private async void MessageText_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             // Get the textbox
             var textbox = sender as TextBox;
@@ -83,7 +83,7 @@ namespace ChatApp
                 }
                 else
                     //Send the message
-                    ViewModel.SendMessage();
+                    await ViewModel.SendMessageAsync();
 
                 // Mark this key as handled by us
                 e.Handled = true;

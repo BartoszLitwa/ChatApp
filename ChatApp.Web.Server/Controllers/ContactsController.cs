@@ -1,5 +1,4 @@
 ﻿using ChatApp.Core;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChatApp.Web.Server
 {
+    [AuthorizeToken]
     public class ContactsController : Controller
     {
         #region Protected Members
@@ -58,9 +58,22 @@ namespace ChatApp.Web.Server
         }
 
         [Route(ContactsRoutes.Create)]
-        public async Task<ApiResponse> CreateAsync()
+        [System.Obsolete]
+        public async Task<ApiResponse> CreateAsync([FromBody] CreateMessageHisotryApiModel apiModel)
         {
-            await mContext.Database.ExecuteSqlCommandAsync("");
+            var result = await CreateTableAsync(apiModel.FirstUser, apiModel.SecondUser);
+
+            return new ApiResponse
+            {
+                ErrorMessage = ""
+            };
+        }
+
+        [Route(ContactsRoutes.SendMessage)]
+        [System.Obsolete]
+        public async Task<ApiResponse> SendMessageAsync([FromBody] CreateMessageHisotryApiModel apiModel)
+        {
+            var result = await CreateTableAsync(apiModel.FirstUser, apiModel.SecondUser);
 
             return new ApiResponse
             {
@@ -79,5 +92,28 @@ namespace ChatApp.Web.Server
         {
             return View();
         }
+
+        #region Private Helpers
+
+        [System.Obsolete]
+        private async Task<int> CreateTableAsync(string firstUser, string secondUser)
+        {
+            // Create the name of the table
+            var tableName = $"dbo.MessageHistory_{firstUser}_{secondUser}";
+
+            var sqlQuery = $"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='{tableName}' and xtype='U')" +
+                $" CREATE TABLE {tableName}" +
+                $" ( ID int PRIMARY KEY IDENTITY(0,1) ," +
+                $" SendBy varchar(100) NOT NULL," +
+                $" Message varchar(2000) NOT NULL," +
+                $" MessageSentTime DATETIME NOT NULL," +
+                $" MessageReadTime DATETIME NOT NULL, " +
+                $" ImageAttachment int NOT NULL, " +
+                $" ImageAttachmentURL varchar(200) );";
+
+            return await mContext.Database.ExecuteSqlCommandAsync(sqlQuery);
+        }
+
+        #endregion
     }
 }

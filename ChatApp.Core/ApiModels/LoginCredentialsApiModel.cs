@@ -18,17 +18,5 @@
         public string Password { get; set; }
 
         #endregion
-
-        #region Constructor
-
-        /// <summary>
-        /// Default Constructor
-        /// </summary>
-        public LoginCredentialsApiModel()
-        {
-
-        }
-
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ChatApp
+namespace ChatApp.Core
 {
     /// <summary>
     /// The design-Time data for a <see cref="ChatMessageListItemDesignModel"/>

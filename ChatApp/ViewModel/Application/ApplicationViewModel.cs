@@ -1,12 +1,8 @@
 ﻿using ChatApp.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using static ChatApp.DI;
-using static ChatApp.Core.CoreDI;
 using System.Windows.Input;
+using static ChatApp.Core.CoreDI;
+using static ChatApp.DI;
 
 namespace ChatApp
 {

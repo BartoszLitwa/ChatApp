@@ -1,5 +1,4 @@
-﻿using ChatApp.Core;
-using System.Security;
+﻿using System.Security;
 
 namespace ChatApp
 {

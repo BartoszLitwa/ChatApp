@@ -6,18 +6,22 @@ namespace ChatApp
     public class RelayCommand : ICommand
     {
         #region Private Members
+
         //A Action to run
         private Action mAction;
         #endregion
 
         #region Public events
+
         /// <summary>
         /// The event thats fired when <see cref="CanExecute(object)"/> value has changed
         /// </summary>
         public event EventHandler CanExecuteChanged = (sender,e) => {};
+
         #endregion
 
         #region Constructor
+
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -25,9 +29,11 @@ namespace ChatApp
         {
             mAction = action;
         }
+
         #endregion
 
         #region Command Methods
+
         /// <summary>
         /// A relay command can always execute
         /// </summary>
@@ -43,6 +49,7 @@ namespace ChatApp
         {
             mAction();
         }
+
         #endregion
     }
 }

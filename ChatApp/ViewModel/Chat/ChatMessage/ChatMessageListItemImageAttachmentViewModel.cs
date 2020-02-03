@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace ChatApp
+namespace ChatApp.Core
 {
     /// <summary>
     /// A view model for each chat list message thread item's attachment (in this case an image) in a chat thread
