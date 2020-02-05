@@ -57,27 +57,57 @@ namespace ChatApp.Web.Server
             return View();
         }
 
-        [Route(ContactsRoutes.Create)]
+        [Route(ContactsRoutes.CreateMessageHistory)]
         [System.Obsolete]
-        public async Task<ApiResponse> CreateAsync([FromBody] CreateMessageHisotryApiModel apiModel)
+        public async Task<ApiResponse> CreateMessageHistoryAsync([FromBody] CreateTableApiModel apiModel)
         {
-            var result = await CreateTableAsync(apiModel.FirstUser, apiModel.SecondUser);
+            var result = await mContext.CreateTableAsync(apiModel, SQLTableTypeEnum.MessageHistory);
 
             return new ApiResponse
             {
-                ErrorMessage = ""
+            };
+        }
+
+        [Route(ContactsRoutes.CreateFriendList)]
+        [System.Obsolete]
+        public async Task<ApiResponse> CreateFriendListAsync([FromBody] CreateTableApiModel apiModel)
+        {
+            var result = await mContext.CreateTableAsync(apiModel, SQLTableTypeEnum.FriendList);
+
+            return new ApiResponse
+            {
+            };
+        }
+
+        [Route(ContactsRoutes.CreateProfileSettings)]
+        [System.Obsolete]
+        public async Task<ApiResponse> CreateProfileSettingsAsync([FromBody] CreateTableApiModel apiModel)
+        {
+            var result = await mContext.CreateTableAsync(apiModel, SQLTableTypeEnum.ProfileSettings);
+
+            return new ApiResponse
+            {
             };
         }
 
         [Route(ContactsRoutes.SendMessage)]
         [System.Obsolete]
-        public async Task<ApiResponse> SendMessageAsync([FromBody] CreateMessageHisotryApiModel apiModel)
+        public async Task<ApiResponse> SendMessageAsync([FromBody] MessageApiModel apiModel)
         {
-            var result = await CreateTableAsync(apiModel.FirstUser, apiModel.SecondUser);
+            // Create empty error message
+            var Error = default(string);
 
+            // Send the message
+            var result = await mContext.SendMessageToTableAsync(apiModel, SQLTableTypeEnum.MessageHistory);
+
+            // If any row has been affected it means that there isnt any table for this chat
+            if (result < 1)
+                Error = $"Error occured while sending the message to {apiModel.SendTo}";
+
+            // Return the new api response
             return new ApiResponse
             {
-                ErrorMessage = ""
+                ErrorMessage = Error
             };
         }
 
@@ -95,24 +125,7 @@ namespace ChatApp.Web.Server
 
         #region Private Helpers
 
-        [System.Obsolete]
-        private async Task<int> CreateTableAsync(string firstUser, string secondUser)
-        {
-            // Create the name of the table
-            var tableName = $"dbo.MessageHistory_{firstUser}_{secondUser}";
-
-            var sqlQuery = $"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='{tableName}' and xtype='U')" +
-                $" CREATE TABLE {tableName}" +
-                $" ( ID int PRIMARY KEY IDENTITY(0,1) ," +
-                $" SendBy varchar(100) NOT NULL," +
-                $" Message varchar(2000) NOT NULL," +
-                $" MessageSentTime DATETIME NOT NULL," +
-                $" MessageReadTime DATETIME NOT NULL, " +
-                $" ImageAttachment int NOT NULL, " +
-                $" ImageAttachmentURL varchar(200) );";
-
-            return await mContext.Database.ExecuteSqlCommandAsync(sqlQuery);
-        }
+        
 
         #endregion
     }

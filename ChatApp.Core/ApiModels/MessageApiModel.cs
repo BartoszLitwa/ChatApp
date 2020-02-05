@@ -5,7 +5,7 @@ namespace ChatApp.Core
     /// <summary>
     /// The details of the Send Message between 2 users
     /// </summary>
-    public class SendMessageApiModel
+    public class MessageApiModel
     {
         #region Public Properties
 

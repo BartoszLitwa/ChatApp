@@ -85,6 +85,32 @@ namespace ChatApp
                 // Ok succesfully registered and logged in. Get the users data
                 var loginResult = result.ServerResponse.Response;
 
+                // Call the server and attempt to create the friend list
+                var resultCreateFriendList = await Dna.WebRequests.PostAsync<ApiResponse>(RouteHelpers.GetAbsoluteRoute(ContactsRoutes.CreateFriendList),
+                   new CreateTableApiModel
+                   {
+                       Username = loginResult.Username
+                   },
+                   bearerToken: loginResult.Token);
+
+                // If the resultCreateFriendList has an error
+                if (await resultCreateFriendList.HandleErrorIfFailedAsync("Creating Friend List failed"))
+                    // We are done
+                    return;
+
+                // Call the server and attempt to create the friend list
+                var resultCreateProfileSettings = await Dna.WebRequests.PostAsync<ApiResponse>(RouteHelpers.GetAbsoluteRoute(ContactsRoutes.CreateProfileSettings),
+                   new CreateTableApiModel
+                   {
+                       Username = loginResult.Username
+                   },
+                   bearerToken: loginResult.Token);
+
+                // If the resultCreateProfileSettings has an error
+                if (await resultCreateProfileSettings.HandleErrorIfFailedAsync("Creating Profile Settings failed"))
+                    // We are done
+                    return;
+
                 // Let the application view model handle what happens
                 await ViewModelApplication.HandleSuccessfulLoginAsync(loginResult);
             });

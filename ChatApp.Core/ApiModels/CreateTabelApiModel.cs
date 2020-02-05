@@ -1,16 +1,16 @@
 ﻿namespace ChatApp.Core
 {
     /// <summary>
-    /// Usernames needed to create the chat history of messages 
+    /// Username detatils needed for creating the tables. And the second username for creating the chat message history table 
     /// </summary>
-    public class CreateMessageHisotryApiModel
+    public class CreateTableApiModel
     {
         #region Public Properties
 
         /// <summary>
-        /// The user that has started this conversation
+        /// The user usernamethat has started this conversation
         /// </summary>
-        public string FirstUser { get; set; }
+        public string Username { get; set; }
 
         /// <summary>
         /// The second User

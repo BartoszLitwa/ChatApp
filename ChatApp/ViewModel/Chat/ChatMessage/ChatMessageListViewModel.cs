@@ -235,7 +235,7 @@ namespace ChatApp
         public async Task SendMessageAsync()
         {
             // If message is empty
-            if(string.IsNullOrEmpty(PendingMessageText))
+            if (string.IsNullOrEmpty(PendingMessageText))
                 // Dont do anything
                 return;
 
@@ -268,31 +268,29 @@ namespace ChatApp
             // Create the 
             var result = new Dna.WebRequestResult<ApiResponse>();
 
-            if (Items.Count != 0)
+            if (Items.Count == 0)
             {
-                 result = await WebRequests.PostAsync<ApiResponse>(RouteHelpers.GetAbsoluteRoute(ContactsRoutes.Create),
-                    new CreateMessageHisotryApiModel
-                    {
-                        FirstUser = message.SentByMe ? loginCredentials.Username : SenderName,
-                        SecondUser = message.SentByMe ? SenderName : loginCredentials.Username
-                    },
-                    bearerToken: loginCredentials.Token);
+                result = await WebRequests.PostAsync<ApiResponse>(RouteHelpers.GetAbsoluteRoute(ContactsRoutes.CreateMessageHistory),
+                   new CreateTableApiModel
+                   {
+                       Username = message.SentByMe ? loginCredentials.Username : SenderName,
+                       SecondUser = message.SentByMe ? SenderName : loginCredentials.Username
+                   },
+                   bearerToken: loginCredentials.Token);
             }
-            else
-            {
-                result = await WebRequests.PostAsync<ApiResponse>(RouteHelpers.GetAbsoluteRoute(ContactsRoutes.SendMessage),
-                    new SendMessageApiModel
-                    {
-                        SendTo = SenderName,
-                        SendBy = loginCredentials.Username,
-                        Message = PendingMessageText,
-                        MessageSentTime = DateTimeOffset.UtcNow,
-                        MessageReadTime = DateTimeOffset.MinValue,
-                        ImageAttachment = message.ImageAttachment != null,
-                        ImageAttachmentURL = message.ImageAttachment != null ? message.ImageAttachment.ThumbnailUrl : ""
-                    },
-                    bearerToken: loginCredentials.Token);
-            }
+
+            result = await WebRequests.PostAsync<ApiResponse>(RouteHelpers.GetAbsoluteRoute(ContactsRoutes.SendMessage),
+                new MessageApiModel
+                {
+                    SendTo = SenderName,
+                    SendBy = loginCredentials.Username,
+                    Message = PendingMessageText,
+                    MessageSentTime = DateTimeOffset.UtcNow,
+                    MessageReadTime = DateTimeOffset.MinValue,
+                    ImageAttachment = message.ImageAttachment != null,
+                    ImageAttachmentURL = message.ImageAttachment != null ? message.ImageAttachment.ThumbnailUrl : ""
+                },
+                bearerToken: loginCredentials.Token);
 
             // If it was successful
             if (result.Successful)

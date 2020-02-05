@@ -21,7 +21,7 @@ namespace ChatApp.Web.Server
         /// Default constrcutor expecting database options passed in
         /// </summary>
         /// <param name="options">The database context options</param>
-        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base (options)
+        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options = null) : base (options)
         {
 
         }
