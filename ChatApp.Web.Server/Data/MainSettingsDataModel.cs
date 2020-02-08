@@ -5,26 +5,24 @@ namespace ChatApp.Web.Server
     /// <summary>
     /// Our Settings database table representational model
     /// </summary>
-    public class ContactsFriendListDataModel
+    public class MainSettingsDataModel
     {
         /// <summary>
         /// Unique Username for this entry
         /// </summary>
         [Key]
-        public string Username { get; set; }
+        public string ID { get; set; }
 
         /// <summary>
-        /// The settings name
+        /// The current version
         /// </summary>
         [Required]
-        [MaxLength(256)]
-        public string Name { get; set; }
+        [MaxLength(64)]
+        public string Version { get; set; }
 
         /// <summary>
-        /// The settings value
+        /// The current number of people registered
         /// </summary>
-        [Required]
-        [MaxLength(1024)]
-        public string Value { get; set; }
+        public int CurrentUsers { get; set; }
     }
 }

@@ -86,8 +86,9 @@ namespace ChatApp
                 var loginResult = result.ServerResponse.Response;
 
                 // Call the server and attempt to create the friend list
-                var resultCreateFriendList = await Dna.WebRequests.PostAsync<ApiResponse>(RouteHelpers.GetAbsoluteRoute(ContactsRoutes.CreateFriendList),
-                   new CreateTableApiModel
+                var resultCreateFriendList = await Dna.WebRequests.PostAsync<ApiResponse>(
+                    RouteHelpers.GetAbsoluteRoute(ContactsRoutes.CreateFriendList),
+                   new TableApiModel
                    {
                        Username = loginResult.Username
                    },
@@ -99,8 +100,9 @@ namespace ChatApp
                     return;
 
                 // Call the server and attempt to create the friend list
-                var resultCreateProfileSettings = await Dna.WebRequests.PostAsync<ApiResponse>(RouteHelpers.GetAbsoluteRoute(ContactsRoutes.CreateProfileSettings),
-                   new CreateTableApiModel
+                var resultCreateProfileSettings = await Dna.WebRequests.PostAsync<ApiResponse>(
+                    RouteHelpers.GetAbsoluteRoute(ContactsRoutes.CreateProfileSettings),
+                   new TableApiModel
                    {
                        Username = loginResult.Username
                    },

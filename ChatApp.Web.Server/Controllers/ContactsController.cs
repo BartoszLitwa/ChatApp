@@ -59,7 +59,7 @@ namespace ChatApp.Web.Server
 
         [Route(ContactsRoutes.CreateMessageHistory)]
         [System.Obsolete]
-        public async Task<ApiResponse> CreateMessageHistoryAsync([FromBody] CreateTableApiModel apiModel)
+        public async Task<ApiResponse> CreateMessageHistoryAsync([FromBody] TableApiModel apiModel)
         {
             var result = await mContext.CreateTableAsync(apiModel, SQLTableTypeEnum.MessageHistory);
 
@@ -70,7 +70,7 @@ namespace ChatApp.Web.Server
 
         [Route(ContactsRoutes.CreateFriendList)]
         [System.Obsolete]
-        public async Task<ApiResponse> CreateFriendListAsync([FromBody] CreateTableApiModel apiModel)
+        public async Task<ApiResponse> CreateFriendListAsync([FromBody] TableApiModel apiModel)
         {
             var result = await mContext.CreateTableAsync(apiModel, SQLTableTypeEnum.FriendList);
 
@@ -81,7 +81,7 @@ namespace ChatApp.Web.Server
 
         [Route(ContactsRoutes.CreateProfileSettings)]
         [System.Obsolete]
-        public async Task<ApiResponse> CreateProfileSettingsAsync([FromBody] CreateTableApiModel apiModel)
+        public async Task<ApiResponse> CreateProfileSettingsAsync([FromBody] TableApiModel apiModel)
         {
             var result = await mContext.CreateTableAsync(apiModel, SQLTableTypeEnum.ProfileSettings);
 
@@ -98,7 +98,7 @@ namespace ChatApp.Web.Server
             var Error = default(string);
 
             // Send the message
-            var result = await mContext.SendMessageToTableAsync(apiModel, SQLTableTypeEnum.MessageHistory);
+            var result = await mContext.InsertIntoTableAsync(apiModel, SQLTableTypeEnum.MessageHistory);
 
             // If any row has been affected it means that there isnt any table for this chat
             if (result < 1)

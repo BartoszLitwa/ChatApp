@@ -11,9 +11,9 @@ namespace ChatApp.Web.Server
         #region Public Properties
 
         /// <summary>
-        /// The Settings for the application
+        /// The Main Settings for the application
         /// </summary>
-        public DbSet<ContactsFriendListDataModel> ContactsFriendList { get; set; }
+        public DbSet<MainSettingsDataModel> MainSettings { get; set; }
 
         #endregion
 
@@ -23,7 +23,6 @@ namespace ChatApp.Web.Server
         /// <param name="options">The database context options</param>
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options = null) : base (options)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -31,7 +30,7 @@ namespace ChatApp.Web.Server
             base.OnModelCreating(modelBuilder);
 
             // Fluent API
-            modelBuilder.Entity<ContactsFriendListDataModel>().HasIndex(a => a.Username).IsUnique();
+            modelBuilder.Entity<MainSettingsDataModel>().HasIndex(a => a.ID).IsUnique();
         }
 
         

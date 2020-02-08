@@ -18,11 +18,26 @@
         /// <summary>
         /// The route to the Create ProfileSettings method
         /// </summary>
-        public const string CreateProfileSettings = "/api/contacts/create/ProfileSettings";
+        public const string CreateProfileSettings = "/api/profile/create/ProfileSettings";
 
         /// <summary>
         /// The route to the Send Message method
         /// </summary>
-        public const string SendMessage = "/api/contacts/sendMessage";
+        public const string SendMessage = "/api/contacts/SendMessage";
+
+        /// <summary>
+        /// The route to the Add Friend method
+        /// </summary>
+        public const string AddFriend = "/api/contacts/AddFriend";
+
+        /// <summary>
+        /// The route to the Remove Friend method
+        /// </summary>
+        public const string RemoveFriend = "/api/contacts/RemoveFriend";
+
+        /// <summary>
+        /// The route to the Add Friend method
+        /// </summary>
+        public const string UpdateProfileSettings = "/api/profile/update/ProfileSettings";
     }
 }

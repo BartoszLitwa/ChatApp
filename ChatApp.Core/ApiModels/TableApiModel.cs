@@ -3,7 +3,7 @@
     /// <summary>
     /// Username detatils needed for creating the tables. And the second username for creating the chat message history table 
     /// </summary>
-    public class CreateTableApiModel
+    public class TableApiModel
     {
         #region Public Properties
 

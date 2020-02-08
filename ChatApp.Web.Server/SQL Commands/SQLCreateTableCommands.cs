@@ -25,18 +25,16 @@ namespace ChatApp.Web.Server
                                          " Username varchar(100) NOT NULL," +
                                          " AddTime DATETIME NOT NULL," +
                                          " Accepted BIT NOT NULL, " +
-                                         " AcceptaionAddTime DATETIME );";
+                                         " AcceptationAddTime DATETIME );";
 
         /// <summary>
         /// SQL Query for creating the Profile and Settings table
         /// </summary>
         public const string ProfileSettings = " ( ID INT PRIMARY KEY IDENTITY(0,1) ," +
-                                              " SendBy varchar(100) NOT NULL," +
-                                              " Message varchar(2000) NOT NULL," +
-                                              " MessageSentTime DATETIME NOT NULL," +
-                                              " MessageReadTime DATETIME NOT NULL, " +
-                                              " ImageAttachment BIT NOT NULL, " +
-                                              " ImageAttachmentURL varchar(200) );";
+                                              " LastLoggedIn DATETIME NOT NULL ," +
+                                              " FirstLoggedIn DATETIME NOT NULL ," +
+                                              " CurrentStatus INT ," +
+                                              " CurrentTheme INT );";
     }
 
     /// <summary>
@@ -45,7 +43,7 @@ namespace ChatApp.Web.Server
     public static class SQLCreateTableCommandsHelpers
     {
         /// <summary>
-        /// Takes the <see cref="SQLTableTypeEnum"/> type and returns the sql query for creating this table
+        /// Takes the <see cref="SQLTableTypeEnum"/> and returns the sql query for creating table
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>

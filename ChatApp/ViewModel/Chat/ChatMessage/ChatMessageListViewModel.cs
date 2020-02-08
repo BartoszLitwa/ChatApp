@@ -271,7 +271,7 @@ namespace ChatApp
             if (Items.Count == 0)
             {
                 result = await WebRequests.PostAsync<ApiResponse>(RouteHelpers.GetAbsoluteRoute(ContactsRoutes.CreateMessageHistory),
-                   new CreateTableApiModel
+                   new TableApiModel
                    {
                        Username = message.SentByMe ? loginCredentials.Username : SenderName,
                        SecondUser = message.SentByMe ? SenderName : loginCredentials.Username

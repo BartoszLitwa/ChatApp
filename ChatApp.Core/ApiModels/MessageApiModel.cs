@@ -10,6 +10,11 @@ namespace ChatApp.Core
         #region Public Properties
 
         /// <summary>
+        /// The number of this message
+        /// </summary>
+        public int ID { get; set; }
+
+        /// <summary>
         /// The user that sent this message
         /// </summary>
         public string SendBy { get; set; }
