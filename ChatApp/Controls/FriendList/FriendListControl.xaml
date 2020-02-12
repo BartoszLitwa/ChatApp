@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="ChatApp.FriendListControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ChatApp"
+             xmlns:core="clr-namespace:ChatApp.Core;assembly=ChatApp.Core"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="300">
+    
+    <Grid DataContext="{x:Static local:FriendListDesignModel.Instance}"
+          Background="{StaticResource ForegroundLightBrush}">
+
+        <Grid.RowDefinitions>
+            <!-- Options bar -->
+            <RowDefinition Height="60"/>
+            <!-- Friend List -->
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Options bar -->
+        <Grid Grid.Row="0">
+
+            <Grid.ColumnDefinitions>
+                <!-- Search text -->
+                <ColumnDefinition Width="*"/>
+                <!-- Refresh -->
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Search text -->
+            <Border Grid.Column="0">
+                
+            </Border>
+
+            <Border Grid.Column="2">
+                <!-- Refresh button -->
+                <Button Content="{StaticResource FontAwesomeRefreshIcon}"
+                        Style="{StaticResource IconGrowButton}"
+                        Foreground="{StaticResource WordOrangeBrush}"
+                        Command="{Binding RefreshFriendsCommand}"
+                        HorizontalAlignment="Center"/>
+            </Border>
+
+        </Grid>
+
+        <!-- Friend List -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding Items}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <local:FriendListItemControl />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

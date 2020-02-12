@@ -51,11 +51,7 @@ namespace ChatApp.Web.Server
             return View();
         }
 
-        // GET: Contacts/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+        #region Create Table
 
         [Route(ContactsRoutes.CreateMessageHistory)]
         [System.Obsolete]
@@ -90,6 +86,8 @@ namespace ChatApp.Web.Server
             };
         }
 
+        #endregion
+
         [Route(ContactsRoutes.SendMessage)]
         [System.Obsolete]
         public async Task<ApiResponse> SendMessageAsync([FromBody] MessageApiModel apiModel)
@@ -110,23 +108,5 @@ namespace ChatApp.Web.Server
                 ErrorMessage = Error
             };
         }
-
-        // GET: Contacts/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // GET: Contacts/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        #region Private Helpers
-
-        
-
-        #endregion
     }
 }

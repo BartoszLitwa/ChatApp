@@ -249,6 +249,12 @@
     <Compile Include="Controls\Chat\ChatMessages\ChatMessageListItemControl.xaml.cs">
       <DependentUpon>ChatMessageListItemControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\FriendList\FriendListControl.xaml.cs">
+      <DependentUpon>FriendListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FriendList\FriendListItemControl.xaml.cs">
+      <DependentUpon>FriendListItemControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Input\PasswordEntryControl.xaml.cs">
       <DependentUpon>PasswordEntryControl.xaml</DependentUpon>
     </Compile>
@@ -326,6 +332,10 @@
     <Compile Include="ViewModel\Dialogs\BaseDialogViewModel.cs" />
     <Compile Include="ViewModel\Dialogs\Design\MessageBoxDialogDesignModel.cs" />
     <Compile Include="ViewModel\Dialogs\MessageBoxDialogViewModel.cs" />
+    <Compile Include="ViewModel\FriendList\Design\FriendListDesignModel.cs" />
+    <Compile Include="ViewModel\FriendList\Design\FriendListItemDesignModel.cs" />
+    <Compile Include="ViewModel\FriendList\FriendListItemViewModel.cs" />
+    <Compile Include="ViewModel\FriendList\FriendListViewModel.cs" />
     <Compile Include="ViewModel\Input\Design\PasswordEntryDesignModel.cs" />
     <Compile Include="ViewModel\Input\Design\TextEntryDesignModel.cs" />
     <Compile Include="ViewModel\Input\PasswordEntryViewModel.cs" />
@@ -361,6 +371,14 @@
     <Page Include="Controls\Chat\ChatMessages\ChatMessageListItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\FriendList\FriendListControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\FriendList\FriendListItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Input\PasswordEntryControl.xaml">
       <Generator>MSBuild:Compile</Generator>

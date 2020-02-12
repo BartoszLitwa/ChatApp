@@ -1,21 +1,24 @@
 ﻿using System;
+using System.Windows.Input;
 
 namespace ChatApp
 {
     /// <summary>
     /// A view model for each chat list message thread item in a chat thread
     /// </summary>
-    public class ChatMessageListItemViewModel : BaseViewModel
+    public class FriendListItemViewModel : BaseViewModel
     {
+        #region Public Properties
+
         /// <summary>
         /// The display name of the sender of the message
         /// </summary>
-        public string SenderName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
-        /// The latest message from this chat
+        /// The display username of the sender of the message
         /// </summary>
-        public string Message { get; set; }
+        public string Username { get; set; }
 
         /// <summary>
         /// The initials to show for the profile backgorund
@@ -34,24 +37,14 @@ namespace ChatApp
         public bool IsSelected { get; set; }
 
         /// <summary>
-        /// True if this message was sent by the signed in user
-        /// </summary>
-        public bool SentByMe { get; set; }
-
-        /// <summary>
         /// The time the message was read or <see cref="DateTimeOffset.MinValue"/> if not read
         /// </summary>
-        public DateTimeOffset MessageReadTime { get; set; }
+        public DateTimeOffset AddTime { get; set; }
 
         /// <summary>
         /// True if this message has been read
         /// </summary>
-        public bool MessageRead => MessageReadTime > DateTimeOffset.MinValue;
-
-        /// <summary>
-        /// The time the message was sent
-        /// </summary>
-        public DateTimeOffset MessageSentTime { get; set; }
+        public bool FriendAdded => AddTime > DateTimeOffset.MinValue;
 
         /// <summary>
         /// A flag idnicating if this item was added since the first main list of item was created
@@ -60,18 +53,44 @@ namespace ChatApp
         public bool NewItem { get; set; } = false;
 
         /// <summary>
-        /// The Image attachment to the message 
+        /// A flag indicating if the settings pop up is visible
         /// </summary>
-        public ChatMessageListItemImageAttachmentViewModel ImageAttachment { get; set; }
+        public bool PopupSettingsVisible { get; set; } = false;
+
+        #endregion
+
+        #region Commands
 
         /// <summary>
-        /// A flag indicating if we have a message or not
+        /// Command for opening the Pop up with all options
         /// </summary>
-        public bool HasMessage => Message != null;
+        public ICommand OpenPopUpSettingsCommand { get; set; }
+
+        #endregion
+
+        #region Constrcutor
 
         /// <summary>
-        /// A flag indicating if we have an image in this message
+        /// Default Constcutor
         /// </summary>
-        public bool HasImageAttachment => ImageAttachment != null;
+        public FriendListItemViewModel()
+        {
+            // Create Commands
+            OpenPopUpSettingsCommand = new RelayCommand(OpenPopupSettings);
+        }
+
+        #endregion
+
+        #region Command Methods
+
+        /// <summary>
+        /// When the Popup button is pressed
+        /// </summary>
+        public void OpenPopupSettings()
+        {
+
+        }
+
+        #endregion
     }
 }

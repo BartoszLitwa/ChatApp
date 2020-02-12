@@ -1,0 +1,124 @@
+﻿<UserControl x:Class="ChatApp.FriendListItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ChatApp"
+             xmlns:core="clr-namespace:ChatApp.Core;assembly=ChatApp.Core"
+             mc:Ignorable="d" 
+             Height="60"
+             d:DesignHeight="60" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <Style x:Key="ContentStyle" TargetType="{x:Type ContentControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContentControl}">
+                        
+                        <!-- Content -->
+                        <Border x:Name="Background" Background="{StaticResource ForegroundLightBrush}">
+
+                            <Grid x:Name="Container" Background="Transparent">
+
+                                <Grid.ColumnDefinitions>
+                                    <!-- Profile Picture -->
+                                    <ColumnDefinition Width="Auto"/>
+                                    <!-- Main content -->
+                                    <ColumnDefinition Width="*"/>
+                                    <!-- Option Control -->
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Profile Picture -->
+                                <Border Grid.Column="0" 
+                                        Padding="8">
+                                    
+                                    <!-- Profile Picture Background -->
+                                    <Border Background="{Binding ProfilePictureRGB, Converter ={local:StringRGBToBrushConverter}}"
+                                            Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
+                                            CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
+                                        
+                                        <!-- Profile Picture Initials -->
+                                        <TextBlock Text="{Binding Initials}"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"
+                                                   Foreground="{StaticResource BackgroundLightBrush}" 
+                                                   FontSize="{StaticResource FontSizeLarge}"
+                                                   FontFamily="{StaticResource LatoRegular}"/>
+                                        
+                                    </Border>
+                                </Border>
+
+                                <!-- Main content -->
+                                <Border Grid.Column="1"  Padding="0 0 15 0">
+                                    <StackPanel VerticalAlignment="Center">
+                                        <!-- Username -->
+                                        <TextBlock Text="{Binding Username}"
+                                                   Padding="0 0 0 3"
+                                                   FontFamily="{StaticResource LatoRegular}"
+                                                   Foreground="{StaticResource WordBlueBrush}"
+                                                   FontSize="{StaticResource FontSizeRegular}"/>
+                                        
+                                        <!-- Name -->
+                                        <TextBlock Text="{Binding Name}"
+                                                   Padding="0 0 0 3"
+                                                   FontFamily="{StaticResource LatoRegular}"
+                                                   Foreground="{StaticResource WordBlueBrush}"
+                                                   FontSize="{StaticResource FontSizeSmall}"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Option Control -->
+                                <Border Grid.Column="2">
+                                    <Button Foreground="{StaticResource WordOrangeBrush}"
+                                            Style="{StaticResource IconGrowButton}"
+                                            Content="{StaticResource FontAwesomeEllipsisVerticalIcon}"/>
+                                </Border>
+                                
+                            </Grid>
+                        </Border>
+
+                        <!-- Hover effect -->
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <!-- Animation -->
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation To="{StaticResource WordVeryVeryLightBlue}"
+                                                        Duration="0:0:0.3"
+                                                        Storyboard.TargetName="Container"                                                                  Storyboard.TargetProperty="Background.Color"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <!-- Animation -->
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation To="Transparent"
+                                                        Duration="0:0:0.3"
+                                                        Storyboard.TargetName="Container"                                                                  Storyboard.TargetProperty="Background.Color"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+
+                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                <Setter Property="Background"
+                                        TargetName="Background"
+                                        Value="{StaticResource WordVeryVeryLightBlueBrush}"/>
+                            </DataTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background"
+                                        TargetName="Container"
+                                        Value="{StaticResource ForegroundDarkBrush}"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <ContentControl d:DataContext="{x:Static local:FriendListItemDesignModel.Instance}" Style="{StaticResource ContentStyle}"/>
+
+</UserControl>

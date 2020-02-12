@@ -6,9 +6,14 @@
     public static class ApiRoutes
     {
         /// <summary>
-        /// The route to the Register Api method
+        /// The route to the Login Api method
         /// </summary>
         public const string Login = "/api/login";
+
+        /// <summary>
+        /// The route to the Check user's Token Api method
+        /// </summary>
+        public const string CheckToken = "/api/Check/Token";
 
         /// <summary>
         /// The route to the Register Api method

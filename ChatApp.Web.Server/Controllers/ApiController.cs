@@ -153,7 +153,7 @@ namespace ChatApp.Web.Server
             if (string.IsNullOrWhiteSpace(registerCredentials.Username))
                 return errorResponse;
 
-                // Create the desired user from the given details
+            // Create the desired user from the given details
             var user = new ApplicationUser
             {
                 UserName = registerCredentials.Username,
@@ -387,6 +387,33 @@ namespace ChatApp.Web.Server
                     ErrorMessage = result.Errors.AggregateErrors()
                 };
             }
+        }
+
+        #endregion
+
+        #region Check User token
+
+        /// <summary>
+        /// Returns if users token is valid and could log in
+        /// </summary>
+        /// <returns></returns>
+        [Route(ApiRoutes.CheckToken)]
+        public async Task<ApiResponse> CheckUserTokenAsync()
+        {
+            // Get users claims
+            var user = await mUserManager.GetUserAsync(HttpContext.User);
+
+            // If we have no user
+            if (user == null)
+                // Return error
+                return new ApiResponse
+                {
+                    // TODO: Localization
+                    ErrorMessage = "User not found"
+                };
+
+            // Return successfull
+            return new ApiResponse();
         }
 
         #endregion

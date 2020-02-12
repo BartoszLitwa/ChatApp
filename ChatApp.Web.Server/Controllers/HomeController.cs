@@ -118,5 +118,11 @@ namespace ChatApp.Web.Server
             await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
             return Content("Signed Out!");
         }
+
+        [Route(WebRoutes.WebpageReachable)]
+        public IActionResult WebPageReachable()
+        {
+            return Content("Reachable");
+        }
     }
 }

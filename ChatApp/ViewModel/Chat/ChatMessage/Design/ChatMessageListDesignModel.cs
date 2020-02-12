@@ -1,5 +1,4 @@
-﻿using ChatApp.Core;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 
 namespace ChatApp

@@ -24,5 +24,10 @@
         /// The route to the Private method
         /// </summary>
         public const string Private = "/user/private";
+
+        /// <summary>
+        /// The route to the Login method
+        /// </summary>
+        public const string WebpageReachable = "/WebpageReachable";
     }
 }

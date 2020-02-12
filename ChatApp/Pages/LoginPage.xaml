@@ -12,9 +12,19 @@
     <Border>
         <Grid>
             <!-- Login main content with white box-->
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" TextBlock.TextAlignment="Center">
-                    <Border Background="{StaticResource ForegroundLightBrush}" CornerRadius="10" Padding="15 50 15 15" Width="330" Height="350" Margin="50 50 50 0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto">
+                
+                <StackPanel VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            TextBlock.TextAlignment="Center">
+                    
+                    <Border Background="{StaticResource ForegroundLightBrush}"
+                            CornerRadius="10"
+                            Padding="15 50 15 15"
+                            Width="330"
+                            Height="350"
+                            Margin="50 50 50 0">
 
                         <StackPanel ClipToBounds="True">
                             <!-- Sign In header -->

@@ -16,6 +16,11 @@ namespace ChatApp
         /// </summary>
         protected ChatListControl mChatListControl = new ChatListControl();
 
+        /// <summary>
+        /// An instance of the current friend list control
+        /// </summary>
+        protected FriendListControl mFriendListControl = new FriendListControl();
+
         #endregion
 
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -31,7 +36,7 @@ namespace ChatApp
                     return mChatListControl;
                     // Contacts
                 case SideMenuContent.Contacts:
-                    return "Contacts";
+                    return mFriendListControl;
                     // Media
                 case SideMenuContent.Media:
                     return "Media";

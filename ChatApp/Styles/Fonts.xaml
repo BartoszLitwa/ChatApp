@@ -42,8 +42,16 @@
     <system:String x:Key="FontAwesomeEllipsisHorizontalIcon">&#xf141;</system:String>
     <system:String x:Key="FontAwesomePaperClipIcon">&#xf0c6;</system:String>
     <system:String x:Key="FontAwesomeSmileEmojiIcon">&#xf118;</system:String>
+    
     <system:String x:Key="FontAwesomeLeftArrowIcon">&#xf060;</system:String>
     <system:String x:Key="FontAwesomeCheckIcon">&#xf00c;</system:String>
     <system:String x:Key="FontAwesomeCancelIcon">&#xf00d;</system:String>
+    <system:String x:Key="FontAwesomeListIcon">&#xf03a;</system:String>
+    <system:String x:Key="FontAwesomeMessageIcon">&#xf044;</system:String>
+    <system:String x:Key="FontAwesomeRefreshIcon">&#xf1da;</system:String>
+    
+    <system:String x:Key="FontAwesomeUserAddIcon">&#xf4fc;</system:String>
+    <system:String x:Key="FontAwesomeUserDeleteIcon">&#xf235;</system:String>
+    <system:String x:Key="FontAwesomeUserBlockIcon">&#xf05e;</system:String>
     
 </ResourceDictionary>
